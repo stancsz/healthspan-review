@@ -1,10 +1,10 @@
 # Goal: measure frontier-token value without overclaiming
 
-Status: active
+Status: done
 Created: 2026-09-11
 Goal ID: VALUE-TOKEN-1
 Steward: project owner; contract prepared by Codex
-Builder: next implementation agent
+Builder: Codex
 
 ## Steward-owned contract
 
@@ -96,3 +96,11 @@ not a real provider or production result.
 Real paired frontier-model runs with provider-owned token accounting and a
 predeclared task-quality rubric are still required before a savings result can
 be reported.
+
+### Completion decision
+
+Closed 2026-09-12. V1-V5 are satisfied by the schema, validator, deterministic
+privacy-safe runner, focused tests, integration-boundary documentation, and
+the explicit `real_paired_runs: false` receipt. This closes the measurement
+apparatus only. It does not verify token savings; a future authorized paired-run
+study must establish that separately.

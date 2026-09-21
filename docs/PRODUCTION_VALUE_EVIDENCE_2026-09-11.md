@@ -182,8 +182,9 @@ must capture, for the same task set and model policy:
 - a predeclared baseline and confidence intervals across tasks.
 
 The primary metric should be frontier tokens per successful task, with quality
-and rework as guardrails. This repository currently has no trace schema or
-experiment receipt for those quantities. Status: **unverified, not zero**.
+and rework as guardrails. The repository now has a redacted trace schema and a
+deterministic synthetic mechanics receipt, but no real paired provider runs for
+those quantities. Status: **unverified, not zero**.
 
 ## Release interpretation
 

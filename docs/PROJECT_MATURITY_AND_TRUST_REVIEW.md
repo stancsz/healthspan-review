@@ -10,7 +10,7 @@ Root GOAL and IR0-IR7 remain authoritative for scientific and release boundaries
 
 ## What was inspected
 
-- Live [GitHub Pages](https://stancsz.github.io/frailty-index-deficit-accumulation-model/)
+- Live [GitHub Pages](https://stancsz.github.io/healthspan-review/)
   and a separate local browser preview of the current `docs/` working tree.
 - Rendered desktop overview and demo/report states at 1440x1000; mobile
   overview at 390x844. Screenshots were personally inspected, not merely saved.

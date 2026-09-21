@@ -11,8 +11,11 @@ reconcile visibility, licensing and public wording; private source is not verifi
 
 ## Active execution goal
 
-[VALUE-TOKEN-1: measure frontier-token value without overclaiming](goals/active/frontier-value-measurement/GOAL.md)
-is the single active execution contract. DOCS-GDE-1 is complete and retained
+[LOCAL-REVIEW-1: Local Measurement Review Pack v0.1](goals/active/local-measurement-review-pack/GOAL.md)
+is the single active execution contract. VALUE-TOKEN-1 is complete as a bounded
+measurement apparatus under `goals/completed/frontier-value-measurement/`; its
+receipt still says `real_paired_runs: false`, so token savings remain unverified.
+DOCS-GDE-1 is complete and retained
 under `goals/completed/documentation-governance/`. It must preserve one
 consistent statement of project state across this file, `ROADMAP.md`, `EVAL.md`,
 the Wiki, and Project #4. [T1: a trustworthy published measurement-review

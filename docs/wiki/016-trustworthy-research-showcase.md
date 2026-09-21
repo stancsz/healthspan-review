@@ -80,6 +80,16 @@ Named reviewers and final publication evidence remain outstanding. A local
 reviewer-first redesign is in progress; no deployment was authorized or
 performed.
 
+## Current local refactor, 2026-09-12
+
+The local candidate now presents itself as **Frailty Measurement Review** rather
+than an engine-first healthspan product. The first screen explains the useful
+artifact, the synthetic-only data boundary, the unavailable age result, and the
+evidence still needed for clinical use before exposing the deeper ledger. The
+palette and hierarchy are deliberately calmer and document-like, not a signal
+of validation. This change is local only pending the canonical verifier,
+browser review, an owner-authorized publication, and a same-SHA live check.
+
 T1 uses three achievable milestones: M1 local reviewer candidate, M2 verified
 publication, and M3 human-accepted research showcase. Q0-Q4 cover candidate/claim
 freeze, deterministic verification, browser/visual QA, live publication and

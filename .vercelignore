@@ -1,0 +1,16 @@
+.ableton-mcp/
+.build-check/
+.claude/
+.pytest_cache/
+.ruff_cache/
+.venv/
+.wheel-smoke/
+.wheel-smoke-*/
+.coverage
+.tmp/
+build/
+dist/
+docs/reviews/
+htmlcov/
+models/
+data/raw/

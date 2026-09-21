@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#f4f0e8" />
+  <title>Healthspan Review · Clinician workspace</title>
+  <meta name="description" content="A local-first measurement review workspace for clinicians. Inspect a SECA export, missing inputs, FI denominator status, and a printable research review packet." />
+  <link rel="stylesheet" href="workbench.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to workspace</a>
+  <header class="app-header">
+    <div class="brand-lockup">
+      <a class="brand-mark" href="/" aria-label="Healthspan Review home"><span>hr</span></a>
+      <div>
+        <p class="brand-kicker">Healthspan Review</p>
+        <p class="brand-title">Clinician workspace</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="local-badge"><span class="local-dot"></span>Local only</span>
+      <a href="/docs/index.html#evidence">Evidence &amp; limits</a>
+    </div>
+  </header>
+
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <strong>Research-use-only</strong>
+      <span>Data stays in this browser tab. Nothing is uploaded.</span>
+      <span class="trust-separator">•</span>
+      <span>No diagnosis, treatment advice, or validated biological age.</span>
+    </div>
+  </div>
+
+  <main id="main" class="app-shell">
+    <aside class="sidebar" aria-label="Review workflow">
+      <div class="sidebar-intro">
+        <p class="eyebrow">A focused review</p>
+        <h1>Make the record legible before making a claim.</h1>
+        <p>Move from an equipment export to an auditable measurement conversation in a few minutes.</p>
+      </div>
+      <nav class="workflow-nav" aria-label="Steps">
+        <button class="workflow-step is-active" data-step="import" type="button">
+          <span class="step-number">01</span><span><strong>Bring in a record</strong><small>SECA TableView CSV</small></span>
+        </button>
+        <button class="workflow-step" data-step="review" type="button" disabled>
+          <span class="step-number">02</span><span><strong>Review the record</strong><small>Observed, derived, missing</small></span>
+        </button>
+        <button class="workflow-step" data-step="export" type="button" disabled>
+          <span class="step-number">03</span><span><strong>Leave with a packet</strong><small>JSON or print</small></span>
+        </button>
+      </nav>
+      <div class="sidebar-footnote">
+        <span class="footnote-icon">↗</span>
+        <p>Use a local pseudonym in your own workflow. The export generated here intentionally contains no patient identifier.</p>
+      </div>
+    </aside>
+
+    <section class="workspace" aria-live="polite">
+      <section id="import-view" class="view is-visible" aria-labelledby="import-title">
+        <div class="view-heading">
+          <p class="eyebrow">01 · Start with what was actually measured</p>
+          <h2 id="import-title">Open a measurement record.</h2>
+          <p class="lede">Choose a SECA TableView CSV from this device. It is parsed in your browser, not sent to a server. You can also use the synthetic sample to see the complete workflow.</p>
+        </div>
+
+        <div class="source-grid">
+          <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-describedby="drop-help">
+            <div class="drop-icon" aria-hidden="true">↑</div>
+            <div>
+              <p class="source-kicker">Source 01 · equipment</p>
+              <h3>Drop a SECA CSV here</h3>
+              <p id="drop-help">or <label class="file-label" for="seca-file">choose a file</label> · max 5 MB</p>
+            </div>
+            <input id="seca-file" type="file" accept=".csv,text/csv" />
+          </div>
+          <div id="clinical-drop-zone" class="drop-zone clinical-drop-zone" tabindex="0" role="button" aria-describedby="clinical-drop-help">
+            <div class="drop-icon clinical-icon" aria-hidden="true">＋</div>
+            <div>
+              <p class="source-kicker">Source 02 · clinical context</p>
+              <h3>Add blood, history &amp; function</h3>
+              <p id="clinical-drop-help">Use <label class="file-label" for="clinical-file">another CSV</label> with Field,Value,Unit</p>
+            </div>
+            <input id="clinical-file" type="file" accept=".csv,text/csv" />
+          </div>
+        </div>
+
+        <div class="import-options">
+          <button id="load-sample" class="button button-primary" type="button">Open complete synthetic case <span>↗</span></button>
+          <button id="load-seca-preview" class="button button-quiet" type="button">Open SECA-only preview</button>
+          <a class="button button-quiet" href="/docs/example-clinical-inputs.csv" download>Download clinical CSV</a>
+          <a class="button button-quiet" href="/manual.html">Enter manually <span>↗</span></a>
+        </div>
+        <p class="import-contract"><strong>Input contract:</strong> SECA contains equipment readings. The second CSV contains canonical blood, history, demographic, and functional values. The app keeps their provenance separate and never fills an absent value.</p>
+        <div id="import-status" class="status-line" role="status" aria-live="polite">No record open.</div>
+
+        <div class="privacy-card">
+          <div class="privacy-icon" aria-hidden="true">⌁</div>
+          <div>
+            <h3>Designed for a private workstation</h3>
+            <p>This workspace has no upload endpoint, account database, or remote processing path. Closing the tab clears the working record. Use your clinic's own approved retention and privacy procedures for anything you choose to print.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="review-view" class="view" aria-labelledby="review-title" hidden>
+        <div class="view-heading compact-heading">
+          <div>
+            <p class="eyebrow">02 · Review before interpretation</p>
+            <h2 id="review-title">The measurement ledger.</h2>
+          </div>
+          <div class="heading-actions">
+            <button id="new-record" class="button button-quiet" type="button">Open another record</button>
+          </div>
+        </div>
+        <div id="record-status" class="record-status"></div>
+        <div id="summary-cards" class="summary-cards"></div>
+
+        <section id="estimated-ages-panel" class="panel age-estimates-panel" aria-labelledby="estimated-ages-title" hidden>
+          <div class="panel-heading"><div><p class="eyebrow">Estimated age signals</p><h3 id="estimated-ages-title">Illustrative estimates alongside the measurements</h3></div><span id="estimated-ages-tag" class="panel-tag"></span></div>
+          <p class="panel-copy">These values are supplied as illustrative estimates for the synthetic review flow. They are not validated biological age, diagnosis, prognosis, or treatment guidance. No validated uncertainty interval is available.</p>
+          <div id="estimated-age-cards" class="estimated-age-cards"></div>
+        </section>
+
+        <div class="review-grid">
+          <section class="panel ledger-panel" aria-labelledby="ledger-title">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Source ledger</p><h3 id="ledger-title">What is in the latest scan</h3></div>
+              <span class="panel-tag">Provenance attached</span>
+            </div>
+            <div class="table-wrap"><table><thead><tr><th scope="col">Measurement</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Origin</th></tr></thead><tbody id="ledger-rows"></tbody></table></div>
+            <p id="ledger-empty" class="empty-state" hidden>No mapped measurements were found in the latest dated scan.</p>
+          </section>
+
+          <section class="panel next-panel" aria-labelledby="next-title">
+            <div class="panel-heading"><div><p class="eyebrow">Collection check</p><h3 id="next-title">What is still missing</h3></div><span id="missing-count" class="count-badge"></span></div>
+            <p id="missing-copy" class="panel-copy">A SECA scan does not supply age, sex, blood values, history, or function. Nothing is inferred here.</p>
+            <ul id="missing-list" class="check-list"></ul>
+            <div class="next-note"><strong>Safe next question</strong><span>Collect missing inputs through your approved workflow before considering any assessment.</span></div>
+          </section>
+        </div>
+
+        <section id="clinical-panel" class="panel clinical-panel" aria-labelledby="clinical-title" hidden>
+          <div class="panel-heading"><div><p class="eyebrow">Clinical input ledger</p><h3 id="clinical-title">Context from the second source</h3></div><span id="clinical-tag" class="panel-tag"></span></div>
+          <p id="clinical-copy" class="panel-copy">Values from the clinical CSV are shown separately from the equipment export.</p>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th></tr></thead><tbody id="clinical-rows"></tbody></table></div>
+        </section>
+
+        <section id="complete-panel" class="panel complete-panel" aria-labelledby="complete-title" hidden>
+          <div class="panel-heading"><div><p class="eyebrow">Canonical completeness</p><h3 id="complete-title">Full review profile</h3></div><span id="complete-tag" class="panel-tag"></span></div>
+          <p class="panel-copy">Every canonical field is shown with its value, unit, category, and source. “Complete” describes this synthetic or locally supplied data packet only. It is not clinical validation.</p>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th></tr></thead><tbody id="complete-rows"></tbody></table></div>
+        </section>
+
+        <section class="panel segment-panel" aria-labelledby="segment-title">
+          <div class="panel-heading"><div><p class="eyebrow">Segment readings</p><h3 id="segment-title">What the scan measured by region</h3></div><span id="segment-tag" class="panel-tag"></span></div>
+          <p class="panel-copy">These regional values are retained as observed equipment readings. They are not converted into a health or action-effect claim.</p>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Region</th><th scope="col">Latest</th><th scope="col">Unit</th><th scope="col">Change</th><th scope="col">Origin</th></tr></thead><tbody id="segment-rows"></tbody></table></div>
+          <p id="segment-empty" class="empty-state" hidden>No regional readings were found in the latest dated scan.</p>
+        </section>
+
+        <div class="lower-grid">
+          <section class="panel fi-panel" aria-labelledby="fi-title">
+            <p class="eyebrow">Frailty index</p>
+            <h3 id="fi-title">Withheld until the review contract is met.</h3>
+            <div class="withheld-number">—</div>
+            <p id="fi-copy" class="panel-copy">The FI numerator and denominator are not computed from a SECA preview. Missing items must remain missing, and they must never be imputed just to produce a score.</p>
+            <div class="boundary-note"><span>Boundary</span><strong>No clinical or lifespan claim</strong></div>
+          </section>
+          <section class="panel comparison-panel" aria-labelledby="comparison-title">
+            <div class="panel-heading"><div><p class="eyebrow">Longitudinal context</p><h3 id="comparison-title">Descriptive change only</h3></div><span id="comparison-tag" class="panel-tag"></span></div>
+            <div id="comparison-content"></div>
+          </section>
+        </div>
+
+        <section class="panel notes-panel" aria-labelledby="notes-title">
+          <div class="panel-heading"><div><p class="eyebrow">Parser review</p><h3 id="notes-title">Warnings and derivations</h3></div></div>
+          <div id="parser-notes" class="notes-grid"></div>
+        </section>
+
+        <div class="review-footer-actions">
+          <button id="export-button" class="button button-primary" type="button">Download review packet <span>↓</span></button>
+          <button id="print-button" class="button button-dark" type="button">Print review packet <span>↗</span></button>
+          <p id="export-status" class="status-line" role="status"></p>
+        </div>
+      </section>
+
+      <section id="export-view" class="view" aria-labelledby="export-title" hidden>
+        <div class="view-heading">
+          <p class="eyebrow">03 · Leave a trace</p>
+          <h2 id="export-title">A packet you can explain.</h2>
+          <p class="lede">The packet is deterministic JSON or a print-ready review page. It records source measurements, provenance, missing inputs, warnings, and the non-clinical boundary.</p>
+        </div>
+        <div class="export-success">
+          <div class="success-mark">✓</div>
+          <div><h3>Review packet ready</h3><p id="export-summary">Your packet is generated locally from the open record.</p></div>
+        </div>
+        <div class="export-actions">
+          <button id="export-again" class="button button-primary" type="button">Download JSON packet <span>↓</span></button>
+          <button id="print-again" class="button button-dark" type="button">Print packet <span>↗</span></button>
+        </div>
+        <div class="export-boundary"><strong>Before sharing</strong><span>Review your clinic's approved privacy and retention procedure. This artifact is research/wellness measurement review only. E-005 clinical evidence remains blocked.</span></div>
+        <button id="back-to-review" class="text-button" type="button">← Back to the measurement ledger</button>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer"><span>Healthspan Review · local measurement review v0.1</span><a href="/docs/index.html">Read the full evidence record</a><span>Clinical use: forbidden</span></footer>
+
+  <script src="seca-parser.js?v=review-v3"></script>
+  <script src="clinical-parser.js?v=review-v1"></script>
+  <script src="workbench.js?v=review-v3"></script>
+</body>
+</html>

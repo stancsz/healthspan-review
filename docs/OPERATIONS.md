@@ -515,7 +515,7 @@ not complete. A clinical reviewer still needs to approve the external cohort,
 cutoff decisions, reference panel, uncertainty method, calibration results,
 and production artifact before any real-world clinical or prognostic use.
 
-See the [GOAL.md](https://github.com/stancsz/frailty-index-deficit-accumulation-model/blob/main/GOAL.md),
-[EVAL.md](https://github.com/stancsz/frailty-index-deficit-accumulation-model/blob/main/EVAL.md),
+See the [GOAL.md](https://github.com/stancsz/healthspan-review/blob/main/GOAL.md),
+[EVAL.md](https://github.com/stancsz/healthspan-review/blob/main/EVAL.md),
 [MODEL_CARD.md](MODEL_CARD.md), and [MODEL_APPROVAL.md](MODEL_APPROVAL.md) for
 the evidence and promotion contracts.

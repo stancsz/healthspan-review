@@ -7,31 +7,30 @@ software check is green.
 
 ## Current position
 
-**Current execution priority: VALUE-TOKEN-1, active (frontier-token value measurement).**
-Owner: implementation agent with project-owner acceptance. The superseded T1
+**Current execution priority: LOCAL-REVIEW-1, active (Local Measurement Review Pack v0.1).**
+Owner: implementation agent with project-owner acceptance. VALUE-TOKEN-1 is complete as a bounded measurement apparatus, while token savings remain unverified. The superseded T1
 showcase contract is retained at
 `goals/completed/trustworthy-research-showcase/GOAL.md`; the completed
 documentation-governance contract is at
 `goals/completed/documentation-governance/GOAL.md`; the current active contract
-is `goals/active/frontier-value-measurement/GOAL.md`.
+is `goals/active/local-measurement-review-pack/GOAL.md`.
 The [audit](docs/PROJECT_MATURITY_AND_TRUST_REVIEW.md) and root goal retain
 the underlying product and release evidence.
 Documentation authority: this roadmap is ordered project guidance below
 [`PRODUCT_INTENT.md`](docs/product-specs/PRODUCT_INTENT.md),
 [`ARCHITECTURE.md`](ARCHITECTURE.md), and the active execution contract in
-[`goals/active/frontier-value-measurement/GOAL.md`](goals/active/frontier-value-measurement/GOAL.md).
+[`goals/active/local-measurement-review-pack/GOAL.md`](goals/active/local-measurement-review-pack/GOAL.md).
 It records sequencing and exit evidence; it does not redefine product intent
 or clinical approval.
 The dated production/value evidence package is
 [`docs/PRODUCTION_VALUE_EVIDENCE_2026-09-11.md`](docs/PRODUCTION_VALUE_EVIDENCE_2026-09-11.md).
-It records 20/20 canonical software checks, 176 Python tests, 28 Node tests,
+It records the prior checkpoint's 20/20 canonical software checks, 176 Python
+tests, 28 Node tests,
 and a passing loopback smoke, while explicitly leaving clinical readiness,
 intended-user value, and frontier-token savings unverified.
 The independent 2026-09-11 review added durable open outcomes to `GOAL.md`.
-The immediate VALUE-TOKEN-1 order is: keep the measurement contract
-reproducible; obtain owner-supplied matched frontier-run exports; adjudicate
-quality and retries; then report a bounded result or a verified no-go. The
-local synthetic receipt verifies mechanics only. Clinical-review readiness,
+The immediate LOCAL-REVIEW-1 order is: ship and verify the local review packet,
+then run the prespecified five-user IR1 comparison. Clinical-review readiness,
 scientific validation, human acceptance, staging, and clinical approval retain
 their existing IR dependencies and are not advanced by this token measurement.
 Order: reconcile public claims and candidate identity; implement a measurement-first
@@ -44,12 +43,50 @@ All milestones remain open.
 The live page was visually inspected and differs materially from local work;
 the latest local canonical verifier passes all required software checks, but
 neither fact establishes T1 completion.
+The current Pages refactor is an in-progress local reviewer-first candidate:
+it renames the opening surface around frailty measurement review, replaces
+engine-forward and promotional language with availability boundaries, and uses
+a calmer clinical-research palette. Its exit evidence is the documented local
+verifier and browser review, followed by an owner-authorized publication and
+same-SHA live inspection. It does not advance E-005, IR1, or any clinical claim.
+On 2026-09-19, a separate owner-private ChatGPT Sites interaction prototype
+was published to test the clinician-facing flow with a fixed synthetic record:
+review provenance and missingness first, inspect a transparent FI denominator,
+then request a bounded documentation draft. Its MiniMax M3 route rejects every
+payload except that fixed demo record, so it cannot receive patient data. This
+is interaction-design evidence only, not a user session, clinical deployment,
+model validation, or IR1 result.
+On 2026-09-21, the local measurement-review slice gained a separate Vercel-
+ready clinician workspace at `docs/workbench.html`, routed from `/` and
+`/workbench` by `vercel.json`. It is deliberately browser-local: a clinician
+can load a SECA TableView CSV, add a separate canonical clinical `Field,Value,Unit`
+CSV, enter the same 35 fields manually at `/manual`, or open a complete
+synthetic case. The complete case shows 10 mapped equipment values, 5 regional
+readings, and 35/35 canonical clinical fields with source provenance, while
+partial real inputs retain explicit missingness. The workspace supports
+descriptive two-scan deltas and deterministic JSON/print output. A local stdio
+MCP adapter exposes the same parsing and completeness review without
+ persistence or a remote patient-data endpoint.
+Focused browser and Node evidence passed. This is a better direct-use
+research/wellness interface, not a clinical service, patient-data host, AI
+decision-support product, or E-005/IR1 result. The static workspace is now
+published and verified at
+`https://frailty-index-deficit-accumulation.vercel.app/`; the live root and
+`/workbench` routes serve the clinician workspace, while clinical use remains
+forbidden and E-005 remains blocked. The newest deployed alias contains the
+complete synthetic, separate clinical CSV, and manual-entry slice; this remains
+static research software, not clinical production.
 The local slice now fronts purpose, intended user, synthetic scope, research-only
 status and the primary example action, then leads the selected report with an
 observed measurement ledger. Local Chromium captures and the current public
 claim inventory are retained under `docs/reviews/`; cross-engine reruns and
 human acceptance remain open. The per-check local record is
 `docs/reviews/trust-maturity-2026-09-10/t1-local-qa-receipt.json`.
+The complete synthetic path now also displays an explicitly supplied
+illustrative `Joint age: 35 years` signal alongside the metrics. It is labelled
+`Estimated · unvalidated`, preserved in the local packet and optional MCP
+metadata, and never inferred for inputs that do not supply an age signal. This
+does not change the withheld validated biological/system-age boundary.
 After the fresh-preview QA receipt update, the current dirty checkout reran
 `uv run python scripts/verify_project.py --json`: all 20 checks passed and
 `clinical_gate` remains `E-005 blocked`. This is current local verification,
@@ -287,7 +324,7 @@ utility is demonstrated. All original gate acceptance thresholds remain in force
 | ID | Priority | Status | Owner role | Depends on | Exit evidence |
 |---|---|---|---|---|---|
 | IR0 | 0 | In progress, local gate passes; release blocked | Maintainer | none | Clean candidate SHA passes full Linux/Windows tests, wheel HTTP smokes and publication gate; live identity verified; licensing/visibility wording reconciled. |
-| IR1 | 1 | Todo | Product owner and clinician | Frozen local package to start; IR0 for release closeout | One workflow and five-user task study meet GOAL thresholds against current manual workflow. |
+| IR1 | 1 | In progress, review pack implemented; five-user study not run | Product owner and clinician | Frozen local package to start; IR0 for release closeout | One workflow and five-user task study meet GOAL thresholds against current manual workflow. |
 | IR2 | 1 | In progress, local contract implemented; reviewer sign-off absent | Engineering and statistician | Draft IR1 contract to start; frozen package for review; IR0 for release | Changing measurement coverage alone cannot imply health improvement; provenance and comparison eligibility tests pass and receive statistical review. |
 | IR3 | 1 | In progress, report/static boundary, browser journeys, and manual checklist delivered; automated light-theme contrast sweep passes, human review and user evidence absent | Design and documentation | Draft IR1/IR2 contract to start; their review and IR0 to close | Focused site/report, real browser and accessibility evidence, network privacy checks and user comprehension pass. |
 | IR4 | 2 | Todo, qualified owners/data needed | Clinical/data lead and statistician | IR1 | One domain protocol, permitted data, baselines, independent split and prespecified acceptance thresholds approved before fitting. |
@@ -297,8 +334,8 @@ utility is demonstrated. All original gate acceptance thresholds remain in force
 
 ### Next agent objectives, 2026-09-10
 
-These are ordered implementation objectives under the existing single active
-T1 contract and IR0-IR7 plan. They are not new clinical-validity claims or
+These are ordered implementation objectives under the single active
+LOCAL-REVIEW-1 contract and IR0-IR7 plan. They are not new clinical-validity claims or
 parallel active GDE goals.
 
 | Order | Objective | Agent-deliverable acceptance | Explicit boundary |
@@ -394,7 +431,7 @@ itself establish clinical validity, transportability, safety, or approval.
    caches, `.ableton-mcp` failure logs, raw SECA exports, model artifacts,
    downloaded NHANES data, credentials, and patient identifiers.
 3. Commit the repository on `main`, push it to
-   `https://github.com/stancsz/frailty-index-deficit-accumulation-model`, and
+   `https://github.com/stancsz/healthspan-review`, and
    verify that the public tree contains `skills/frailty-engine/SKILL.md`.
 4. Enable/verify Actions and GitHub Pages. Pages may publish only the static
    `docs/` surface and synthetic fixtures; it must never receive patient data

@@ -1,0 +1,9 @@
+{
+  "framework": null,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/workbench.html" },
+    { "source": "/workbench", "destination": "/workbench.html" },
+    { "source": "/manual", "destination": "/manual.html" }
+  ]
+}

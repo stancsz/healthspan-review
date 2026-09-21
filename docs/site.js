@@ -140,18 +140,18 @@
     { id: "E-007", verdict: "passing",  area: "Public NHANES XPT + mortality ingestion" },
     { id: "E-008", verdict: "passing",  area: "GitHub Pages docs + browser/link review" },
     { id: "E-009", verdict: "passing",  area: "Operational skill-compatibility + serving gates" },
-    { id: "E-010", verdict: "passing",  area: "SECA import + demo + wellness report" },
+    { id: "E-010", verdict: "passing",  area: "SECA import + demo + measurement review" },
     { id: "E-011", verdict: "passing",  area: "Training missingness + artifact approval invariants" },
     { id: "E-012", verdict: "passing",  area: "Training quality and missingness evidence report" },
     { id: "E-013", verdict: "passing",  area: "Censoring-aware calibration + approval reset" },
     { id: "E-014", verdict: "passing",  area: "Pages parser/accessibility + API boundary hardening" },
     { id: "E-015", verdict: "passing",  area: "SECA parser parity + derivation provenance" },
     { id: "E-016", verdict: "passing",  area: "Training recipe metadata + CI ML gate" },
-    { id: "E-017", verdict: "passing",  area: "Wellness direction + numeric range clarity" },
+    { id: "E-017", verdict: "passing",  area: "Measurement context + numeric range clarity" },
     { id: "E-018", verdict: "passing",  area: "Frozen training-manifest reproducibility shape" },
     { id: "E-019", verdict: "passing",  area: "Locked package + installed-wheel smoke path" },
     { id: "E-020", verdict: "passing",  area: "Privacy-safe normalized SECA handoff" },
-    { id: "E-021", verdict: "passing",  area: "Downloadable wellness improvement report" },
+    { id: "E-021", verdict: "passing",  area: "Downloadable measurement review export" },
     { id: "E-022", verdict: "passing",  area: "Explicit SECA assessment-readiness checklist" },
     { id: "E-023", verdict: "passing",  area: "Operations, monitoring, rollback, and privacy runbook" },
     { id: "E-024", verdict: "passing",  area: "External subgroup event/censoring support denominators" },
@@ -163,7 +163,7 @@
     { id: "E-030", verdict: "passing",  area: "Allow-listed runtime release receipt capture and reconciliation" },
     { id: "E-031", verdict: "passing",  area: "Model/panel/approval release preflight and uncertainty lock" },
     { id: "E-032", verdict: "passing",  area: "Typed no-action-effect and no-clinical-claim boundary" },
-    { id: "E-033", verdict: "passing",  area: "Stateless longitudinal wellness progress comparison" },
+    { id: "E-033", verdict: "passing",  area: "Stateless longitudinal measurement comparison" },
     { id: "E-034", verdict: "passing",  area: "Downloadable/loadable synthetic SECA sample" },
     { id: "E-035", verdict: "passing",  area: "Visible input completeness context" },
     { id: "E-036", verdict: "passing",  area: "Descriptive SECA segment trends" },
@@ -177,7 +177,7 @@
     { id: "E-044", verdict: "passing",  area: "Semantic release-receipt readiness invariants" },
     { id: "E-045", verdict: "passing",  area: "NHANES linked-duration unit boundary" },
     { id: "E-046", verdict: "passing",  area: "Pages handoff flags + EVAL status parity" },
-    { id: "E-047", verdict: "passing",  area: "Complete wellness focus list + transparent Pages display" },
+    { id: "E-047", verdict: "passing",  area: "Complete measured-item list + transparent Pages display" },
     { id: "E-048", verdict: "passing",  area: "External-validation and clinical-review protocol template" },
     { id: "E-049", verdict: "passing",  area: "Nullable uncertainty, nested receipt schema, and validation identity" },
     { id: "E-050", verdict: "passing",  area: "Reviewable validation exclusions and uncertainty status" },
@@ -190,14 +190,14 @@
     { id: "E-057", verdict: "passing",  area: "External-validation support and outcome metric obligations" },
     { id: "E-058", verdict: "passing",  area: "Windows-first CI and installed-wheel verification" },
     { id: "E-059", verdict: "passing",  area: "Clinical-ML credibility research crosswalk" },
-    { id: "E-060", verdict: "passing",  area: "Typed Pages wellness focus-list handoff boundary" },
+    { id: "E-060", verdict: "passing",  area: "Typed Pages measured-item handoff boundary" },
     { id: "E-061", verdict: "passing",  area: "Synthetic reference-panel promotion guard" },
     { id: "E-062", verdict: "passing",  area: "All-feature panel age-band coverage boundary" },
     { id: "E-063", verdict: "passing",  area: "Explicit supplied mapper provenance gate" },
     { id: "E-064", verdict: "passing",  area: "Explicit uncertainty construction labels" },
     { id: "E-065", verdict: "passing",  area: "Deterministic Python/Node test receipt" },
     { id: "E-066", verdict: "passing",  area: "Bounded privacy-safe runtime metrics" },
-    { id: "E-067", verdict: "passing",  area: "Intervention and wellness-range context parity" },
+    { id: "E-067", verdict: "passing",  area: "Context-label and range parity" },
     { id: "E-068", verdict: "passing",  area: "Local SECA assessment handoff and MVV overlay" },
     { id: "E-069", verdict: "passing",  area: "Versioned SECA handoff, preview, and typed CLI errors" },
     { id: "E-070", verdict: "passing",  area: "Privacy-safe local NHANES intake-shape receipt" },
@@ -208,7 +208,7 @@
     { id: "E-075", verdict: "passing", area: "Loopback HTTP serving contract" },
     { id: "E-076", verdict: "passing", area: "Runtime-process provenance and installed-build identity" },
     { id: "E-077", verdict: "passing", area: "Pages deploy guard and provenance admission semantics" },
-    { id: "E-078", verdict: "passing", area: "Truthful Pages readout and complete wellness handoff" },
+    { id: "E-078", verdict: "passing", area: "Truthful Pages withheld output and complete handoff" },
     { id: "E-079", verdict: "passing", area: "Real HTTP strict serving software gate" },
     { id: "E-080", verdict: "passing", area: "Independent next-tranche selection" },
     { id: "E-081", verdict: "passing", area: "External-validation subgroup support warnings" },
@@ -233,6 +233,7 @@
     { id: "E-100", verdict: "passing", area: "Representative real-data distributions for all categories" },
     { id: "E-101", verdict: "passing", area: "Runtime links to category distribution evidence" },
     { id: "E-102", verdict: "passing", area: "Privacy-safe frontier-token value measurement mechanics" },
+    { id: "E-103", verdict: "passing", area: "Local Measurement Review Pack v0.1 export and print contract" },
   ];
 
   function initStatusTable() {
@@ -355,7 +356,7 @@
         var description = document.querySelector("#demo-description");
         if (description) {
           description.textContent = "Demo data could not be loaded: " + error.message
-            + " The wellness report controls are disabled until the static JSON asset is restored.";
+            + " The measurement-review controls are disabled until the static JSON asset is restored.";
         }
         setDemoReportStatus("Demo data is unavailable — " + error.message, true);
       });
@@ -474,11 +475,11 @@
       var extraList = document.querySelector("[data-demo-focus-extra-list]");
       if (countEl) {
         countEl.textContent = areas.length
-          ? "Showing " + Math.min(areas.length, 5) + " of " + areas.length + " measured focus areas."
-          : "No measured focus areas in this example.";
+          ? "Showing " + Math.min(areas.length, 5) + " of " + areas.length + " measured review items."
+          : "No measured review items in this example.";
       }
       if (!areas.length) {
-        focus.innerHTML = "<li>No measured focus areas in this example. Keep monitoring trends and complete missing inputs when appropriate.</li>";
+        focus.innerHTML = "<li>No measured review items in this example. Complete missing inputs before drawing a broader interpretation.</li>";
         if (extraHost) extraHost.hidden = true;
         if (extraList) extraList.innerHTML = "";
       } else {
@@ -551,7 +552,7 @@
           + "<p><strong>Category age report:</strong> " + escapeHtml(ageText) + "</p>"
           + (measurements ? "<ul>" + measurements + "</ul>" : "<p>No supported measurements are available.</p>")
           + (missing ? "<p class=\"field-note\"><strong>Not measured:</strong> " + missing + "</p>" : "")
-          + "<p class=\"field-note\"><strong>Next step:</strong> "
+          + "<p class=\"field-note\"><strong>Review question:</strong> "
           + escapeHtml(category.next_step || "Discuss the report with a qualified professional.") + "</p>";
         categories.appendChild(article);
       });
@@ -1055,14 +1056,19 @@
     if (!input) return;
     var sampleButton = document.querySelector("#seca-load-sample");
     var downloadButton = document.querySelector("#seca-download");
+    var printButton = document.querySelector("#seca-print");
     var sampleDownloadLink = document.querySelector('a[href="example-seca-tableview.csv"][download]');
     var intake = initSecaAssessmentIntake();
     var parsedExport = null;
     if (downloadButton) {
       downloadButton.hidden = true;
       downloadButton.addEventListener("click", function () {
-        if (parsedExport) downloadNormalizedSecaSummary(parsedExport);
+        if (parsedExport) downloadMeasurementReviewPack(parsedExport, "Local export");
       });
+    }
+    if (printButton) {
+      printButton.hidden = true;
+      printButton.addEventListener("click", printMeasurementReviewPack);
     }
     if (sampleDownloadLink && !sampleDownloadLink.hasAttribute("aria-label")) {
       sampleDownloadLink.setAttribute(
@@ -1077,10 +1083,12 @@
         renderSecaPreview(parsedExport, sourceLabel, token);
         intake.setExport(parsedExport, sourceLabel);
         if (downloadButton) downloadButton.hidden = false;
+        if (printButton) printButton.hidden = false;
       } catch (error) {
         parsedExport = null;
         intake.clear();
         if (downloadButton) downloadButton.hidden = true;
+        if (printButton) printButton.hidden = true;
         clearSecaDetails(token);
         setSecaStatus("Could not parse this export: " + error.message, true, token);
       }
@@ -1112,6 +1120,7 @@
       parsedExport = null;
       intake.clear();
       if (downloadButton) downloadButton.hidden = true;
+      if (printButton) printButton.hidden = true;
       secaRequestToken += 1;
       var token = secaRequestToken;
       if (file.size > window.FrailtySecaParser.MAX_SECA_BYTES) {
@@ -1133,43 +1142,39 @@
     });
   }
 
-  function downloadNormalizedSecaSummary(exported) {
+  function downloadMeasurementReviewPack(exported, sourceLabel) {
     if (!window.Blob || !window.URL || !window.URL.createObjectURL) {
       setSecaStatus("This browser cannot create a local normalized download.", true);
       return;
     }
-    var latest = exported.latest || { values: {}, units: {}, segments: {}, warnings: [], derivations: [] };
-    var summary = {
-      format: "seca-tableview-normalized-v1",
-      source_format: "SECA TableView CSV",
-      measured_at: exported.measuredAt,
-      latest_measurements: latest.values,
-      units: latest.units,
-      segmental_skeletal_muscle_mass: latest.segments,
-      unmapped_labels: exported.unmappedLabels || [],
-      derivations: latest.derivations,
-      unit_warnings: latest.warnings,
-      trend_available: Boolean(exported.trendAvailable),
-      trend_latest_minus_previous: exported.trend || {},
-      segmental_trend_latest_minus_previous: exported.segmentalTrend || {},
-      assessment_readiness: exported.assessmentReadiness ? {
-        assessment_ready: exported.assessmentReadiness.assessmentReady,
-        missing_requirements: exported.assessmentReadiness.missingRequirements,
-        note: exported.assessmentReadiness.note
-      } : null,
-      privacy_note: "Normalized locally from a SECA export. The original CSV and patient identifiers are not included."
-    };
+    var summary = window.FrailtySecaParser.buildMeasurementReviewPack(exported, sourceLabel);
     var blob = new Blob([JSON.stringify(summary, null, 2) + "\n"], { type: "application/json" });
     var url = window.URL.createObjectURL(blob);
     var anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "seca-normalized-summary.json";
+    anchor.download = "local-measurement-review-pack-v0.1.json";
     anchor.hidden = true;
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
     window.setTimeout(function () { window.URL.revokeObjectURL(url); }, 0);
-    setSecaStatus("Downloaded normalized summary locally. No scan data was uploaded.", false);
+    setSecaStatus("Downloaded Local Measurement Review Pack v0.1. No scan data was uploaded.", false);
+  }
+
+  function printMeasurementReviewPack() {
+    var pack = document.querySelector("#seca-review-pack");
+    if (!pack || pack.hidden || typeof window.print !== "function") {
+      setSecaStatus("Load a valid SECA export before printing the review pack.", true);
+      return;
+    }
+    document.body.classList.add("print-seca-review-mode");
+    var finish = function () {
+      document.body.classList.remove("print-seca-review-mode");
+      window.removeEventListener("afterprint", finish);
+    };
+    window.addEventListener("afterprint", finish);
+    setSecaStatus("Print dialog opened for Local Measurement Review Pack v0.1.", false);
+    window.print();
   }
 
   function renderSecaPreview(exported, sourceLabel, token) {
@@ -1181,10 +1186,13 @@
     setSecaStatus((sourceLabel ? sourceLabel + " " : "") + "Mapped " + canonical.length + " canonical fields from the latest dated scan. No upload occurred." + trendNote + readinessNote + warningNote, Boolean(scan.warnings.length), token);
     var details = document.querySelector("#seca-import-details");
     if (!details) return;
+    var pack = document.querySelector("#seca-review-pack");
+    if (pack) pack.hidden = false;
     var segmentLabels = Object.keys(scan.segments);
     var trendLabels = Object.keys(exported.segmentalTrend || {});
     var pairs = [
       ["Latest scan", exported.measuredAt],
+      ["Source provenance", (sourceLabel || "Local export") + " / SECA TableView CSV"],
       ["BMI", scan.values.bmi],
       ["Weight", scan.values.weight_kg],
       ["Height", scan.values.height_cm],
@@ -1204,7 +1212,11 @@
       ["Muscle trend", exported.trend.skeletal_muscle_mass === undefined ? "not comparable" : formatDelta(exported.trend.skeletal_muscle_mass)],
       ["Assessment status", readiness && readiness.assessmentReady ? "ready" : "SECA preview only — MVV not met"],
       ["Remaining MVV inputs", readiness ? readiness.missingRequirements.join("; ") : "not available"],
-      ["Safe next step", readiness ? readiness.note : "Complete the full MVV through an approved workflow."]
+      ["FI numerator / denominator", "withheld / withheld until MVV-gated assessment"],
+      ["FI coverage caveat", "Missing FI items are excluded from the denominator and are never imputed."],
+      ["Comparison interpretation", exported.trendAvailable ? "descriptive deltas only; not evidence of improved health or an action effect" : "unavailable; at least two dated scans required"],
+      ["Safe next step", readiness ? readiness.note : "Complete the full MVV through an approved workflow."],
+      ["Use boundary", "Research measurement review only; no diagnosis, treatment advice, or validated biological/system age; E-005 blocked"]
     ];
     var pairsHtml = "";
     pairs.forEach(function (pair) {
@@ -1264,6 +1276,8 @@
     if (!details) return;
     if (token !== undefined && token !== secaRequestToken) return;
     details.innerHTML = "";
+    var pack = document.querySelector("#seca-review-pack");
+    if (pack) pack.hidden = true;
   }
 
   // ---------------------------------------------------------------

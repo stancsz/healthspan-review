@@ -493,7 +493,7 @@ def _failures(root: Path, test_count: int, node_test_count: int) -> list[str]:
     if 'href="PRIVACY_THREAT_MODEL.md"' not in html:
         failures.append("Pages source map is missing the privacy threat model")
     if (
-        'href="https://github.com/stancsz/frailty-index-deficit-accumulation-model/blob/main/SECURITY.md"'
+        'href="https://github.com/stancsz/healthspan-review/blob/main/SECURITY.md"'
         not in html
     ):
         failures.append("Pages source map is missing the stable SECURITY.md link")
@@ -525,8 +525,10 @@ def _failures(root: Path, test_count: int, node_test_count: int) -> list[str]:
     ):
         if marker not in security:
             failures.append(f"SECURITY.md is missing marker: {marker}")
-    if "Status / action" not in html:
-        failures.append("Pages wellness table is missing action semantics")
+    if "Status / context" not in html:
+        failures.append(
+            "Pages measurement table is missing contextual-status semantics"
+        )
     if (
         'href="MODEL_APPROVAL.md"' not in html
         or "reference_panel_sha256" not in model_approval
@@ -591,7 +593,7 @@ def _failures(root: Path, test_count: int, node_test_count: int) -> list[str]:
         "MAX_SECA_BYTES",
         "dated columns must contain parseable dates",
         "Single scan only — trend comparison requires two dated scans.",
-        "Biological-age readout",
+        "Withheld age-equivalent output",
         "uncertainty not validated",
         "ci_95: null",
         'response.headers["Connection"] = "close"',
@@ -602,9 +604,9 @@ def _failures(root: Path, test_count: int, node_test_count: int) -> list[str]:
         'id="seca-load-sample"',
         "example-seca-tableview.csv",
         "Synthetic sample:",
-        "downloadNormalizedSecaSummary",
-        "seca-tableview-normalized-v1",
-        "seca-normalized-summary.json",
+        "downloadMeasurementReviewPack",
+        "local-measurement-review-pack-v0.1",
+        "local-measurement-review-pack-v0.1.json",
         'id="demo-download"',
         'id="demo-print"',
         'id="demo-copy-focus"',
@@ -620,7 +622,7 @@ def _failures(root: Path, test_count: int, node_test_count: int) -> list[str]:
         "copyWellnessFocus",
         "publicFocusAreas",
         "top_interventions: result.top_interventions || []",
-        "Normalized age-equivalent difference",
+        "Age-equivalent comparison: withheld pending validation",
         "data-demo-deviation-uncertainty",
         "report-print-banner",
         "target_range_label",

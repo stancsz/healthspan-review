@@ -4,21 +4,21 @@
    --------------------------------------------------------------- */
 
 :root {
-  --ink:        #0f1620;
-  --ink-soft:   #2a3343;
-  --bone:       #f4efe6;
-  --bone-deep:  #ebe4d6;
-  --paper:      #faf6ef;
-  --rule:       #1c2330;
-  --muted:      #5b5146;
-  --accent:     #8f2f17;       /* reserved for development-status alerts */
-  --accent-bg:  #f1d9c4;
-  --archive:    #3b6b4d;       /* verified evidence */
-  --archive-bg: #dde7df;
-  --gold:       #6f5d19;       /* citation / inline receipt markers */
-  --gold-bg:    #f0e4c8;
-  --link:       #1f3d5c;
-  --link-hover: #8f2f17;
+  --ink:        #152733;
+  --ink-soft:   #3b5360;
+  --bone:       #edf1ed;
+  --bone-deep:  #e2e9e5;
+  --paper:      #fbfcfa;
+  --rule:       #9dada9;
+  --muted:      #5b6f70;
+  --accent:     #9b3d28;       /* reserved for evidence gaps */
+  --accent-bg:  #f6e5dc;
+  --archive:    #28665a;       /* verified evidence */
+  --archive-bg: #dcece6;
+  --gold:       #766324;       /* citation / inline receipt markers */
+  --gold-bg:    #f4edcf;
+  --link:       #245b72;
+  --link-hover: #9b3d28;
   --serif:      "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, "Times New Roman", serif;
   --sans:       -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --mono:       "SF Mono", "Menlo", "Consolas", ui-monospace, monospace;
@@ -66,14 +66,8 @@ body {
   line-height: 1.55;
   color: var(--ink);
   background:
-    repeating-linear-gradient(
-      to right,
-      transparent 0,
-      transparent calc(100% - 1px),
-      rgba(15, 22, 32, 0.04) calc(100% - 1px),
-      rgba(15, 22, 32, 0.04) 100%
-    ),
-    radial-gradient(circle at 20% 0%, rgba(184, 109, 31, 0.06), transparent 40%),
+    radial-gradient(circle at 7% 0%, rgba(43, 114, 105, 0.11), transparent 27rem),
+    radial-gradient(circle at 93% 10%, rgba(195, 147, 76, 0.08), transparent 23rem),
     var(--paper);
   background-attachment: fixed;
 }
@@ -111,9 +105,9 @@ body {
 
 /* -- Masthead -- */
 .masthead {
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 65%, transparent);
   background: var(--bone);
-  padding: 1.5rem var(--gutter) 1rem;
+  padding: 1.75rem var(--gutter) 1.15rem;
 }
 .masthead-inner {
   max-width: 78rem;
@@ -125,7 +119,7 @@ body {
 }
 .brand {
   font-family: var(--serif);
-  font-size: 1.65rem;
+  font-size: 1.9rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.01em;
@@ -160,8 +154,8 @@ body {
 
 /* -- Status ribbon (unmissable) -- */
 .status-ribbon {
-  background: var(--accent-bg);
-  border-bottom: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent-bg) 72%, var(--paper));
+  border-bottom: 1px solid var(--accent);
   padding: 0.6rem var(--gutter);
 }
 .status-ribbon-inner {
@@ -218,16 +212,16 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
   gap: clamp(1.25rem, 4vw, 4rem);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
 }
 .review-hero-copy { max-width: 48rem; }
 .review-hero h2 {
-  max-width: 10ch;
+  max-width: 13ch;
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(2.8rem, 7vw, 6.2rem);
-  line-height: 0.95;
-  letter-spacing: -0.045em;
+  font-size: clamp(2.7rem, 5.8vw, 5.3rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
 }
 .review-hero-lede {
   max-width: 48ch;
@@ -1243,6 +1237,13 @@ footer.colophon a { color: var(--ink-soft); }
     padding: 0;
     background: white;
   }
+  body.print-seca-review-mode > *:not(main),
+  body.print-seca-review-mode main > *:not(#demo),
+  body.print-seca-review-mode #demo > *:not(.demo-grid),
+  body.print-seca-review-mode .demo-grid > *:not(.demo-controls),
+  body.print-seca-review-mode .demo-controls > *:not(.seca-import),
+  body.print-seca-review-mode .seca-import > *:not(#seca-review-pack) { display: none; }
+  body.print-seca-review-mode #seca-review-pack { display: block; border: 0; background: white; }
 }
 
 /* ============================================================

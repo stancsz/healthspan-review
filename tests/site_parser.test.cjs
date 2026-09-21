@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const test = require("node:test");
 
-const { MAX_SECA_BYTES, parseSecaCsv } = require(path.join(
+const { MAX_SECA_BYTES, parseSecaCsv, buildMeasurementReviewPack } = require(path.join(
   __dirname,
   "..",
   "docs",
@@ -95,12 +95,34 @@ test("Pages parser ignores nonnumeric unmapped rows like the Python importer", (
   assert.equal(parsed.latest.values.bmi, 25.8);
 });
 
+test("Local Measurement Review Pack is deterministic, auditable, and claim-safe", () => {
+  const parsed = parseSecaCsv(fixture);
+  const pack = buildMeasurementReviewPack(parsed, "Synthetic SECA example");
+  assert.equal(pack.format, "local-measurement-review-pack-v0.1");
+  assert.equal(pack.clinical_use, "forbidden");
+  assert.equal(pack.source.measured_at, "Jan 2, 2025, 8:00 AM");
+  assert.ok(pack.measurement_ledger.some((item) => item.field === "bmi" && item.unit === "kg/m²" && item.provenance === "observed_in_export"));
+  assert.ok(pack.measurement_ledger.some((item) => item.field === "ffmi" && item.provenance === "derived_from_exported_measurements"));
+  assert.equal(pack.assessment_readiness.assessment_ready, false);
+  assert.equal(pack.frailty_index.numerator, null);
+  assert.equal(pack.frailty_index.denominator, null);
+  assert.equal(pack.comparison.status, "descriptive_measurement_deltas_only");
+  assert.match(pack.comparison.caveat, /not evidence of improved health/);
+  assert.ok(pack.boundaries.includes("E-005 remains blocked."));
+  assert.equal(JSON.stringify(pack), JSON.stringify(buildMeasurementReviewPack(parsed, "Synthetic SECA example")));
+  assert.doesNotMatch(JSON.stringify(pack), /patient_id/);
+  assert.match(pageSource, /id="seca-review-pack"/);
+  assert.match(pageSource, /id="seca-print"/);
+  assert.match(siteSource, /function printMeasurementReviewPack/);
+  assert.match(siteCss, /print-seca-review-mode/);
+});
+
 test("Pages keeps development and single-scan limits visible", () => {
   assert.match(
     siteSource,
     /Single scan only — trend comparison requires two dated scans\./,
   );
-  assert.match(pageSource, /Biological-age readout/);
+  assert.match(pageSource, /Withheld age-equivalent output/);
   assert.match(pageSource, /data-build-meta/);
   assert.match(pageSource, /data-test-receipt-count/);
   assert.match(siteSource, /function applyBuildMetadata/);
@@ -114,9 +136,9 @@ test("Pages keeps development and single-scan limits visible", () => {
   assert.match(testReceipt.node_command, /--test-reporter=tap/);
   assert.match(pageSource, /test-receipt\.json/);
   assert.match(pagesWorkflow, /scripts\/build_test_receipt\.py --check/);
-  assert.match(pageSource, /site\.js\?v=e103/);
-  assert.match(pageSource, /intake-form\.js\?v=e103/);
-  assert.match(pageSource, /seca-parser\.js\?v=e103/);
+  assert.match(pageSource, /site\.js\?v=e104/);
+  assert.match(pageSource, /intake-form\.js\?v=e104/);
+  assert.match(pageSource, /seca-parser\.js\?v=e104/);
   assert.match(pageSource, /subgroup_support_warnings/);
   assert.match(pageSource, /support warning/);
   assert.match(pageSource, /outcome_metric_status/);
@@ -128,16 +150,16 @@ test("Pages keeps development and single-scan limits visible", () => {
 test("Pages license metadata matches the proprietary distribution decision", () => {
   assert.match(
     pageSource,
-    /"license": "https:\/\/github\.com\/stancsz\/frailty-index-deficit-accumulation-model\/blob\/main\/LICENSE\.md"/,
+    /"license": "https:\/\/github\.com\/stancsz\/healthspan-review\/blob\/main\/LICENSE\.md"/,
   );
   assert.match(pageSource, /Proprietary distribution/);
   assert.doesNotMatch(pageSource, /Apache-2\.0/);
 });
 
 test("Pages status tokens preserve readable light-theme contrast", () => {
-  assert.match(siteCss, /--muted:\s+#5b5146/);
-  assert.match(siteCss, /--accent:\s+#8f2f17/);
-  assert.match(siteCss, /--gold:\s+#6f5d19/);
+  assert.match(siteCss, /--muted:\s+#5b6f70/);
+  assert.match(siteCss, /--accent:\s+#9b3d28/);
+  assert.match(siteCss, /--gold:\s+#766324/);
   assert.match(siteCss, /\.trust-chip-v\.ok\s*\{\s*color:\s*var\(--archive\);/);
 });
 
@@ -242,20 +264,17 @@ test("Pages MVV contract agrees with canonical Python feature categories", () =>
   );
 });
 
-test("Pages exposes a privacy-safe normalized SECA download contract", () => {
+test("Pages exposes a privacy-safe SECA review-pack download contract", () => {
   assert.match(pageSource, /id="seca-download"/);
   assert.match(pageSource, /original CSV or a patient identifier/);
-  assert.match(siteSource, /downloadNormalizedSecaSummary/);
-  assert.match(siteSource, /seca-tableview-normalized-v1/);
-  assert.match(siteSource, /seca-normalized-summary\.json/);
-  assert.match(siteSource, /assessment_readiness/);
+  assert.match(siteSource, /downloadMeasurementReviewPack/);
+  assert.match(siteSource, /buildMeasurementReviewPack/);
+  assert.match(siteSource, /local-measurement-review-pack-v0\.1\.json/);
   assert.match(siteSource, /reference_panel_fixture_only/);
-  assert.match(siteSource, /segmental_trend_latest_minus_previous/);
-  assert.match(siteSource, /unmapped_labels/);
+  assert.match(siteSource, /descriptive deltas only/);
   assert.match(siteSource, /Unmapped export rows/);
   assert.match(siteSource, /Segment trends \(latest/);
-  assert.match(siteSource, /missing_requirements/);
-  assert.match(siteSource, /original CSV and patient identifiers are not included/);
+  assert.match(pageSource, /E-005 blocked/);
   assert.match(siteSource, /function clearSecaDetails\(token\)/);
   assert.equal((siteSource.match(/clearSecaDetails\(token\);/g) || []).length, 4);
 });
@@ -265,7 +284,14 @@ test("Pages exposes a downloadable and loadable synthetic SECA sample", () => {
   assert.equal(parsed.measuredAt, "Jan 2, 2025, 8:00 AM");
   assert.equal(parsed.trendAvailable, true);
   assert.equal(parsed.latest.values.bmi, 25.8);
+  assert.equal(parsed.latest.values.height_cm, 171.86);
+  assert.equal(parsed.latest.values.phase_angle, 6.1);
+  assert.equal(parsed.latest.values.ecw_tbw, 0.39);
   assert.equal(Object.keys(parsed.latest.segments).length, 5);
+  assert.equal(parsed.latest.segmentUnits["Left Arm"], "kg");
+  const pack = buildMeasurementReviewPack(parsed, "Synthetic SECA example");
+  assert.equal(pack.segment_ledger.length, 5);
+  assert.equal(pack.segment_ledger.find((item) => item.segment === "Left Arm").unit, "kg");
   assert.match(pageSource, /id="seca-load-sample"/);
   assert.match(pageSource, /example-seca-tableview\.csv/);
   assert.match(siteSource, /fetch\("example-seca-tableview\.csv"/);
@@ -276,17 +302,17 @@ test("Pages deploy gate regenerates the committed synthetic demo artifact", () =
   assert.match(pagesWorkflow, /uv run python scripts\/build_demo_data\.py --check/);
 });
 
-test("Pages exposes a privacy-safe wellness improvement report", () => {
+test("Pages exposes a privacy-safe measurement review export", () => {
   assert.match(pageSource, /id="demo-download"/);
   assert.match(pageSource, /id="demo-print"/);
   assert.match(pageSource, /id="demo-copy-focus"/);
   assert.match(pageSource, /id="demo-report"/);
   assert.match(pageSource, /role="region" aria-labelledby="demo-report-heading"/);
-  assert.match(pageSource, /Normalized age-equivalent difference/);
+  assert.match(pageSource, /Age-equivalent comparison: withheld pending validation/);
   assert.match(pageSource, /data-demo-deviation-uncertainty/);
   assert.match(pageSource, /Research-use-only — synthetic development output/);
-  assert.match(pageSource, /Download development wellness report/);
-  assert.match(pageSource, /Print development wellness report/);
+  assert.match(pageSource, /Download development measurement review/);
+  assert.match(pageSource, /Print development measurement review/);
   assert.match(siteSource, /downloadWellnessReport/);
   assert.match(siteSource, /setDemoReportStatus\("Showing " \+ example\.label \+ " development report\./);
   assert.match(siteSource, /printWellnessReport/);
@@ -419,12 +445,12 @@ test("Pages focus list agrees with the API list and uses a bounded visible displ
   assert.match(pageSource, /data-demo-focus-shown/);
   assert.match(pageSource, /data-demo-focus-extra/);
   assert.match(pageSource, /data-demo-focus-extra-list/);
-  assert.match(pageSource, /All remaining measured focus areas/);
+  assert.match(pageSource, /All remaining measured review items/);
   // The renderer must slice to at most five bullets, surface the count
   // statement, and emit the remaining list only when overflow exists.
   assert.match(siteSource, /visibleLimit = 5/);
-  assert.match(siteSource, /Showing.*of.*measured focus areas/);
-  assert.match(siteSource, /No measured focus areas in this example/);
+  assert.match(siteSource, /Showing.*of.*measured review items/);
+  assert.match(siteSource, /No measured review items in this example/);
   assert.match(siteSource, /extraHost\.hidden = true/);
   assert.match(siteSource, /remainingAreas/);
   // The downloadable report and JSON handoff must carry every measured
@@ -649,7 +675,7 @@ test("Pages exposes a visible :focus-visible rule for copy buttons and a printab
     /\.demo-controls, \.demo-result\s*\{[\s\S]*?min-width:\s*0/,
   );
   assert.match(siteCss, /\.demo-flag\s*\{[\s\S]*?overflow-wrap:\s*anywhere/);
-  assert.match(pageSource, /site\.css\?v=ir3-t1-review-1/);
+  assert.match(pageSource, /site\.css\?v=reviewer-first-2/);
   // Reduced-motion handling must remain in place.
   assert.match(siteCss, /@media \(prefers-reduced-motion: reduce\)/);
 });

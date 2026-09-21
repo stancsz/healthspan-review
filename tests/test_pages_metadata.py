@@ -43,7 +43,7 @@ class BuildMetadataValidationTests(unittest.TestCase):
     valid_args = {
         "commit": VALID_40,
         "built_at": "2026-09-07T12:00:00Z",
-        "repository": "stancsz/frailty-index-deficit-accumulation-model",
+        "repository": "stancsz/healthspan-review",
         "run_id": "987654321",
     }
 
@@ -65,7 +65,7 @@ class BuildMetadataValidationTests(unittest.TestCase):
         self.assertEqual(payload["short_commit"], "0123abc")
         self.assertEqual(
             payload["run_url"],
-            "https://github.com/stancsz/frailty-index-deficit-accumulation-model/actions/runs/987654321",
+            "https://github.com/stancsz/healthspan-review/actions/runs/987654321",
         )
         forbidden = {
             "verify_job_passed",

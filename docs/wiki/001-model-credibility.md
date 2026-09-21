@@ -1,6 +1,10 @@
 # 001 — What evidence is required before this biological-age engine can be called credible or production-ready?
 
-- **scope:** the `frailty-index-deficit-accumulation-model` Python package at version `0.1.0`, its deterministic FI calculator, the optional `XGBoost survival:cox` adapter, the synthetic BIA reference panel, and any output derived from those components within this repository as of 2026-08-28.
+Current software evidence through E-103 includes the Local Measurement Review
+Pack v0.1 contract. It does not add clinical model credibility or change the
+E-005 block.
+
+- **scope:** the `healthspan-review` Python package at version `0.1.0`, its deterministic FI calculator, the optional `XGBoost survival:cox` adapter, the synthetic BIA reference panel, and any output derived from those components within this repository as of 2026-08-28.
 - **status:** draft
 - **verified:** 2026-08-28
 - **decision it feeds:** whether downstream documentation, stakeholder communication, or deployment plans can claim the engine is "credible," "validated," or "production-ready"; and which reviewer, dataset, and approval obligations must be cleared before that claim becomes defensible.

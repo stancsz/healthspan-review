@@ -39,7 +39,8 @@ stronger claim than the layer it mirrors.
 | `LICENSE.md` | License terms | Legal boundary | Users and maintainers |
 | `SECURITY.md` | Vulnerability reporting boundary | Security guidance | Reporters and maintainers |
 | `skills/frailty-engine/SKILL.md` | Agent usage contract | Tool guidance | Coding agents |
-| `goals/active/frontier-value-measurement/GOAL.md` | Current frontier-token value measurement | Active execution | Builder and verifier |
+| `goals/active/local-measurement-review-pack/GOAL.md` | Local Measurement Review Pack v0.1 | Active execution | Builder and verifier |
+| `goals/completed/frontier-value-measurement/GOAL.md` | Frontier-token measurement apparatus; savings unverified | Completed execution history | Builder and verifier |
 | `goals/completed/documentation-governance/GOAL.md` | Completed documentation migration | Historical execution | Reviewers and future agents |
 | `goals/completed/trustworthy-research-showcase/GOAL.md` | Superseded showcase execution | Historical execution | Reviewers and future agents |
 
@@ -59,6 +60,7 @@ the product boundary, architecture invariants, and root evidence contract.
 | `docs/ACCESSIBILITY_MANUAL_CHECKLIST_2026-09-10.md` | Human accessibility review protocol |
 | `docs/CLINICIAN_WORKFLOW_STUDY.md` | Intended-user study protocol |
 | `docs/ASSESSMENT_OVERLAY.md` | Local SECA handoff contract |
+| `docs/MCP.md` | Local stdio MCP parsing and completeness adapter |
 | `docs/NHANES_INTAKE.md` | Public-data intake and provenance contract |
 | `docs/MODEL_APPROVAL.md` | Hash-bound model approval schema |
 | `docs/OPERATIONS.md` | Serving, release, rollback, and privacy operations |
@@ -88,6 +90,9 @@ clinical validity, production readiness, or publication identity.
 | `docs/test-receipt.json` and its hash | Test-count receipt metadata |
 | `docs/demo-data.json` and its hash | Synthetic public demo artifact |
 | `docs/example-seca-tableview.csv` | Synthetic local-import fixture |
+| `docs/example-clinical-inputs.csv` | Complete synthetic canonical clinical-input fixture |
+| `docs/example-complete-synthetic.json` | Complete 35-field synthetic profile |
+| `docs/manual.html`, `docs/manual.js`, `docs/manual.css` | Browser-local manual entry surface |
 | `docs/publication-failure-demo-2026-09-10.json` | Negative publication-path receipt |
 | `docs/ir0-*.json` | Historical and current IR0 candidate receipts |
 | `docs/reviews/trust-maturity-2026-09-10/` | Candidate, QA, review, security, and live-audit package |
@@ -108,14 +113,15 @@ clinical validity, production readiness, or publication identity.
 
 ## Wiki mirror
 
-`docs/wiki/index.md` is the Wiki index. Entries `001` through `019` are
+`docs/wiki/index.md` is the Wiki index. Entries `001` through `025` are
 research, product, release, and evidence guidance. Entry `018` documents this
 GDE authority model, and `hits.md` is retained search/evidence material. Wiki
 entries are reader guidance and historical decision records; they cannot
 override the product spec, architecture, root goal, or active goal.
 
 The public showcase files (`docs/index.html`, `docs/site.js`,
-`docs/site.css`, `docs/intake-form.js`, and `docs/seca-parser.js`) are an
+`docs/site.css`, `docs/intake-form.js`, `docs/seca-parser.js`,
+`docs/clinical-parser.js`, `docs/workbench.html`, and `docs/manual.html`) are an
 implementation surface, not a second product specification. Their visible
 copy must remain consistent with the product intent, architecture invariants,
 and research-use-only boundary.

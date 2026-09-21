@@ -1,6 +1,6 @@
 # Clinician workflow study protocol
 
-**Status:** protocol artifact only; no sessions completed  
+**Status:** Local Measurement Review Pack v0.1 implemented; no sessions completed
 **Purpose:** prepare the IR1 usability and interpretation study without
 recruiting through the public demo
 
@@ -66,6 +66,10 @@ scientific thresholds.
 
 **Measured:** No participant sessions, comprehension scores, task times, or
 manual-workflow comparison are recorded in this repository. IR1 remains open.
+
+**Measured:** The frozen workflow surface is the browser-local synthetic SECA
+sample plus `local-measurement-review-pack-v0.1` JSON/print output. This is
+readiness to run the study, not evidence from a participant.
 
 **Method:** A future result must include the frozen task version, participant
 count, de-identified rows, protocol deviations, reviewer, date, and pass/fail

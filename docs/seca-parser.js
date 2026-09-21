@@ -73,6 +73,41 @@
     return overlay;
   }
 
+  function buildMeasurementReviewPack(exported, sourceLabel) {
+    if (!exported || !exported.latest) throw new Error("a parsed SECA export is required");
+    var latest = exported.latest;
+    var measurements = Object.keys(latest.values).sort().map(function (field) {
+      var derivation = (latest.derivations || []).find(function (item) { return item.indexOf(field + " ") === 0; });
+      return {
+        field: field, value: latest.values[field],
+        unit: latest.units[field] || (field === "estimated_height_cm" ? "cm" : field === "ffmi" ? "kg/m²" : null),
+        provenance: derivation ? "derived_from_exported_measurements" : "observed_in_export",
+        derivation: derivation || null
+      };
+    });
+    var segmentMeasurements = Object.keys(latest.segments || {}).sort().map(function (segment) {
+      return {
+        segment: segment,
+        value: latest.segments[segment],
+        unit: (latest.segmentUnits || {})[segment] || null,
+        provenance: "observed_in_export"
+      };
+    });
+    return {
+      format: "local-measurement-review-pack-v0.1",
+      intended_use: "research_and_wellness_measurement_review_only",
+      clinical_use: "forbidden",
+      source: { format: "SECA TableView CSV", label: sourceLabel || "local SECA export", measured_at: exported.measuredAt },
+      measurement_ledger: measurements,
+      segment_ledger: segmentMeasurements,
+      parsing_review: { unmapped_labels: exported.unmappedLabels || [], unit_warnings: latest.warnings || [], derivations: latest.derivations || [] },
+      assessment_readiness: exported.assessmentReadiness ? { assessment_ready: exported.assessmentReadiness.assessmentReady, missing_requirements: exported.assessmentReadiness.missingRequirements, note: exported.assessmentReadiness.note } : null,
+      frailty_index: { status: "not_computed_from_seca_preview", numerator: null, denominator: null, coverage_caveat: "FI requires the MVV-gated assessment. Missing FI items are excluded from its denominator and must not be imputed." },
+      comparison: exported.trendAvailable ? { status: "descriptive_measurement_deltas_only", basis: "latest_minus_previous_dated_scan", measurement_deltas: exported.trend || {}, segmental_deltas: exported.segmentalTrend || {}, caveat: "A change in an equipment value is not evidence of improved health or an action effect." } : { status: "unavailable", basis: null, measurement_deltas: {}, segmental_deltas: {}, caveat: "At least two dated scans are required; no comparison was inferred." },
+      boundaries: ["No diagnosis or treatment advice.", "No validated biological or system age.", "E-005 remains blocked.", "Generated locally; no source CSV or patient identifier is included."]
+    };
+  }
+
   function parseSecaCsv(input) {
     var text = String(input).replace(/^\uFEFF/, "");
     var rows = parseCsv(text);
@@ -83,7 +118,7 @@
     if (!headers.length || headers.some(function (header) { return !header; })) {
       throw new Error("expected at least one non-empty dated column");
     }
-    var scans = headers.map(function () { return { values: {}, units: {}, segments: {}, warnings: [], derivations: [] }; });
+    var scans = headers.map(function () { return { values: {}, units: {}, segments: {}, segmentUnits: {}, warnings: [], derivations: [] }; });
     var direct = {
       "Body Mass Index": ["bmi", "kg/m²"],
       "Height": ["height_cm", "cm"],
@@ -120,7 +155,10 @@
             scan.warnings.push(label + ": exported unit " + unit + "; expected " + direct[label][1]);
           }
         }
-        else scan.segments[label] = value;
+        else {
+          scan.segments[label] = value;
+          scan.segmentUnits[label] = unit;
+        }
       });
     });
     scans.forEach(function (scan) {
@@ -166,5 +204,5 @@
     return { headers: headers, scans: scans, latest: scans[latestIndex], measuredAt: headers[latestIndex], trend: trend, segmentalTrend: segmentalTrend, trendAvailable: order.length > 1, unmappedLabels: unmappedLabels, assessmentReadiness: assessmentReadiness(scans[latestIndex].values), assessmentPayloadOverlay: assessmentPayloadOverlay(scans[latestIndex].values) };
   }
 
-  return { MAX_SECA_BYTES: MAX_SECA_BYTES, parseSecaCsv: parseSecaCsv, assessmentPayloadOverlay: assessmentPayloadOverlay };
+  return { MAX_SECA_BYTES: MAX_SECA_BYTES, parseSecaCsv: parseSecaCsv, assessmentPayloadOverlay: assessmentPayloadOverlay, buildMeasurementReviewPack: buildMeasurementReviewPack };
 });

@@ -583,7 +583,8 @@ real field in every category. Coded fields are retained as unfiltered source
 distributions and do not satisfy reference-band or clinical-validity review.
 E-101 links each runtime category to that receipt and representative field,
 and E-102 adds a privacy-safe frontier-token measurement mechanics receipt
-without claiming a live-provider savings result,
+without claiming a live-provider savings result. E-103 adds the deterministic,
+privacy-safe Local Measurement Review Pack v0.1 export and print contract,
 while preserving the no-row and no-clinical-claim boundary.
 
 

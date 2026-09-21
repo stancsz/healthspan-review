@@ -1,0 +1,34 @@
+(function () {
+  "use strict";
+  var parser = window.HealthspanClinicalParser, form = document.querySelector("#manual-form"), groups = document.querySelector("#manual-groups"), result = null, lastPayload = null;
+  var labels = { demographics: "Demographics", bia: "BIA / SECA", blood: "Blood panel", history: "Clinical history", functional: "Function & lifestyle" };
+  function $(selector) { return document.querySelector(selector); }
+  function escapeHtml(value) { return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); }
+  function renderForm() {
+    var order = ["demographics", "bia", "blood", "history", "functional"];
+    groups.innerHTML = order.map(function (category) { return '<section class="manual-group"><p class="eyebrow">Canonical fields</p><h2>' + labels[category] + '</h2><div class="manual-fields">' + parser.specs.filter(function (spec) { return spec.category === category; }).map(function (spec) {
+      var input = spec.kind === "sex" ? '<select id="field-' + spec.name + '"><option value="">Not supplied</option><option value="female">Female</option><option value="male">Male</option></select>' : spec.kind === "smoking" ? '<select id="field-' + spec.name + '"><option value="">Not supplied</option><option value="never">Never</option><option value="former">Former</option><option value="current">Current</option></select>' : '<input id="field-' + spec.name + '" type="' + (spec.kind === "numeric" ? "number" : "text") + '" step="any" inputmode="decimal" placeholder="Not supplied" />';
+      var unit = spec.unit ? '<small>' + escapeHtml(spec.unit) + '</small>' : '<small>canonical</small>';
+      return '<div class="manual-field"><label for="field-' + spec.name + '"><span>' + escapeHtml(spec.label) + '</span>' + unit + '</label>' + input + '<small>' + escapeHtml(spec.name) + '</small></div>';
+    }).join("") + '</div></section>'; }).join("");
+  }
+  function readValues() {
+    var values = parser.emptyValues(), units = {};
+    parser.specs.forEach(function (spec) { var input = document.querySelector("#field-" + spec.name); if (!input || input.value.trim() === "") return; values[spec.name] = parser.normalizeValue(input.value, spec); if (spec.unit) units[spec.name] = spec.unit; });
+    return parser.result(values, units, "Manual local entry");
+  }
+  function showReview(data) {
+    result = data; lastPayload = { format: "manual-clinical-inputs-v0.1", source: "manual local entry", measurements: data.values, units: data.units, estimated_ages: data.estimatedAges || [], completeness: { present_count: data.presentFields.length, total_count: parser.specs.length, missing_fields: data.missingFields }, intended_use: "research_and_wellness_measurement_review_only", clinical_use: "forbidden", privacy_note: "Generated in this browser. No patient identifier or source upload is included." };
+    $("#manual-result").hidden = false; $("#manual-result-title").textContent = data.complete ? "Complete local profile" : "Partial local profile"; $("#manual-result-tag").textContent = data.presentFields.length + " / " + parser.specs.length + (data.complete ? " complete" : " present"); $("#manual-result-copy").textContent = data.complete ? "All 35 canonical fields are present in this manually entered packet. This is data completeness, not clinical validation." : "Only supplied fields are shown as present. The missing list is explicit so an absent value cannot be mistaken for a normal value.";
+    $("#manual-result-groups").innerHTML = Object.keys(data.byCategory).map(function (category) { var group = data.byCategory[category]; return '<div class="result-group"><strong>' + escapeHtml(labels[category]) + '</strong><span>' + group.present + ' / ' + group.total + ' present' + (group.missing.length ? '<br>Missing: ' + escapeHtml(group.missing.length) : '') + '</span></div>'; }).join("");
+    var estimates = data.estimatedAges || [];
+    $("#manual-estimated-ages").hidden = !estimates.length;
+    $("#manual-estimated-age-cards").innerHTML = estimates.map(function (item) { var value = item.value === null || item.value === undefined ? "Not available" : String(item.value) + " " + (item.unit || "years"); return '<article class="estimated-age-card"><span class="age-label">' + escapeHtml(item.label || item.key || "Estimated age") + '</span><strong>' + escapeHtml(value) + '</strong><span class="age-status">Estimated · unvalidated</span><p class="age-basis">' + escapeHtml((item.method || "Illustrative estimate.") + " " + (item.uncertainty || "No validated uncertainty interval is available.")) + '</p></article>'; }).join("");
+    $("#manual-status").textContent = data.presentFields.length + " / " + parser.specs.length + " canonical fields present. Nothing was uploaded."; $("#download-manual").disabled = false;
+  }
+  function fillSynthetic() { fetch("example-complete-synthetic.json", { cache: "no-store" }).then(function (response) { if (!response.ok) throw new Error("synthetic profile returned " + response.status); return response.json(); }).then(function (profile) { var data = parser.parseProfile(profile, "Complete synthetic clinical profile"); parser.specs.forEach(function (spec) { var input = document.querySelector("#field-" + spec.name); if (input && data.values[spec.name] !== null) input.value = data.values[spec.name]; }); showReview(data); }).catch(function (error) { $("#manual-status").textContent = "Synthetic profile could not be loaded: " + error.message; }); }
+  renderForm();
+  form.addEventListener("submit", function (event) { event.preventDefault(); try { showReview(readValues()); } catch (error) { $("#manual-status").textContent = "Check the entry: " + error.message; $("#download-manual").disabled = true; } });
+  $("#fill-synthetic").addEventListener("click", fillSynthetic); $("#clear-form").addEventListener("click", function () { form.reset(); result = null; lastPayload = null; $("#manual-result").hidden = true; $("#download-manual").disabled = true; $("#manual-status").textContent = "No values entered."; });
+  $("#download-manual").addEventListener("click", function () { if (!lastPayload) return; var blob = new Blob([JSON.stringify(lastPayload, null, 2) + "\n"], { type: "application/json" }), url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = "manual-clinical-inputs-v0.1.json"; a.click(); URL.revokeObjectURL(url); $("#manual-status").textContent = "Downloaded locally. No patient identifier or source upload is included."; });
+})();
