@@ -105,6 +105,35 @@
     return values;
   }
 
+  function hasValue(values, field) {
+    return values[field] !== null && values[field] !== undefined && values[field] !== "";
+  }
+
+  function clamp(value, minimum, maximum) { return Math.max(minimum, Math.min(maximum, value)); }
+
+  function estimateJointAge(values) {
+    var score = hasValue(values, "age") ? Number(values.age) - 10 : 35;
+    var used = [];
+    ["age", "osteoarthritis", "grip_strength", "chair_rise_time", "bmi", "ffmi"].forEach(function (field) { if (hasValue(values, field)) used.push(field); });
+    if (hasValue(values, "osteoarthritis") && Number(values.osteoarthritis) === 1) score += 8;
+    if (hasValue(values, "grip_strength")) score += clamp((30 - Number(values.grip_strength)) * 0.35, -5, 8);
+    if (hasValue(values, "chair_rise_time")) score += clamp((Number(values.chair_rise_time) - 10) * 0.75, -5, 12);
+    if (hasValue(values, "bmi")) score += clamp((Number(values.bmi) - 24) * 0.25, -3, 6);
+    if (hasValue(values, "ffmi")) score += clamp((19 - Number(values.ffmi)) * 0.4, -4, 4);
+    return {
+      key: "joint_age",
+      label: "Joint age",
+      value: Math.round(clamp(score, 18, 100)),
+      unit: "years",
+      status: "illustrative_heuristic",
+      basis: used,
+      inputsUsed: used,
+      inputCoverage: used.length + " / 6",
+      method: "Deterministic heuristic using the available joint-related measurements; not computed by a validated joint-age model.",
+      uncertainty: "No validated uncertainty interval is available."
+    };
+  }
+
   function parseRows(rows, sourceLabel) {
     if (!rows.length) throw new Error("the clinical CSV is empty");
     var header = rows[0].map(function (cell) { return cell.trim().toLowerCase(); });
@@ -148,7 +177,7 @@
       byCategory: byCategory,
       unknownFields: (extra && extra.unknownFields) || [],
       warnings: (extra && extra.warnings) || [],
-      estimatedAges: (extra && extra.estimatedAges) || []
+      estimatedAges: extra && Object.prototype.hasOwnProperty.call(extra, "estimatedAges") ? extra.estimatedAges : [estimateJointAge(values)]
     };
   }
 
@@ -166,7 +195,9 @@
         status: String(item.status || "illustrative_estimate"),
         basis: Array.isArray(item.basis) ? item.basis.map(function (part) { return String(part); }) : [],
         method: String(item.method || "Illustrative synthetic estimate; not computed by a validated model."),
-        uncertainty: String(item.uncertainty || "No validated uncertainty interval is available.")
+        uncertainty: String(item.uncertainty || "No validated uncertainty interval is available."),
+        inputsUsed: Array.isArray(item.inputsUsed || item.inputs_used) ? (item.inputsUsed || item.inputs_used).map(function (part) { return String(part); }) : [],
+        inputCoverage: String(item.inputCoverage || item.input_coverage || "")
       };
     });
   }
@@ -186,11 +217,12 @@
       if (!byName[field]) { unknown.push(field); return; }
       values[field] = normalizeValue(profile.measurements[field], byName[field]);
     });
-    return result(values, units, sourceLabel || profile.profile_label || "local profile", {
+    var suppliedEstimates = profile.estimated_ages || profile.estimatedAges;
+    return result(values, units, sourceLabel || profile.profile_label || "local profile", suppliedEstimates ? {
       unknownFields: unknown,
-      estimatedAges: normalizeEstimatedAges(profile.estimated_ages || profile.estimatedAges)
-    });
+      estimatedAges: normalizeEstimatedAges(suppliedEstimates)
+    } : { unknownFields: unknown });
   }
 
-  return { MAX_BYTES: MAX_BYTES, specs: specs, byName: byName, emptyValues: emptyValues, parseClinicalCsv: parseClinicalCsv, parseProfile: parseProfile, normalizeValue: normalizeValue, normalizeEstimatedAges: normalizeEstimatedAges, result: result };
+  return { MAX_BYTES: MAX_BYTES, specs: specs, byName: byName, emptyValues: emptyValues, parseClinicalCsv: parseClinicalCsv, parseProfile: parseProfile, normalizeValue: normalizeValue, normalizeEstimatedAges: normalizeEstimatedAges, estimateJointAge: estimateJointAge, result: result };
 });

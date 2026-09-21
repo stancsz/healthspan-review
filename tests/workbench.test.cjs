@@ -38,6 +38,8 @@ test("clinician workspace keeps the local-only safety boundary visible", () => {
   assert.match(js, /Clinical inputs CSV/);
   assert.match(js, /contains no original CSV or patient identifier/);
   assert.match(js, /estimatedAges/);
+  assert.match(js, /estimateJointAge/);
+  assert.match(js, /heuristic/);
   assert.match(js, /Estimated · unvalidated/);
   assert.doesNotMatch(js, /fetch\s*\([^)]*https?:\/\//);
 });

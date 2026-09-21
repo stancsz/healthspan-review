@@ -104,13 +104,61 @@ def _clinical_values_from_measurements(measurements: dict[str, Any]) -> dict[str
     ).values
 
 
+def _estimate_joint_age(values: dict[str, Any]) -> dict[str, Any]:
+    """Return a transparent, non-clinical estimate from whatever is present."""
+
+    def has_value(field: str) -> bool:
+        return values.get(field) is not None
+
+    def clamp(value: float, minimum: float, maximum: float) -> float:
+        return max(minimum, min(maximum, value))
+
+    score = float(values["age"]) - 10 if has_value("age") else 35.0
+    used = [
+        field
+        for field in (
+            "age",
+            "osteoarthritis",
+            "grip_strength",
+            "chair_rise_time",
+            "bmi",
+            "ffmi",
+        )
+        if has_value(field)
+    ]
+    if has_value("osteoarthritis") and float(values["osteoarthritis"]) == 1:
+        score += 8
+    if has_value("grip_strength"):
+        score += clamp((30 - float(values["grip_strength"])) * 0.35, -5, 8)
+    if has_value("chair_rise_time"):
+        score += clamp((float(values["chair_rise_time"]) - 10) * 0.75, -5, 12)
+    if has_value("bmi"):
+        score += clamp((float(values["bmi"]) - 24) * 0.25, -3, 6)
+    if has_value("ffmi"):
+        score += clamp((19 - float(values["ffmi"])) * 0.4, -4, 4)
+    return {
+        "key": "joint_age",
+        "label": "Joint age",
+        "value": round(clamp(score, 18, 100)),
+        "unit": "years",
+        "status": "illustrative_heuristic",
+        "basis": used,
+        "inputs_used": used,
+        "input_coverage": f"{len(used)} / 6",
+        "method": "Deterministic heuristic using the available joint-related measurements; not computed by a validated joint-age model.",
+        "uncertainty": "No validated uncertainty interval is available.",
+    }
+
+
 def _review(arguments: dict[str, Any]) -> dict[str, Any]:
     merged: dict[str, Any] = {name: None for name in FEATURE_NAMES}
     provenance: dict[str, str | None] = {name: None for name in FEATURE_NAMES}
     units: dict[str, str] = {}
     sources: dict[str, Any] = {"seca": None, "clinical": None}
     warnings: list[str] = []
-    estimated_ages = arguments.get("estimated_ages") or []
+    estimated_ages = arguments.get("estimated_ages")
+    if estimated_ages is None:
+        estimated_ages = []
     if not isinstance(estimated_ages, list) or any(
         not isinstance(item, dict) for item in estimated_ages
     ):
@@ -154,6 +202,8 @@ def _review(arguments: dict[str, Any]) -> dict[str, Any]:
             provenance[field] = "measurements argument"
     present = [name for name in FEATURE_NAMES if merged[name] is not None]
     readiness = evaluate_mvv(merged)
+    if not estimated_ages:
+        estimated_ages = [_estimate_joint_age(merged)]
     return {
         "format": "local-measurement-review-v1",
         "sources": sources,

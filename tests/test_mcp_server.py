@@ -31,15 +31,6 @@ def test_complete_synthetic_review_returns_35_of_35_without_raw_csv() -> None:
             {
                 "seca_csv": seca,
                 "clinical_csv": clinical,
-                "estimated_ages": [
-                    {
-                        "key": "joint_age",
-                        "label": "Joint age",
-                        "value": 35,
-                        "unit": "years",
-                        "status": "illustrative_estimate",
-                    }
-                ],
             },
         )
     )
@@ -52,6 +43,8 @@ def test_complete_synthetic_review_returns_35_of_35_without_raw_csv() -> None:
     assert result["assessment_readiness"]["assessment_ready"] is True
     assert result["estimated_ages"][0]["label"] == "Joint age"
     assert result["estimated_ages"][0]["value"] == 35
+    assert result["estimated_ages"][0]["status"] == "illustrative_heuristic"
+    assert result["estimated_ages"][0]["input_coverage"] == "6 / 6"
     assert "csv_text" not in json.dumps(result)
     assert "patient_id" not in json.dumps(result)
 

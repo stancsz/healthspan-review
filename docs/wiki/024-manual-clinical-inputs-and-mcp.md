@@ -19,15 +19,18 @@ silently replacing a SECA measurement.
 ## Estimated age signals
 
 The complete synthetic profile includes one separate illustrative output:
-`Joint age: 35 years`. The workspace renders it in an `Estimated age signals`
-panel beside the current metrics and marks it `Estimated · unvalidated`. The
-fixture metadata records that it is not computed by a validated joint-age model
-and has no validated uncertainty interval.
+`Joint age: 35 years`. The browser, manual, CSV, and MCP paths render it in an
+`Estimated age signals` panel beside the current metrics and mark it
+`Estimated · unvalidated`. A deterministic heuristic uses whatever of age,
+osteoarthritis, grip strength, chair-rise time, BMI, and FFMI are present. The
+output records the fields used and coverage, and has no validated uncertainty
+interval.
 
 This is intentionally different from a validated biological or system age.
-SECA-only imports, clinical CSV imports, and manual entries do not receive an
-age estimate unless the caller explicitly supplies age-signal metadata. Missing
-metadata stays missing; the product does not guess an age from partial data.
+SECA-only imports, clinical CSV imports, and manual entries still receive a
+clearly labelled heuristic estimate from the measurements actually present.
+The product does not invent a missing measurement or hide the coverage of the
+estimate.
 
 ## Complete synthetic case
 

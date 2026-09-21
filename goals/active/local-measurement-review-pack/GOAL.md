@@ -38,7 +38,7 @@ and withheld obvious enough to support the prespecified five-user IR1 study.
 | L4 | Comparison is descriptive only when two dated scans exist and unavailable otherwise. | Two-scan and single-scan tests; no health-improvement claim. |
 | L5 | The packet can be downloaded as deterministic JSON and printed locally without raw CSV or patient identifiers. | UI contract tests and scoped print mode. |
 | L6 | Governance surfaces agree and the pack is ready for the five-user IR1 comparison. | GOAL, ROADMAP, Wiki, EVAL/evidence, protocol, and Project #4 reconciliation. |
-| L7 | Explicitly supplied illustrative age signals appear alongside current metrics without being invented for incomplete inputs, and survive JSON/MCP export. | Synthetic browser/MCP evidence shows `Joint age: 35 years` with an unvalidated label; inputs without age-signal metadata show no fabricated estimate. |
+| L7 | A deterministic illustrative age estimate appears alongside current metrics for complete and partial inputs, records the fields used, and survives JSON/MCP export. | Synthetic browser/MCP evidence shows `Joint age: 35 years` with an unvalidated label; partial-input evidence shows a coverage count and no hidden fabricated measurements. |
 
 ### Constraints / invariants
 
@@ -85,9 +85,9 @@ schema, a visible review region, JSON download, and isolated print mode.
   a local JSON export.
 - [x] Add a dependency-free local stdio MCP adapter for SECA parsing, clinical
   CSV parsing, and provenance-aware completeness review.
-- [x] Add explicitly supplied illustrative age-signal output to the synthetic
-  review, including `Joint age: 35 years`, while keeping validated biological
-  and system ages withheld.
+- [x] Add a deterministic illustrative age-signal heuristic to the synthetic,
+  CSV, manual, and MCP review paths, including `Joint age: 35 years`, while
+  keeping validated biological and system ages withheld.
 
 ### Validation
 

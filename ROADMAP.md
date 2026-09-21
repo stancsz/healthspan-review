@@ -82,10 +82,11 @@ observed measurement ledger. Local Chromium captures and the current public
 claim inventory are retained under `docs/reviews/`; cross-engine reruns and
 human acceptance remain open. The per-check local record is
 `docs/reviews/trust-maturity-2026-09-10/t1-local-qa-receipt.json`.
-The complete synthetic path now also displays an explicitly supplied
-illustrative `Joint age: 35 years` signal alongside the metrics. It is labelled
-`Estimated · unvalidated`, preserved in the local packet and optional MCP
-metadata, and never inferred for inputs that do not supply an age signal. This
+The complete and partial input paths now also display a deterministic
+illustrative `Joint age` signal alongside the metrics. The complete synthetic
+case computes `35 years`; partial inputs compute from whatever approved fields
+are present and show the fields used and coverage. It is labelled
+`Estimated · unvalidated`, preserved in the local packet and MCP output, and
 does not change the withheld validated biological/system-age boundary.
 After the fresh-preview QA receipt update, the current dirty checkout reran
 `uv run python scripts/verify_project.py --json`: all 20 checks passed and
