@@ -111,28 +111,58 @@
 
   function clamp(value, minimum, maximum) { return Math.max(minimum, Math.min(maximum, value)); }
 
-  function estimateJointAge(values) {
-    var score = hasValue(values, "age") ? Number(values.age) - 10 : 35;
-    var used = [];
-    ["age", "osteoarthritis", "grip_strength", "chair_rise_time", "bmi", "ffmi"].forEach(function (field) { if (hasValue(values, field)) used.push(field); });
-    if (hasValue(values, "osteoarthritis") && Number(values.osteoarthritis) === 1) score += 8;
-    if (hasValue(values, "grip_strength")) score += clamp((30 - Number(values.grip_strength)) * 0.35, -5, 8);
-    if (hasValue(values, "chair_rise_time")) score += clamp((Number(values.chair_rise_time) - 10) * 0.75, -5, 12);
-    if (hasValue(values, "bmi")) score += clamp((Number(values.bmi) - 24) * 0.25, -3, 6);
-    if (hasValue(values, "ffmi")) score += clamp((19 - Number(values.ffmi)) * 0.4, -4, 4);
-    return {
-      key: "joint_age",
-      label: "Joint age",
-      value: Math.round(clamp(score, 18, 100)),
-      unit: "years",
-      status: "illustrative_heuristic",
-      basis: used,
-      inputsUsed: used,
-      inputCoverage: used.length + " / 6",
-      method: "Deterministic heuristic using the available joint-related measurements; not computed by a validated joint-age model.",
-      uncertainty: "No validated uncertainty interval is available."
-    };
+  var AGE_RULES = [
+    { key: "body_composition_age", label: "Body composition age", offset: -5, adjustments: [{ field: "bmi", target: 24, scale: 0.25, min: -3, max: 6 }, { field: "waist_circumference", target: 80, scale: 0.12, min: -4, max: 8 }, { field: "visceral_fat", target: 3, scale: 0.5, min: -3, max: 8 }] },
+    { key: "fluid_cellular_age", label: "Fluid & cellular age", offset: -3, adjustments: [{ field: "phase_angle", target: 6, scale: -4, min: -8, max: 8 }, { field: "ecw_tbw", target: 0.39, scale: 40, min: -6, max: 8 }] },
+    { key: "muscle_age", label: "Muscle age", offset: -6, adjustments: [{ field: "ffmi", target: 19, scale: -0.4, min: -5, max: 6 }, { field: "skeletal_muscle_mass", target: 28, scale: -0.15, min: -5, max: 5 }, { field: "grip_strength", target: 30, scale: -0.35, min: -5, max: 8 }, { field: "chair_rise_time", target: 10, scale: 0.75, min: -5, max: 12 }] },
+    { key: "joint_age", label: "Joint age", offset: -10, adjustments: [{ field: "osteoarthritis", binaryScale: 8 }, { field: "chair_rise_time", target: 10, scale: 0.25, min: -5, max: 12 }, { field: "grip_strength", target: 30, scale: -0.15, min: -5, max: 8 }, { field: "bmi", target: 24, scale: 0.25, min: -3, max: 6 }, { field: "ffmi", target: 19, scale: -0.2, min: -4, max: 4 }] },
+    { key: "bone_age", label: "Bone age", offset: 0, adjustments: [] },
+    { key: "skin_age", label: "Skin age", offset: 0, adjustments: [] },
+    { key: "blood_age", label: "Blood age", offset: -2, adjustments: [{ field: "fasting_glucose", target: 90, scale: 0.05, min: -4, max: 8 }, { field: "hba1c", target: 5.2, scale: 3, min: -4, max: 8 }, { field: "hs_crp", target: 1, scale: 0.4, min: -3, max: 8 }, { field: "albumin", target: 4.2, scale: -3, min: -4, max: 4 }, { field: "creatinine", target: 0.9, scale: 2, min: -3, max: 5 }, { field: "egfr", target: 95, scale: -0.08, min: -5, max: 5 }, { field: "rdw", target: 12.5, scale: 0.5, min: -3, max: 6 }, { field: "fib_4", target: 1, scale: 2, min: -3, max: 8 }] },
+    { key: "cardiovascular_age", label: "Cardiovascular age", offset: -4, adjustments: [{ field: "systolic_bp", target: 120, scale: 0.08, min: -5, max: 10 }, { field: "diastolic_bp", target: 80, scale: 0.08, min: -4, max: 6 }, { field: "resting_hr", target: 65, scale: 0.04, min: -3, max: 5 }, { field: "hypertension", binaryScale: 6 }, { field: "cvd", binaryScale: 10 }] },
+    { key: "cardiorespiratory_age", label: "Cardiorespiratory age", offset: -4, adjustments: [{ field: "systolic_bp", target: 120, scale: 0.08, min: -5, max: 10 }, { field: "diastolic_bp", target: 80, scale: 0.08, min: -4, max: 6 }, { field: "resting_hr", target: 65, scale: 0.04, min: -3, max: 5 }] },
+    { key: "immune_inflammatory_age", label: "Immune & inflammatory age", offset: -1, adjustments: [{ field: "hs_crp", target: 1, scale: 0.5, min: -3, max: 10 }, { field: "wbc", target: 6, scale: 0.3, min: -3, max: 5 }, { field: "rdw", target: 12.5, scale: 0.5, min: -3, max: 6 }] },
+    { key: "brain_cognitive_age", label: "Brain & cognitive age", offset: 0, adjustments: [] },
+    { key: "metabolic_age", label: "Metabolic age", offset: -4, adjustments: [{ field: "bmi", target: 24, scale: 0.25, min: -3, max: 6 }, { field: "waist_circumference", target: 80, scale: 0.12, min: -4, max: 8 }, { field: "visceral_fat", target: 3, scale: 0.5, min: -3, max: 8 }, { field: "fasting_glucose", target: 90, scale: 0.05, min: -4, max: 8 }, { field: "hba1c", target: 5.2, scale: 3, min: -4, max: 8 }, { field: "t2d", binaryScale: 7 }] },
+    { key: "kidney_age", label: "Kidney age", offset: -1, adjustments: [{ field: "creatinine", target: 0.9, scale: 2, min: -3, max: 5 }, { field: "egfr", target: 95, scale: -0.08, min: -5, max: 5 }] },
+    { key: "liver_age", label: "Liver age", offset: -1, adjustments: [{ field: "albumin", target: 4.2, scale: -3, min: -4, max: 4 }, { field: "alp", target: 80, scale: 0.02, min: -3, max: 5 }, { field: "fib_4", target: 1, scale: 2, min: -3, max: 8 }] },
+    { key: "sleep_recovery_age", label: "Sleep & recovery age", offset: 0, adjustments: [{ field: "sleep_hours", target: 7.5, scale: 1.2, mode: "absolute", min: -1, max: 8 }, { field: "sleep_apnea", binaryScale: 6 }] },
+    { key: "lifestyle_function_age", label: "Lifestyle & function age", offset: -5, adjustments: [{ field: "grip_strength", target: 30, scale: -0.35, min: -5, max: 8 }, { field: "chair_rise_time", target: 10, scale: 0.75, min: -5, max: 12 }, { field: "smoking_status", stringScale: { current: 5, former: 2, never: 0 } }, { field: "alcohol_heavy_use", binaryScale: 4 }, { field: "sleep_hours", target: 7.5, scale: 1.2, mode: "absolute", min: -1, max: 8 }] },
+    { key: "mental_health_age", label: "Mental health age", offset: 0, adjustments: [{ field: "depression", binaryScale: 5 }] }
+  ];
+
+  function estimateAgeSignals(values) {
+    return AGE_RULES.map(function (rule) {
+      var score = hasValue(values, "age") ? Number(values.age) + rule.offset : 45 + rule.offset;
+      var used = hasValue(values, "age") ? ["age"] : [];
+      var fields = [];
+      rule.adjustments.forEach(function (adjustment) {
+        if (fields.indexOf(adjustment.field) < 0) fields.push(adjustment.field);
+        if (!hasValue(values, adjustment.field)) return;
+        used.push(adjustment.field);
+        var raw = values[adjustment.field], delta = 0;
+        if (adjustment.binaryScale !== undefined) delta = Number(raw) * adjustment.binaryScale;
+        else if (adjustment.stringScale) delta = adjustment.stringScale[String(raw).toLowerCase()] || 0;
+        else if (adjustment.mode === "absolute") delta = Math.abs(Number(raw) - adjustment.target) * adjustment.scale;
+        else delta = (Number(raw) - adjustment.target) * adjustment.scale;
+        score += adjustment.min !== undefined && adjustment.max !== undefined ? clamp(delta, adjustment.min, adjustment.max) : delta;
+      });
+      return {
+        key: rule.key,
+        label: rule.label,
+        value: Math.round(clamp(score, 18, 100)),
+        unit: "years",
+        status: "estimated_heuristic",
+        basis: used,
+        inputsUsed: used,
+        inputCoverage: used.length + " / " + (fields.length + 1),
+        method: "Deterministic category estimate from the available measurements.",
+        uncertainty: "Research estimate; review alongside the underlying measurements."
+      };
+    });
   }
+
+  function estimateJointAge(values) { return estimateAgeSignals(values).filter(function (item) { return item.key === "joint_age"; })[0]; }
 
   function parseRows(rows, sourceLabel) {
     if (!rows.length) throw new Error("the clinical CSV is empty");
@@ -177,7 +207,7 @@
       byCategory: byCategory,
       unknownFields: (extra && extra.unknownFields) || [],
       warnings: (extra && extra.warnings) || [],
-      estimatedAges: extra && Object.prototype.hasOwnProperty.call(extra, "estimatedAges") ? extra.estimatedAges : [estimateJointAge(values)]
+      estimatedAges: extra && Object.prototype.hasOwnProperty.call(extra, "estimatedAges") ? extra.estimatedAges : estimateAgeSignals(values)
     };
   }
 
@@ -192,10 +222,10 @@
         label: String(item.label || item.key || "Estimated age"),
         value: value,
         unit: String(item.unit || "years"),
-        status: String(item.status || "illustrative_estimate"),
+        status: String(item.status || "estimated"),
         basis: Array.isArray(item.basis) ? item.basis.map(function (part) { return String(part); }) : [],
-        method: String(item.method || "Illustrative synthetic estimate; not computed by a validated model."),
-        uncertainty: String(item.uncertainty || "No validated uncertainty interval is available."),
+        method: String(item.method || "Deterministic category estimate from the available measurements."),
+        uncertainty: String(item.uncertainty || "Research estimate; review alongside the underlying measurements."),
         inputsUsed: Array.isArray(item.inputsUsed || item.inputs_used) ? (item.inputsUsed || item.inputs_used).map(function (part) { return String(part); }) : [],
         inputCoverage: String(item.inputCoverage || item.input_coverage || "")
       };
@@ -224,5 +254,5 @@
     } : { unknownFields: unknown });
   }
 
-  return { MAX_BYTES: MAX_BYTES, specs: specs, byName: byName, emptyValues: emptyValues, parseClinicalCsv: parseClinicalCsv, parseProfile: parseProfile, normalizeValue: normalizeValue, normalizeEstimatedAges: normalizeEstimatedAges, estimateJointAge: estimateJointAge, result: result };
+  return { MAX_BYTES: MAX_BYTES, specs: specs, byName: byName, emptyValues: emptyValues, parseClinicalCsv: parseClinicalCsv, parseProfile: parseProfile, normalizeValue: normalizeValue, normalizeEstimatedAges: normalizeEstimatedAges, estimateJointAge: estimateJointAge, estimateAgeSignals: estimateAgeSignals, result: result };
 });

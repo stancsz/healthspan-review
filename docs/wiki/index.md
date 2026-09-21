@@ -21,7 +21,7 @@
 022 | current | 2026-09-12 | How does Local Measurement Review Pack v0.1 support a safe local SECA review?
 023 | current | 2026-09-21 | How does the Vercel-ready clinician workspace support a local measurement review?
 024 | current | 2026-09-21 | How do separate clinical inputs, manual entry, and the local MCP adapter complete the review workflow?
-025 | current | 2026-09-21 | How are explicitly supplied illustrative age signals shown without inventing validated ages?
+025 | current | 2026-09-21 | How are major category age estimates shown alongside the measurement metrics?
 # Wiki index
 
 This Wiki is reader guidance and retained decision history. Its canonical

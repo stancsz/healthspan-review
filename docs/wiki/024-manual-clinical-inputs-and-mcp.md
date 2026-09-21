@@ -18,13 +18,11 @@ silently replacing a SECA measurement.
 
 ## Estimated age signals
 
-The complete synthetic profile includes one separate illustrative output:
-`Joint age: 35 years`. The browser, manual, CSV, and MCP paths render it in an
-`Estimated age signals` panel beside the current metrics and mark it
-`Estimated · unvalidated`. A deterministic heuristic uses whatever of age,
-osteoarthritis, grip strength, chair-rise time, BMI, and FFMI are present. The
-output records the fields used and coverage, and has no validated uncertainty
-interval.
+The complete synthetic profile includes all 17 major category estimates,
+including `Joint age: 35 years`. The browser, manual, CSV, and MCP paths render
+them in an `Estimated age signals` panel beside the current metrics and label
+each card `Estimated age`. Category heuristics use whatever relevant measurements
+are present, and each output records the fields used and coverage.
 
 This is intentionally different from a validated biological or system age.
 SECA-only imports, clinical CSV imports, and manual entries still receive a

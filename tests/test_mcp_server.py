@@ -41,10 +41,14 @@ def test_complete_synthetic_review_returns_35_of_35_without_raw_csv() -> None:
     }
     assert result["missing_fields"] == []
     assert result["assessment_readiness"]["assessment_ready"] is True
-    assert result["estimated_ages"][0]["label"] == "Joint age"
-    assert result["estimated_ages"][0]["value"] == 35
-    assert result["estimated_ages"][0]["status"] == "illustrative_heuristic"
-    assert result["estimated_ages"][0]["input_coverage"] == "6 / 6"
+    assert len(result["estimated_ages"]) == 17
+    joint = next(
+        item for item in result["estimated_ages"] if item["key"] == "joint_age"
+    )
+    assert joint["label"] == "Joint age"
+    assert joint["value"] == 35
+    assert joint["status"] == "estimated_heuristic"
+    assert joint["input_coverage"] == "6 / 6"
     assert "csv_text" not in json.dumps(result)
     assert "patient_id" not in json.dumps(result)
 

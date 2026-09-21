@@ -54,7 +54,7 @@ TOOLS = [
                 "measurements": {"type": "object"},
                 "estimated_ages": {
                     "type": "array",
-                    "description": "Optional explicitly supplied illustrative age signals. They are returned unchanged and are not validated model outputs.",
+                    "description": "Optional explicitly supplied age signals. They are returned unchanged in the review packet.",
                     "items": {"type": "object"},
                 },
             },
@@ -104,8 +104,163 @@ def _clinical_values_from_measurements(measurements: dict[str, Any]) -> dict[str
     ).values
 
 
-def _estimate_joint_age(values: dict[str, Any]) -> dict[str, Any]:
-    """Return a transparent, non-clinical estimate from whatever is present."""
+_AGE_RULES = (
+    (
+        "body_composition_age",
+        "Body composition age",
+        -5,
+        (
+            ("bmi", 24, 0.25, -3, 6, "numeric"),
+            ("waist_circumference", 80, 0.12, -4, 8, "numeric"),
+            ("visceral_fat", 3, 0.5, -3, 8, "numeric"),
+        ),
+    ),
+    (
+        "fluid_cellular_age",
+        "Fluid & cellular age",
+        -3,
+        (
+            ("phase_angle", 6, -4, -8, 8, "numeric"),
+            ("ecw_tbw", 0.39, 40, -6, 8, "numeric"),
+        ),
+    ),
+    (
+        "muscle_age",
+        "Muscle age",
+        -6,
+        (
+            ("ffmi", 19, -0.4, -5, 6, "numeric"),
+            ("skeletal_muscle_mass", 28, -0.15, -5, 5, "numeric"),
+            ("grip_strength", 30, -0.35, -5, 8, "numeric"),
+            ("chair_rise_time", 10, 0.75, -5, 12, "numeric"),
+        ),
+    ),
+    (
+        "joint_age",
+        "Joint age",
+        -10,
+        (
+            ("osteoarthritis", 0, 8, 0, 8, "binary"),
+            ("chair_rise_time", 10, 0.25, -5, 12, "numeric"),
+            ("grip_strength", 30, -0.15, -5, 8, "numeric"),
+            ("bmi", 24, 0.25, -3, 6, "numeric"),
+            ("ffmi", 19, -0.2, -4, 4, "numeric"),
+        ),
+    ),
+    ("bone_age", "Bone age", 0, ()),
+    ("skin_age", "Skin age", 0, ()),
+    (
+        "blood_age",
+        "Blood age",
+        -2,
+        (
+            ("fasting_glucose", 90, 0.05, -4, 8, "numeric"),
+            ("hba1c", 5.2, 3, -4, 8, "numeric"),
+            ("hs_crp", 1, 0.4, -3, 8, "numeric"),
+            ("albumin", 4.2, -3, -4, 4, "numeric"),
+            ("creatinine", 0.9, 2, -3, 5, "numeric"),
+            ("egfr", 95, -0.08, -5, 5, "numeric"),
+            ("rdw", 12.5, 0.5, -3, 6, "numeric"),
+            ("fib_4", 1, 2, -3, 8, "numeric"),
+        ),
+    ),
+    (
+        "cardiovascular_age",
+        "Cardiovascular age",
+        -4,
+        (
+            ("systolic_bp", 120, 0.08, -5, 10, "numeric"),
+            ("diastolic_bp", 80, 0.08, -4, 6, "numeric"),
+            ("resting_hr", 65, 0.04, -3, 5, "numeric"),
+            ("hypertension", 0, 6, 0, 6, "binary"),
+            ("cvd", 0, 10, 0, 10, "binary"),
+        ),
+    ),
+    (
+        "cardiorespiratory_age",
+        "Cardiorespiratory age",
+        -4,
+        (
+            ("systolic_bp", 120, 0.08, -5, 10, "numeric"),
+            ("diastolic_bp", 80, 0.08, -4, 6, "numeric"),
+            ("resting_hr", 65, 0.04, -3, 5, "numeric"),
+        ),
+    ),
+    (
+        "immune_inflammatory_age",
+        "Immune & inflammatory age",
+        -1,
+        (
+            ("hs_crp", 1, 0.5, -3, 10, "numeric"),
+            ("wbc", 6, 0.3, -3, 5, "numeric"),
+            ("rdw", 12.5, 0.5, -3, 6, "numeric"),
+        ),
+    ),
+    ("brain_cognitive_age", "Brain & cognitive age", 0, ()),
+    (
+        "metabolic_age",
+        "Metabolic age",
+        -4,
+        (
+            ("bmi", 24, 0.25, -3, 6, "numeric"),
+            ("waist_circumference", 80, 0.12, -4, 8, "numeric"),
+            ("visceral_fat", 3, 0.5, -3, 8, "numeric"),
+            ("fasting_glucose", 90, 0.05, -4, 8, "numeric"),
+            ("hba1c", 5.2, 3, -4, 8, "numeric"),
+            ("t2d", 0, 7, 0, 7, "binary"),
+        ),
+    ),
+    (
+        "kidney_age",
+        "Kidney age",
+        -1,
+        (
+            ("creatinine", 0.9, 2, -3, 5, "numeric"),
+            ("egfr", 95, -0.08, -5, 5, "numeric"),
+        ),
+    ),
+    (
+        "liver_age",
+        "Liver age",
+        -1,
+        (
+            ("albumin", 4.2, -3, -4, 4, "numeric"),
+            ("alp", 80, 0.02, -3, 5, "numeric"),
+            ("fib_4", 1, 2, -3, 8, "numeric"),
+        ),
+    ),
+    (
+        "sleep_recovery_age",
+        "Sleep & recovery age",
+        0,
+        (
+            ("sleep_hours", 7.5, 1.2, -1, 8, "absolute"),
+            ("sleep_apnea", 0, 6, 0, 6, "binary"),
+        ),
+    ),
+    (
+        "lifestyle_function_age",
+        "Lifestyle & function age",
+        -5,
+        (
+            ("grip_strength", 30, -0.35, -5, 8, "numeric"),
+            ("chair_rise_time", 10, 0.75, -5, 12, "numeric"),
+            ("smoking_status", 0, 0, 0, 5, "smoking"),
+            ("alcohol_heavy_use", 0, 4, 0, 4, "binary"),
+            ("sleep_hours", 7.5, 1.2, -1, 8, "absolute"),
+        ),
+    ),
+    (
+        "mental_health_age",
+        "Mental health age",
+        0,
+        (("depression", 0, 5, 0, 5, "binary"),),
+    ),
+)
+
+
+def _estimate_age_signals(values: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return one deterministic category estimate for every major category."""
 
     def has_value(field: str) -> bool:
         return values.get(field) is not None
@@ -113,41 +268,41 @@ def _estimate_joint_age(values: dict[str, Any]) -> dict[str, Any]:
     def clamp(value: float, minimum: float, maximum: float) -> float:
         return max(minimum, min(maximum, value))
 
-    score = float(values["age"]) - 10 if has_value("age") else 35.0
-    used = [
-        field
-        for field in (
-            "age",
-            "osteoarthritis",
-            "grip_strength",
-            "chair_rise_time",
-            "bmi",
-            "ffmi",
+    estimates = []
+    for key, label, offset, adjustments in _AGE_RULES:
+        score = float(values["age"]) + offset if has_value("age") else 45 + offset
+        used = ["age"] if has_value("age") else []
+        fields = []
+        for field, target, scale, minimum, maximum, mode in adjustments:
+            fields.append(field)
+            if not has_value(field):
+                continue
+            used.append(field)
+            raw = values[field]
+            if mode == "binary":
+                delta = float(raw) * scale
+            elif mode == "smoking":
+                delta = {"current": 5, "former": 2, "never": 0}.get(str(raw).lower(), 0)
+            elif mode == "absolute":
+                delta = abs(float(raw) - target) * scale
+            else:
+                delta = (float(raw) - target) * scale
+            score += clamp(delta, minimum, maximum)
+        estimates.append(
+            {
+                "key": key,
+                "label": label,
+                "value": round(clamp(score, 18, 100)),
+                "unit": "years",
+                "status": "estimated_heuristic",
+                "basis": used,
+                "inputs_used": used,
+                "input_coverage": f"{len(used)} / {len(fields) + 1}",
+                "method": "Deterministic category estimate from the available measurements.",
+                "uncertainty": "Research estimate; review alongside the underlying measurements.",
+            }
         )
-        if has_value(field)
-    ]
-    if has_value("osteoarthritis") and float(values["osteoarthritis"]) == 1:
-        score += 8
-    if has_value("grip_strength"):
-        score += clamp((30 - float(values["grip_strength"])) * 0.35, -5, 8)
-    if has_value("chair_rise_time"):
-        score += clamp((float(values["chair_rise_time"]) - 10) * 0.75, -5, 12)
-    if has_value("bmi"):
-        score += clamp((float(values["bmi"]) - 24) * 0.25, -3, 6)
-    if has_value("ffmi"):
-        score += clamp((19 - float(values["ffmi"])) * 0.4, -4, 4)
-    return {
-        "key": "joint_age",
-        "label": "Joint age",
-        "value": round(clamp(score, 18, 100)),
-        "unit": "years",
-        "status": "illustrative_heuristic",
-        "basis": used,
-        "inputs_used": used,
-        "input_coverage": f"{len(used)} / 6",
-        "method": "Deterministic heuristic using the available joint-related measurements; not computed by a validated joint-age model.",
-        "uncertainty": "No validated uncertainty interval is available.",
-    }
+    return estimates
 
 
 def _review(arguments: dict[str, Any]) -> dict[str, Any]:
@@ -203,7 +358,7 @@ def _review(arguments: dict[str, Any]) -> dict[str, Any]:
     present = [name for name in FEATURE_NAMES if merged[name] is not None]
     readiness = evaluate_mvv(merged)
     if not estimated_ages:
-        estimated_ages = [_estimate_joint_age(merged)]
+        estimated_ages = _estimate_age_signals(merged)
     return {
         "format": "local-measurement-review-v1",
         "sources": sources,
@@ -230,8 +385,7 @@ def _review(arguments: dict[str, Any]) -> dict[str, Any]:
         "warnings": warnings,
         "boundaries": [
             "No diagnosis or treatment advice.",
-            "Estimated age signals are illustrative, unvalidated, and not a biological or system age.",
-            "No validated biological or system age.",
+            "Estimated age signals are informational heuristic estimates, not a diagnosis or treatment recommendation.",
             "No persistence or external network calls.",
             "E-005 remains blocked.",
         ],

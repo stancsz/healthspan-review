@@ -71,8 +71,8 @@
       assessment_readiness: { assessment_ready: ready.assessmentReady, missing_requirements: ready.missingRequirements, blood_values_present: ready.bloodCount, history_values_present: ready.historyCount, note: "This is an input-completeness check, not a clinical assessment." },
       frailty_index: { status: "not_computed_in_browser_review", numerator: null, denominator: null, coverage_caveat: "The browser review does not compute an FI. Missing values must not be imputed." },
       comparison: base ? base.comparison : { status: "unavailable", basis: null, measurement_deltas: {}, segmental_deltas: {}, caveat: "A SECA comparison requires two dated scans." },
-      estimated_ages: state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : [clinicalParser.estimateJointAge(merged.values)],
-      boundaries: ["No diagnosis or treatment advice.", "Estimated age signals use a deterministic heuristic and are illustrative, unvalidated, and not a biological or system age.", "No validated biological or system age.", "E-005 remains blocked.", "Generated locally; no source CSV or patient identifier is included."]
+      estimated_ages: state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : clinicalParser.estimateAgeSignals(merged.values),
+      boundaries: ["No diagnosis or treatment advice.", "Estimated age signals are informational heuristic estimates, not a diagnosis or treatment recommendation.", "E-005 remains blocked.", "Generated locally; no source CSV or patient identifier is included."]
     };
   }
 
@@ -134,14 +134,14 @@
     $("#clinical-rows").innerHTML = clinicalParser.specs.filter(function (spec) { return present(state.clinical.values[spec.name]); }).map(function (spec) { return '<tr><td>' + escapeHtml(spec.label) + '<br><small class="field-name">' + escapeHtml(spec.name) + '</small></td><td>' + escapeHtml(formatValue(state.clinical.values[spec.name])) + '</td><td>' + escapeHtml(unitFor(spec.name, state.clinical.units)) + '</td><td>' + escapeHtml(categoryLabels[spec.category]) + '</td><td class="derived-label">Clinical CSV</td></tr>'; }).join("");
   }
   function renderEstimatedAges() {
-    var estimates = state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : [clinicalParser.estimateJointAge((state.parsed && state.parsed.latest && state.parsed.latest.values) || {})];
+    var estimates = state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : clinicalParser.estimateAgeSignals((state.parsed && state.parsed.latest && state.parsed.latest.values) || {});
     $("#estimated-ages-panel").hidden = !estimates.length;
-    $("#estimated-ages-tag").textContent = estimates.length ? estimates.length + " illustrative" : "";
+    $("#estimated-ages-tag").textContent = estimates.length ? estimates.length + " estimates" : "";
     $("#estimated-age-cards").innerHTML = estimates.map(function (item) {
       var value = present(item.value) ? formatValue(item.value) + " " + (item.unit || "years") : "Not available";
       var basis = item.basis && item.basis.length ? "Inputs used: " + item.basis.join(", ") + ". " : "Inputs used: none. ";
       var coverage = item.inputCoverage ? " Coverage: " + item.inputCoverage + "." : "";
-      return '<article class="estimated-age-card"><span class="age-label">' + escapeHtml(item.label || item.key || "Estimated age") + '</span><strong>' + escapeHtml(value) + '</strong><span class="age-status">Estimated · unvalidated</span><p class="age-basis">' + escapeHtml(basis + (item.method || "Illustrative estimate.") + coverage + " " + (item.uncertainty || "No validated uncertainty interval is available.")) + '</p></article>';
+      return '<article class="estimated-age-card"><span class="age-label">' + escapeHtml(item.label || item.key || "Estimated age") + '</span><strong>' + escapeHtml(value) + '</strong><span class="age-status">Estimated age</span><p class="age-basis">' + escapeHtml(basis + (item.method || "Category estimate.") + coverage + " " + (item.uncertainty || "Research estimate; review alongside the underlying measurements.")) + '</p></article>';
     }).join("");
   }
   function downloadPacket() { if (!state.packet) return; var blob = new Blob([JSON.stringify(state.packet, null, 2) + "\n"], { type: "application/json" }), url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = "local-measurement-review-pack-v0.2.json"; a.click(); URL.revokeObjectURL(url); $("#export-status").textContent = "Downloaded locally. The packet contains no original CSV or patient identifier."; showView("export"); }

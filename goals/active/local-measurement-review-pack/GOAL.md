@@ -38,7 +38,7 @@ and withheld obvious enough to support the prespecified five-user IR1 study.
 | L4 | Comparison is descriptive only when two dated scans exist and unavailable otherwise. | Two-scan and single-scan tests; no health-improvement claim. |
 | L5 | The packet can be downloaded as deterministic JSON and printed locally without raw CSV or patient identifiers. | UI contract tests and scoped print mode. |
 | L6 | Governance surfaces agree and the pack is ready for the five-user IR1 comparison. | GOAL, ROADMAP, Wiki, EVAL/evidence, protocol, and Project #4 reconciliation. |
-| L7 | A deterministic illustrative age estimate appears alongside current metrics for complete and partial inputs, records the fields used, and survives JSON/MCP export. | Synthetic browser/MCP evidence shows `Joint age: 35 years` with an unvalidated label; partial-input evidence shows a coverage count and no hidden fabricated measurements. |
+| L7 | Deterministic age estimates for all major categories appear alongside current metrics for complete and partial inputs, record the fields used, and survive JSON/MCP export. | Synthetic browser/MCP evidence shows all 17 category estimates, including `Joint age: 35 years`; partial-input evidence shows coverage for each estimate. |
 
 ### Constraints / invariants
 
@@ -85,15 +85,15 @@ schema, a visible review region, JSON download, and isolated print mode.
   a local JSON export.
 - [x] Add a dependency-free local stdio MCP adapter for SECA parsing, clinical
   CSV parsing, and provenance-aware completeness review.
-- [x] Add a deterministic illustrative age-signal heuristic to the synthetic,
-  CSV, manual, and MCP review paths, including `Joint age: 35 years`, while
-  keeping validated biological and system ages withheld.
+- [x] Add deterministic age-signal heuristics for all 17 major categories to
+  the synthetic, CSV, manual, and MCP review paths, including `Joint age: 35
+  years`, while keeping the existing research/wellness boundary visible.
 
 ### Validation
 
 Focused Node verification passed 35/35 tests, including the new Vercel workspace
 route, complete synthetic parser, second CSV input, manual-entry surface,
-safety-boundary, accessibility-action, print-style, and illustrative-age-signal
+safety-boundary, accessibility-action, print-style, and category-age-signal
 checks. The focused MCP Python tests also pass. The refreshed receipt records
 179 Python tests and 29 Node tests. The canonical verifier passed all 20 checks,
 including documentation and loopback serving, and reported `E-005 blocked`.
@@ -103,14 +103,12 @@ including documentation and loopback serving, and reported `E-005 blocked`.
 The local workspace was exercised in a headed browser with the complete
 synthetic case: 2 dated SECA scans, 10 equipment fields, 5 regional readings,
 separate clinical source ledger, 35/35 canonical fields, 0 open minimum-input
-items, explicit provenance, an illustrative `Joint age: 35 years` card marked
-`Estimated · unvalidated`, descriptive deltas, and a ready deterministic
-packet. The estimated signal is preserved in the JSON packet and optional MCP
-metadata; SECA-only, clinical-CSV-only, and manual values without such metadata
-do not receive a fabricated age. The `/manual` page filled the same synthetic
-profile and reported 35/35 present. The MCP dispatcher returned the three local
-review tools and the combined synthetic review returned 35/35 with no raw CSV
-or patient identifier.
+items, explicit provenance, all 17 major category age cards including `Joint
+age: 35 years`, descriptive deltas, and a ready deterministic packet. Each estimate
+records the inputs used and coverage. The `/manual` page filled the same
+synthetic profile and reported 35/35 present. The MCP dispatcher returned the
+three local review tools and the combined synthetic review returned 35/35 with
+17 category estimates, no raw CSV, and no patient identifier.
 The newest slice is deployed at `https://frailty-index-deficit-accumulation.vercel.app/`.
 Live `/`, `/workbench`, and `/manual` walkthroughs show the complete synthetic
 case and manual 35/35 state. These checks verify local and static-host software

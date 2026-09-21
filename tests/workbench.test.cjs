@@ -31,16 +31,17 @@ test("Vercel root routes to the clinician workspace", () => {
 test("clinician workspace keeps the local-only safety boundary visible", () => {
   assert.match(html, /Data stays in this browser tab/);
   assert.match(html, /Nothing is uploaded/);
-  assert.match(html, /No diagnosis, treatment advice, or validated biological age/);
+  assert.match(html, /No diagnosis or treatment advice\. Age estimates are for research and wellness review/);
   assert.match(html, /Clinical use: forbidden/);
   assert.match(js, /buildMeasurementReviewPack/);
   assert.match(js, /35/);
   assert.match(js, /Clinical inputs CSV/);
   assert.match(js, /contains no original CSV or patient identifier/);
   assert.match(js, /estimatedAges/);
-  assert.match(js, /estimateJointAge/);
+  assert.match(js, /estimateAgeSignals/);
   assert.match(js, /heuristic/);
-  assert.match(js, /Estimated · unvalidated/);
+  assert.match(js, /Estimated age/);
+  assert.match(js, /estimateAgeSignals/);
   assert.doesNotMatch(js, /fetch\s*\([^)]*https?:\/\//);
 });
 
