@@ -62,6 +62,12 @@ The full local Node suite passes 56/56 and the canonical verifier passes 20/20.
 The source now rejects missing or malformed Origin headers; the earlier
 manually deployed Vercel runtime is not a same-SHA verification of this source
 checkpoint. The Vercel project has no connected Git repository.
+Remote CI at `74e91af` failed because the `data` dependency extra was omitted.
+The dependency repair at `f56dba8` exposed six receipt tests tied to external
+NHANES files in a workstation path. Always-run synthetic builder tests now
+cover those modules, while three exact raw-data receipt comparisons remain
+available with `HEALTHSPAN_NHANES_DATA_ROOT`. Without those external files, CI
+must explicitly report three skips; it does not prove raw-data regeneration.
 DOCS-GDE-1 is complete and retained
 under `goals/completed/documentation-governance/`. It must preserve one
 consistent statement of project state across this file, `ROADMAP.md`, `EVAL.md`,

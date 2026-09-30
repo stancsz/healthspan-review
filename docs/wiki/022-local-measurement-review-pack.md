@@ -97,3 +97,9 @@ gate. The full local Node suite passes 56/56 and the canonical verifier passes
 existing manual Vercel deployment is independent of this source checkpoint;
 the Vercel project has no connected Git repository. Source publication does
 not close the 24-page browser-flow gap, the IR1 comparison, or E-005.
+Remote CI at `74e91af` omitted the `data` extra. The dependency repair at
+`f56dba8` exposed workstation-specific raw-file paths in six receipt tests.
+Portable synthetic builder checks now always run; three exact raw-data
+comparisons require `HEALTHSPAN_NHANES_DATA_ROOT` and explicitly skip if their
+external files are absent. Scientific receipts are unchanged; those skips
+are not evidence of exact raw-data regeneration.

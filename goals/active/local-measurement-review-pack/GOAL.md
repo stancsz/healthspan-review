@@ -315,6 +315,11 @@ Remote runs for `74e91af` failed at Python test collection because CI omitted
 the declared `data` extra needed by three pandas receipt tests. The dependency
 setup is corrected; the failed runs are retained as failure evidence and do
 not verify the PDF checks that had not yet executed.
+The dependency repair at `f56dba8` then exposed six receipt tests tied to
+external NHANES files in a workstation path. Synthetic builder checks now run
+without those files; three exact raw-data comparisons remain conditional on
+`HEALTHSPAN_NHANES_DATA_ROOT`. CI without those inputs must report three skips
+and cannot claim exact raw-data receipt regeneration.
 
 The extraction API and single-page browser slices are verified, while the
 complete 24-page production browser flow remains open. The goal also

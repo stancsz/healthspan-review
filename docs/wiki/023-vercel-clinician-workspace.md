@@ -88,6 +88,11 @@ The complete local Node suite passes 56/56 and the canonical verifier passes
 20/20. These source checks do not establish same-SHA live Vercel verification.
 
 The focused checks are:
+For exact NHANES receipt regeneration, set `HEALTHSPAN_NHANES_DATA_ROOT` to a
+directory containing the required XPT files in `2003-2004`, `2005-2006`,
+`2007-2008`, and `2013-2014` subdirectories before running pytest. Without
+those external inputs, three exact comparisons explicitly skip. Synthetic
+builder checks still run; CI does not claim raw-data regeneration from them.
 
 ```powershell
 node --test tests/workbench.test.cjs tests/site_parser.test.cjs

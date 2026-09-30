@@ -81,6 +81,12 @@ Python receipt tests import pandas while the CI environments omitted the
 `data` extra. The workflows now install that declared extra alongside their
 existing dependencies. Remote execution of the repair must be checked before
 claiming a remote software pass.
+The dependency repair at `f56dba8` reached six receipt failures caused by a
+hardcoded workstation path to external NHANES files. The portable repair adds
+always-run synthetic builder checks and preserves three exact receipt
+comparisons when `HEALTHSPAN_NHANES_DATA_ROOT` supplies the required files.
+The checked scientific receipts are unchanged. Missing raw inputs produce
+three explicit skips rather than a claim of exact regeneration in CI.
 
 Order: reconcile public claims and candidate identity; implement a measurement-first
 experience; verify visual/behavior states and human comprehension; publish and
