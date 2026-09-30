@@ -12,13 +12,15 @@ function pages(count) {
   }));
 }
 
-test('24-page PDFs split into four sequential six-page requests', () => {
-  const parts = batches.splitPages(pages(24));
-  assert.equal(parts.length, 4);
+test('50-page PDFs split into nine sequential six-page requests with a two-page tail', () => {
+  const parts = batches.splitPages(pages(50));
+  assert.equal(parts.length, 9);
   assert.deepEqual(parts.map(part => [part.startPage, part.endPage, part.offset]), [
-    [1, 6, 0], [7, 12, 6], [13, 18, 12], [19, 24, 18]
+    [1, 6, 0], [7, 12, 6], [13, 18, 12], [19, 24, 18],
+    [25, 30, 24], [31, 36, 30], [37, 42, 36], [43, 48, 42], [49, 50, 48]
   ]);
-  assert.deepEqual(parts.map(part => part.pages.length), [6, 6, 6, 6]);
+  assert.deepEqual(parts.map(part => part.pages.length), [6, 6, 6, 6, 6, 6, 6, 6, 2]);
+  assert.deepEqual(parts.flatMap(part => part.pages.map(page => page.page)), Array.from({ length: 50 }, (_, index) => index + 1));
 });
 
 test('requests reindex pages locally and send compressed AI images, not local previews', () => {
@@ -43,23 +45,23 @@ test('six maximum-sized page envelopes stay below the browser request preflight 
   assert.equal(new TextEncoder().encode(request).byteLength < batches.MAX_REQUEST_BYTES, true);
 });
 
-test('candidates preserve their original PDF page numbers across each batch', () => {
-  const sourcePages = batches.splitPages(pages(24))[3].pages;
+test('candidates preserve original PDF citations through the 50-page boundary', () => {
+  const parts = batches.splitPages(pages(50));
   const validated = batches.validateCandidatePages([
-    { field: 'fasting_glucose', page: 19 },
-    { field: 'hba1c', page: 24 }
-  ], sourcePages);
-  assert.deepEqual(validated.map(candidate => candidate.page), [19, 24]);
+    { field: 'fasting_glucose', page: 49 },
+    { field: 'hba1c', page: 50 }
+  ], parts[8].pages);
+  assert.deepEqual(validated.map(candidate => candidate.page), [49, 50]);
 });
 
 test('same-date conflicts remain visible when their candidates come from distant batches', () => {
-  const allPages = pages(24), parts = batches.splitPages(allPages);
+  const allPages = pages(50), parts = batches.splitPages(allPages);
   const candidates = [
     { field: 'fasting_glucose', page: 1 },
     { field: 'hba1c', page: 7 },
-    { field: 'fasting_glucose', page: 13 },
-    { field: 'albumin', page: 19 }
-  ].map((candidate, index) => batches.validateCandidatePages([candidate], parts[[0, 1, 2, 3][index]].pages)[0]);
+    { field: 'fasting_glucose', page: 37 },
+    { field: 'albumin', page: 49 }
+  ].map((candidate, index) => batches.validateCandidatePages([candidate], parts[[0, 1, 6, 8][index]].pages)[0]);
   const rows = candidates.map((candidate, index) => ({
     field: candidate.field,
     value: [98, 5.6, 110, 4.3][index],
@@ -67,15 +69,15 @@ test('same-date conflicts remain visible when their candidates come from distant
   }));
   const flags = candidateReview.classifyCandidateRows(rows);
   assert.equal(candidates[0].page, 1);
-  assert.equal(candidates[2].page, 13);
+  assert.equal(candidates[2].page, 37);
   assert.equal(flags[0].conflict, true);
   assert.equal(flags[2].conflict, true);
 });
 
 test('invalid document pages and invalid model page citations fail closed', () => {
-  assert.throws(() => batches.splitPages([]), /1 to 24 pages/);
-  assert.throws(() => batches.splitPages(pages(25)), /1 to 24 pages/);
+  assert.throws(() => batches.splitPages([]), /1 to 50 pages/);
+  assert.throws(() => batches.splitPages(pages(51)), /1 to 50 pages/);
   assert.throws(() => batches.splitPages([{ ...pages(1)[0], page: 2 }]), /pages are invalid/);
-  assert.throws(() => batches.validateCandidatePages([{ page: 18 }], batches.splitPages(pages(24))[3].pages), /page is invalid/);
-  assert.throws(() => batches.validateCandidatePages([{ page: 25 }], batches.splitPages(pages(24))[3].pages), /page is invalid/);
+  assert.throws(() => batches.validateCandidatePages([{ page: 42 }], batches.splitPages(pages(50))[8].pages), /page is invalid/);
+  assert.throws(() => batches.validateCandidatePages([{ page: 51 }], batches.splitPages(pages(50))[8].pages), /page is invalid/);
 });

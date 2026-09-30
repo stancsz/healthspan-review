@@ -18,10 +18,10 @@ test('PDF intake is separate, opt-in, and begins with local file inspection', ()
   assert.match(importer, /page\.getTextContent\(\)/);
   assert.match(importer, /canvas\.toDataURL\('image\/jpeg'/);
   assert.match(importer, /MAX_BYTES = 12 \* 1024 \* 1024/);
-  assert.match(importer, /MAX_PAGES = 24/);
-  assert.match(html, /up to 24 pages and 12 MB/i);
+  assert.match(importer, /MAX_PAGES = 50/);
+  assert.match(html, /up to 50 pages and 12 MB/i);
   assert.match(html, /pdf-batches\.js/);
-  assert.match(batches, /MAX_DOCUMENT_PAGES = 24/);
+  assert.match(batches, /MAX_DOCUMENT_PAGES = 50/);
   assert.match(batches, /MAX_BATCH_PAGES = 6/);
 });
 
@@ -29,7 +29,7 @@ test('PDF bytes and file names are excluded from bounded sequential AI requests;
   assert.match(browser, /window\.pdfBatches\.splitPages\(sourcePdf\.pages\)/);
   assert.match(browser, /window\.pdfBatches\.requestPages\(batch\.pages\)/);
   assert.match(browser, /encoder\.encode\(request\)\.byteLength > window\.pdfBatches\.MAX_REQUEST_BYTES/);
-  assert.match(browser, /await fetch\('\/api\/extract-pdf'/);
+  assert.match(browser, /await pdfRequestScheduler\.send\('\/api\/extract-pdf'/);
   assert.match(browser, /validateCandidatePages\(data\.candidates \|\| \[\], batch\.pages\)/);
   assert.match(browser, /selectionId !== pdfSelectionId/);
   assert.match(importer, /MAX_REQUEST_IMAGE_CHARS = 500_000/);

@@ -1,0 +1,142 @@
+[
+  {
+    "batch": 1,
+    "requestId": "13544.19",
+    "startedAt": 195184.244278,
+    "gapMs": null,
+    "status": 200,
+    "sourcePages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "bodyBytes": 161721
+  },
+  {
+    "batch": 2,
+    "requestId": "13544.20",
+    "startedAt": 195196.457012,
+    "gapMs": 12212.734000000637,
+    "status": 200,
+    "sourcePages": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "bodyBytes": 160334
+  },
+  {
+    "batch": 3,
+    "requestId": "13544.21",
+    "startedAt": 195208.666955,
+    "gapMs": 12209.942999994382,
+    "status": 200,
+    "sourcePages": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "bodyBytes": 162738
+  },
+  {
+    "batch": 4,
+    "requestId": "13544.22",
+    "startedAt": 195220.879664,
+    "gapMs": 12212.709000014002,
+    "status": 200,
+    "sourcePages": [
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "bodyBytes": 161617
+  },
+  {
+    "batch": 5,
+    "requestId": "13544.23",
+    "startedAt": 195233.080566,
+    "gapMs": 12200.901999982307,
+    "status": 200,
+    "sourcePages": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "bodyBytes": 159052
+  },
+  {
+    "batch": 6,
+    "requestId": "13544.24",
+    "startedAt": 195245.289697,
+    "gapMs": 12209.13100001053,
+    "status": 200,
+    "sourcePages": [
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ],
+    "bodyBytes": 159048
+  },
+  {
+    "batch": 7,
+    "requestId": "13544.25",
+    "startedAt": 195257.493924,
+    "gapMs": 12204.227000009269,
+    "status": 200,
+    "sourcePages": [
+      37,
+      38,
+      39,
+      40,
+      41,
+      42
+    ],
+    "bodyBytes": 158840
+  },
+  {
+    "batch": 8,
+    "requestId": "13544.26",
+    "startedAt": 195269.7029,
+    "gapMs": 12208.975999994436,
+    "status": 200,
+    "sourcePages": [
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "bodyBytes": 158756
+  },
+  {
+    "batch": 9,
+    "requestId": "13544.27",
+    "startedAt": 195281.907883,
+    "gapMs": 12204.983000003267,
+    "status": 200,
+    "sourcePages": [
+      49,
+      50
+    ],
+    "bodyBytes": 57941
+  }
+]

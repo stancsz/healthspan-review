@@ -1,0 +1,570 @@
+{
+  "format": "local-measurement-review-pack-v0.2",
+  "intended_use": "research_and_wellness_measurement_review_only",
+  "clinical_use": "forbidden",
+  "source": {
+    "seca": null,
+    "clinical": null
+  },
+  "measurement_ledger": [],
+  "segment_ledger": [],
+  "clinical_ledger": [
+    {
+      "field": "fasting_glucose",
+      "value": 98,
+      "unit": "mg/dL",
+      "unit_conversion_applied": false,
+      "category": "blood",
+      "provenance": "user_confirmed_pdf_measurement",
+      "printed_value": "98 mg/dL",
+      "printed_unit": "mg/dL",
+      "printed_date": "2026-01-02",
+      "source_page": 1,
+      "evidence": "Fasting glucose: 98 mg/dL",
+      "measured_at": "2026-01-02"
+    },
+    {
+      "field": "hba1c",
+      "value": 6,
+      "unit": "%",
+      "unit_conversion_applied": false,
+      "category": "blood",
+      "provenance": "user_confirmed_pdf_measurement",
+      "printed_value": "6.0 %",
+      "printed_unit": "%",
+      "printed_date": "2026-01-02",
+      "source_page": 49,
+      "evidence": "HbA1c: 6.0 %",
+      "measured_at": "2026-01-02"
+    },
+    {
+      "field": "albumin",
+      "value": 4.5,
+      "unit": "g/dL",
+      "unit_conversion_applied": false,
+      "category": "blood",
+      "provenance": "user_confirmed_pdf_measurement",
+      "printed_value": "4.5 g/dL",
+      "printed_unit": "g/dL",
+      "printed_date": "2026-01-02",
+      "source_page": 50,
+      "evidence": "Albumin: 4.5 g/dL",
+      "measured_at": "2026-01-02"
+    }
+  ],
+  "complete_profile": {
+    "present_count": 3,
+    "total_count": 35,
+    "fields": [
+      {
+        "field": "age",
+        "value": null,
+        "unit": "years",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "sex",
+        "value": null,
+        "unit": "",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "bmi",
+        "value": null,
+        "unit": "kg/m²",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "systolic_bp",
+        "value": null,
+        "unit": "mmHg",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "diastolic_bp",
+        "value": null,
+        "unit": "mmHg",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "resting_hr",
+        "value": null,
+        "unit": "bpm",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "waist_circumference",
+        "value": null,
+        "unit": "cm",
+        "category": "demographics",
+        "provenance": null
+      },
+      {
+        "field": "phase_angle",
+        "value": null,
+        "unit": "degrees",
+        "category": "bia",
+        "provenance": null
+      },
+      {
+        "field": "ecw_tbw",
+        "value": null,
+        "unit": "ratio",
+        "category": "bia",
+        "provenance": null
+      },
+      {
+        "field": "ffmi",
+        "value": null,
+        "unit": "kg/m²",
+        "category": "bia",
+        "provenance": null
+      },
+      {
+        "field": "skeletal_muscle_mass",
+        "value": null,
+        "unit": "kg",
+        "category": "bia",
+        "provenance": null
+      },
+      {
+        "field": "visceral_fat",
+        "value": null,
+        "unit": "Liters",
+        "category": "bia",
+        "provenance": null
+      },
+      {
+        "field": "fasting_glucose",
+        "value": 98,
+        "unit": "mg/dL",
+        "category": "blood",
+        "provenance": "PDF · user-confirmed"
+      },
+      {
+        "field": "hba1c",
+        "value": 6,
+        "unit": "%",
+        "category": "blood",
+        "provenance": "PDF · user-confirmed"
+      },
+      {
+        "field": "hs_crp",
+        "value": null,
+        "unit": "mg/L",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "albumin",
+        "value": 4.5,
+        "unit": "g/dL",
+        "category": "blood",
+        "provenance": "PDF · user-confirmed"
+      },
+      {
+        "field": "creatinine",
+        "value": null,
+        "unit": "mg/dL",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "egfr",
+        "value": null,
+        "unit": "mL/min/1.73m²",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "alp",
+        "value": null,
+        "unit": "U/L",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "wbc",
+        "value": null,
+        "unit": "10^9/L",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "rdw",
+        "value": null,
+        "unit": "%",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "fib_4",
+        "value": null,
+        "unit": "index",
+        "category": "blood",
+        "provenance": null
+      },
+      {
+        "field": "hypertension",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "t2d",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "osteoarthritis",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "sleep_apnea",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "cvd",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "copd",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "cancer",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "depression",
+        "value": null,
+        "unit": "",
+        "category": "history",
+        "provenance": null
+      },
+      {
+        "field": "grip_strength",
+        "value": null,
+        "unit": "kg",
+        "category": "functional",
+        "provenance": null
+      },
+      {
+        "field": "chair_rise_time",
+        "value": null,
+        "unit": "seconds",
+        "category": "functional",
+        "provenance": null
+      },
+      {
+        "field": "smoking_status",
+        "value": null,
+        "unit": "",
+        "category": "functional",
+        "provenance": null
+      },
+      {
+        "field": "alcohol_heavy_use",
+        "value": null,
+        "unit": "",
+        "category": "functional",
+        "provenance": null
+      },
+      {
+        "field": "sleep_hours",
+        "value": null,
+        "unit": "hours",
+        "category": "functional",
+        "provenance": null
+      }
+    ]
+  },
+  "parsing_review": {
+    "unmapped_labels": [],
+    "unit_warnings": [],
+    "derivations": [],
+    "merge_warnings": []
+  },
+  "assessment_readiness": {
+    "assessment_ready": false,
+    "missing_requirements": [
+      "age and sex (not present in the supplied inputs; never inferred)",
+      "Body mass index (not present in the supplied inputs)",
+      "Phase angle (not present in the supplied inputs)",
+      "ECW/TBW (not present in the supplied inputs)",
+      "at least 6 blood-panel values, including fasting glucose or HbA1c (3 present)",
+      "at least 4 clinical-history values (0 present)"
+    ],
+    "blood_values_present": 3,
+    "history_values_present": 0,
+    "note": "This is an input-completeness check, not a clinical assessment."
+  },
+  "frailty_index": {
+    "status": "not_computed_in_browser_review",
+    "numerator": null,
+    "denominator": null,
+    "coverage_caveat": "The browser review does not compute an FI. Missing values must not be imputed."
+  },
+  "comparison": {
+    "status": "unavailable",
+    "basis": null,
+    "measurement_deltas": {},
+    "segmental_deltas": {},
+    "caveat": "A SECA comparison requires two dated scans."
+  },
+  "estimated_ages": [
+    {
+      "key": "body_composition_age",
+      "label": "Body composition age",
+      "value": 40,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 4",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "fluid_cellular_age",
+      "label": "Fluid & cellular age",
+      "value": 42,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 3",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "muscle_age",
+      "label": "Muscle age",
+      "value": 39,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 5",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "joint_age",
+      "label": "Joint age",
+      "value": 35,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 6",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "bone_age",
+      "label": "Bone age",
+      "value": 45,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 1",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "skin_age",
+      "label": "Skin age",
+      "value": 45,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 1",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "blood_age",
+      "label": "Blood age",
+      "value": 45,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [
+        "fasting_glucose",
+        "hba1c",
+        "albumin"
+      ],
+      "inputsUsed": [
+        "fasting_glucose",
+        "hba1c",
+        "albumin"
+      ],
+      "inputCoverage": "3 / 9",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "cardiovascular_age",
+      "label": "Cardiovascular age",
+      "value": 41,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 6",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "cardiorespiratory_age",
+      "label": "Cardiorespiratory age",
+      "value": 41,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 4",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "immune_inflammatory_age",
+      "label": "Immune & inflammatory age",
+      "value": 44,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 4",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "brain_cognitive_age",
+      "label": "Brain & cognitive age",
+      "value": 45,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 1",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "metabolic_age",
+      "label": "Metabolic age",
+      "value": 44,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [
+        "fasting_glucose",
+        "hba1c"
+      ],
+      "inputsUsed": [
+        "fasting_glucose",
+        "hba1c"
+      ],
+      "inputCoverage": "2 / 7",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "kidney_age",
+      "label": "Kidney age",
+      "value": 44,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 3",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "liver_age",
+      "label": "Liver age",
+      "value": 43,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [
+        "albumin"
+      ],
+      "inputsUsed": [
+        "albumin"
+      ],
+      "inputCoverage": "1 / 4",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "sleep_recovery_age",
+      "label": "Sleep & recovery age",
+      "value": 45,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 3",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "lifestyle_function_age",
+      "label": "Lifestyle & function age",
+      "value": 40,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 6",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    },
+    {
+      "key": "mental_health_age",
+      "label": "Mental health age",
+      "value": 45,
+      "unit": "years",
+      "status": "estimated_heuristic",
+      "basis": [],
+      "inputsUsed": [],
+      "inputCoverage": "0 / 2",
+      "method": "Deterministic category estimate from the available measurements.",
+      "uncertainty": "Research estimate; review alongside the underlying measurements."
+    }
+  ],
+  "boundaries": [
+    "No diagnosis or treatment advice.",
+    "Estimated age signals are informational heuristic estimates, not a diagnosis or treatment recommendation.",
+    "E-005 remains blocked.",
+    "Generated locally; no original source document or patient identifier is included.",
+    "PDF values were suggested by AI and entered only after user confirmation."
+  ]
+}

@@ -1,7 +1,7 @@
 const specs = require('../docs/clinical-parser.js').specs;
 const MAX_REQUEST_BYTES = 3_900_000;
 const MAX_PAGES = 6;
-const MAX_DOCUMENT_PAGES = 24;
+const MAX_DOCUMENT_PAGES = 50;
 const MAX_PAGE_TEXT = 10000;
 const MAX_PAGE_IMAGE_CHARS = 500_000;
 
@@ -137,6 +137,11 @@ async function handler(req, res) {
       method: 'POST', headers: { Authorization: `Bearer ${process.env.MINIMAX_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ model: 'MiniMax-M3', temperature: 0, max_tokens: 5000, tools: [{ type: 'function', function: { name: 'record_measurements', description: 'Return traceable measured value candidates found explicitly in the document.', parameters: { type: 'object', properties: { candidates: { type: 'array', items: { type: 'object', properties: { field: { type: 'string', enum: fieldNames }, printed_value: { type: 'string' }, unit: { type: 'string' }, date: { type: 'string' }, page: { type: 'integer', description: 'Original PDF page number shown in the page label.' }, evidence: { type: 'string' } }, required: ['field', 'printed_value', 'unit', 'date', 'page', 'evidence'], additionalProperties: false } } }, required: ['candidates'], additionalProperties: false } } }], tool_choice: { type: 'function', function: { name: 'record_measurements' } }, messages: [{ role: 'user', content }] })
     });
+    if (upstream.status === 429) {
+      const retryAfter = upstream.headers.get('Retry-After');
+      if (retryAfter) res.setHeader('Retry-After', retryAfter.slice(0, 128));
+      return send(res, 429, { error: 'The extraction service is busy. Please retry later.' });
+    }
     if (!upstream.ok) return send(res, 502, { error: 'The extraction service could not complete this request' });
     const result = await upstream.json();
     const args = result.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;

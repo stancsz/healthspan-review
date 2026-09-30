@@ -3,7 +3,7 @@ import * as pdfjs from './vendor/pdfjs/pdf.min.mjs';
 pdfjs.GlobalWorkerOptions.workerSrc = '/docs/vendor/pdfjs/pdf.worker.min.mjs';
 
 const MAX_BYTES = 12 * 1024 * 1024;
-const MAX_PAGES = 24;
+const MAX_PAGES = 50;
 const MAX_PAGE_TEXT = 10000;
 const MAX_REQUEST_IMAGE_CHARS = 500_000;
 
@@ -14,7 +14,7 @@ export async function analyzePdfLocally(file) {
   const task = pdfjs.getDocument({ data: bytes, isEvalSupported: false, useSystemFonts: true });
   try {
     const pdf = await task.promise;
-    if (!pdf.numPages || pdf.numPages > MAX_PAGES) throw new Error('PDFs must contain 1 to 24 pages.');
+    if (!pdf.numPages || pdf.numPages > MAX_PAGES) throw new Error('PDFs must contain 1 to 50 pages.');
     const pages = [];
     for (let number = 1; number <= pdf.numPages; number++) {
       const page = await pdf.getPage(number);

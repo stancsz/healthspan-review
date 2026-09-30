@@ -32,7 +32,7 @@ test("clinician workspace discloses optional external PDF processing", () => {
   assert.match(html, /CSV files stay local/);
   assert.match(html, /original PDF is not uploaded/);
   assert.match(html, /text and rendered page images leave this browser for processing by an external AI service/);
-  assert.match(html, /up to 24 pages and 12 MB/i);
+  assert.match(html, /up to 50 pages and 12 MB/i);
   assert.match(html, /pdf-batches\.js/);
   assert.match(html, /I consent to sending its selected page content to an external AI service/);
   assert.doesNotMatch(html, /MiniMax|Vercel function/);

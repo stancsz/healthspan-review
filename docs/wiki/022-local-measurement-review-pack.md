@@ -76,7 +76,7 @@ clinical validity, or E-005 approval.
 
 ### PDF page capacity, 2026-09-29
 
-The source file limit is now 24 pages and 12 MiB. The browser sends at most six
+At this historical checkpoint, the source file limit was 24 pages and 12 MiB. The browser sent at most six
 pages per sequential request, preflights each UTF-8 request size, retains
 full-resolution source-page previews locally, and keeps each candidate's
 original PDF page citation. A synthetic 24-page production API run completed
@@ -103,3 +103,25 @@ Portable synthetic builder checks now always run; three exact raw-data
 comparisons require `HEALTHSPAN_NHANES_DATA_ROOT` and explicitly skip if their
 external files are absent. Scientific receipts are unchanged; those skips
 are not evidence of exact raw-data regeneration.
+
+### 50-page capacity acceptance, 2026-09-30
+
+The current limit is 50 pages / 12 MiB, sent in nine six-page-or-smaller
+batches with at least 12.2 seconds between request starts. Throttling permits
+two automatic retries, honors Retry-After across manual restarts, and limits
+automatic waits to 120 seconds. Consent withdrawal, file replacement, or
+reset cancels requests and waits. Larger documents can take several minutes.
+
+Ready deployment `dpl_AtSVJq3KXqnZmmv3uxNfy9zDHNtR` completed the live synthetic
+50-page picker → consent → nine HTTP-200 batches → six cited candidates →
+page-50 preview → confirmation → JSON export workflow. Candidates retained
+source pages 1, 7, 13, 19, 49, and 50; the downloaded 15,721-byte packet retained
+three human-confirmed values from pages 1/49/50 without PDF/image payloads.
+Consent withdrawal stopped a pacing wait; a 51-page file was rejected locally
+with no POST. This supersedes the historical multi-page browser gap for this
+selectable-text fixture. Scanned-only 50-page input and live 429 recovery were
+not separately exercised. Deterministic tests cover retry/cooldown behavior.
+The prepared snapshot passes 68 Node tests, 176 Python tests with three
+external-data skips, and all 20 canonical checks. Screenshots and receipts are
+in `docs/reviews/pdf-capacity-50-2026-09-30/`. The broader goal remains active;
+IR1 participation and E-005 are unchanged.

@@ -155,11 +155,12 @@ import { analyzePdfLocally } from './pdf-import.mjs';
   }
   function downloadPacket() { if (!state.packet) return; var blob = new Blob([JSON.stringify(state.packet, null, 2) + "\n"], { type: "application/json" }), url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = "local-measurement-review-pack-v0.2.json"; a.click(); URL.revokeObjectURL(url); $("#export-status").textContent = "Downloaded locally. The packet contains no original CSV or patient identifier."; showView("export"); }
   function printPacket() { if (!state.packet) return; showView("review"); window.print(); }
-  function reset() { state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; setStatus("No record open.", false); showView("import"); }
+  function reset() { choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; setStatus("No record open.", false); showView("import"); }
   function fetchText(url) { return fetch(url, { cache: "no-store" }).then(function (response) { if (!response.ok) throw new Error(url + " returned " + response.status); return response.text(); }); }
 
   var localPdf = null, pdfSelectionId = 0, activePdfController = null;
-  function updatePdfButton() { $("#analyze-pdf").disabled = !localPdf || !$("#pdf-ai-consent").checked; }
+  var pdfRequestScheduler = window.pdfBatches.createRequestScheduler();
+  function updatePdfButton() { $("#analyze-pdf").disabled = !localPdf || !$("#pdf-ai-consent").checked || Boolean(activePdfController); }
   function setPdfStatus(message, error) { $("#pdf-status").textContent = message; $("#pdf-status").style.color = error ? "var(--rust)" : "var(--forest)"; }
   function choosePdf(file) {
     pdfSelectionId++;
@@ -215,13 +216,13 @@ import { analyzePdfLocally } from './pdf-import.mjs';
   $("#choose-pdf").addEventListener("click", function () { $("#pdf-file").click(); });
   $("#pdf-file").addEventListener("change", function () { choosePdf(this.files && this.files[0]); });
   $("#pdf-ai-consent").addEventListener("change", function () {
-    if (!this.checked && activePdfController) { activePdfController.abort(); activePdfController = null; }
+    if (!this.checked && activePdfController) activePdfController.abort();
     updatePdfButton();
   });
   $("#close-pdf-page").addEventListener("click", function () { $("#pdf-page-dialog").close(); });
   $("#analyze-pdf").addEventListener("click", async function () {
-    if (!localPdf || !$("#pdf-ai-consent").checked) return;
-    var sourcePdf = localPdf, selectionId = pdfSelectionId, button = this, operationController = null; button.disabled = true; state.pdfCandidates = []; $("#pdf-candidate-panel").hidden = true; $("#pdf-apply-status").textContent = "";
+    if (!localPdf || !$("#pdf-ai-consent").checked || activePdfController) return;
+    var sourcePdf = localPdf, selectionId = pdfSelectionId, button = this, operationController = new AbortController(); activePdfController = operationController; button.disabled = true; state.pdfCandidates = []; $("#pdf-candidate-panel").hidden = true; $("#pdf-apply-status").textContent = "";
     try {
       var batches = window.pdfBatches.splitPages(sourcePdf.pages), encoder = new TextEncoder();
       batches.forEach(function (batch) {
@@ -234,16 +235,27 @@ import { analyzePdfLocally } from './pdf-import.mjs';
         if (selectionId !== pdfSelectionId || localPdf !== sourcePdf) return;
         if (!$("#pdf-ai-consent").checked) throw new Error("Extraction stopped because consent was withdrawn.");
         var batch = batches[index];
-        setPdfStatus("Sending pages " + batch.startPage + "–" + batch.endPage + " of " + sourcePdf.pageCount + " for extraction (" + (index + 1) + "/" + batches.length + ")…", false);
-        operationController = new AbortController(); activePdfController = operationController;
-        var response = await fetch('/api/extract-pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ confirmedDeidentified: true, pages: window.pdfBatches.requestPages(batch.pages) }), signal: operationController.signal });
-        if (activePdfController === operationController) activePdfController = null;
+        var response;
+        try {
+          response = await pdfRequestScheduler.send('/api/extract-pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ confirmedDeidentified: true, pages: window.pdfBatches.requestPages(batch.pages) }), signal: operationController.signal }, { onProgress: function (progress) {
+            if (selectionId !== pdfSelectionId || operationController.signal.aborted) return;
+            var span = "pages " + batch.startPage + "–" + batch.endPage + " of " + sourcePdf.pageCount;
+            setPdfStatus(progress.state === 'waiting' ? "Waiting about " + Math.ceil(progress.waitMs / 1000) + "s before reviewing " + span + "…" : "Reviewing " + span + " (" + (index + 1) + "/" + batches.length + ")…", false);
+          } });
+        } catch (requestError) {
+          if (requestError.name === 'AbortError') throw requestError;
+          throw new Error("PDF extraction failed for pages " + batch.startPage + "–" + batch.endPage + ": " + requestError.message);
+        }
         if (selectionId !== pdfSelectionId || localPdf !== sourcePdf) return;
-        var data = await response.json();
+        if (response.status === 429) throw new Error("PDF extraction paused for pages " + batch.startPage + "–" + batch.endPage + ". The service is busy; please retry this PDF later.");
+        var data;
+        try { data = await response.json(); } catch (_) { throw new Error("PDF extraction returned an unreadable response for pages " + batch.startPage + "–" + batch.endPage + ". Please try again later."); }
+        if (operationController.signal.aborted) throw new DOMException("Extraction cancelled.", "AbortError");
         if (!response.ok) throw new Error("PDF extraction failed for pages " + batch.startPage + "–" + batch.endPage + ": " + (data.error || "Please try again."));
         candidates = candidates.concat(window.pdfBatches.validateCandidatePages(data.candidates || [], batch.pages));
       }
       if (selectionId !== pdfSelectionId || localPdf !== sourcePdf) return;
+      if (operationController.signal.aborted) throw new DOMException("Extraction cancelled.", "AbortError");
       renderPdfCandidates(candidates); setPdfStatus("Extraction complete. Verify every value against its source page before entry.", false);
       $("#pdf-apply-status").textContent = candidates.length ? "" : "No supported measurement candidates were returned.";
     } catch (error) {

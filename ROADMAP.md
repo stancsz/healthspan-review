@@ -7,6 +7,30 @@ software check is green.
 
 ## Current position
 
+### PDF capacity to 50 pages, 2026-09-30
+
+Priority: first. Owner: implementation agent. Status: complete for the PDF-capacity slice.
+Dependency: source organization and push completed through `1feff10`.
+Increase the source cap to 50 pages while retaining the 12 MiB file limit,
+six-page / 3.7 MB request bounds, original citations, and human confirmation.
+A full document uses nine batches. Pace requests by at least 12.2 seconds,
+honor bounded Retry-After waits, and cancel both waits and fetches on consent
+withdrawal, file replacement, or reset. Exit evidence requires deterministic
+boundary/throttling tests, a production build, deployment readback, and the
+complete synthetic 50-page picker-to-export workflow. All of these checks
+passed on the prepared snapshot: 68/68 Node tests, 176 Python tests with three
+external-data comparisons explicitly skipped, 20/20 canonical checks, and a
+Ready production deployment `dpl_AtSVJq3KXqnZmmv3uxNfy9zDHNtR`. The live browser
+completed nine HTTP-200 batches with at least 12,200 ms between starts; six
+candidates retained pages 1, 7, 13, 19, 49, and 50. Human-confirmed values from
+pages 1/49/50 survived readback of the downloaded 15,721-byte JSON. Source page
+50 preview, cancellation during a pacing wait, and local page-51 rejection
+without a POST were verified. Evidence is retained under
+`docs/reviews/pdf-capacity-50-2026-09-30/`. Remote Linux/Windows and Pages passed
+the preceding source-cleanup commit `1feff10`; the capacity commit needs its own
+remote CI result. The historical 24-page
+API receipt below remains a prior checkpoint, not proof of this extension.
+
 **Current execution priority: LOCAL-REVIEW-1, active (Local Measurement Review Pack with AI-assisted PDF entry).**
 Owner: implementation agent with project-owner acceptance. VALUE-TOKEN-1 is complete as a bounded measurement apparatus, while token savings remain unverified. The superseded T1
 showcase contract is retained at
@@ -53,7 +77,7 @@ exclude blank/invalid values from duplicate warnings. At that checkpoint the
 focused suite passed 49 tests and the canonical verifier passed 20/20 with
 E-005 blocked. Exact-
 hostname evidence remains open.
-The PDF source limit is now 24 pages / 12 MiB. The browser makes four
+At the prior 2026-09-29 checkpoint, the PDF source limit was 24 pages / 12 MiB. The browser made four
 sequential six-page requests at most, preflights each encoded request, and
 preserves original page numbers through the API response. The corrected
 production API was exercised with all four batches from a synthetic 24-page

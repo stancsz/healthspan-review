@@ -121,6 +121,50 @@ test('API requires consent, valid origin, supported page data, and limits payloa
   } finally { if (previous === undefined) delete process.env.MINIMAX_API_KEY; else process.env.MINIMAX_API_KEY = previous; }
 });
 
+test('last batch accepts source page 50 and rejects source page 51 without calling the service', async () => {
+  const previousKey = process.env.MINIMAX_API_KEY, previousFetch = global.fetch;
+  process.env.MINIMAX_API_KEY = 'synthetic-test-key';
+  let calls = 0;
+  global.fetch = async (url, options) => {
+    calls++;
+    assert.match(JSON.stringify(JSON.parse(options.body)), /ORIGINAL PDF PAGE 50/);
+    const argumentsValue = JSON.stringify({ candidates: [
+      { field: 'albumin', printed_value: '4.5', unit: 'g/dL', date: '2026-01-02', page: 2, evidence: 'Albumin 4.5 g/dL' }
+    ] });
+    return new Response(JSON.stringify({ choices: [{ message: { tool_calls: [{ function: { arguments: argumentsValue } }] } }] }), { status: 200 });
+  };
+  try {
+    const pages = [49, 50].map((sourcePage, index) => ({ page: index + 1, sourcePage, text: 'Synthetic test page', image: 'data:image/jpeg;base64,AA==' }));
+    const result = await invoke({ confirmedDeidentified: true, pages });
+    assert.equal(result.status, 200);
+    assert.equal(result.body.candidates[0].page, 50);
+    assert.equal(result.body.candidates[0].value, 4.5);
+    assert.equal((await invoke({ confirmedDeidentified: true, pages: [{ ...pages[0], sourcePage: 51 }] })).status, 400);
+    assert.equal(calls, 1);
+    assert.deepEqual(handler.normalizeCandidates([{ field: 'albumin', printed_value: '4.5', unit: 'g/dL', date: '', page: 51, evidence: 'Albumin 4.5 g/dL' }], sourcePages([49, 50])), []);
+  } finally {
+    global.fetch = previousFetch;
+    if (previousKey === undefined) delete process.env.MINIMAX_API_KEY; else process.env.MINIMAX_API_KEY = previousKey;
+  }
+});
+
+test('upstream throttling returns 429 with Retry-After for bounded browser retry', async () => {
+  const previousKey = process.env.MINIMAX_API_KEY, previousFetch = global.fetch;
+  process.env.MINIMAX_API_KEY = 'synthetic-test-key';
+  global.fetch = async () => new Response('', { status: 429, headers: { 'Retry-After': '17' } });
+  try {
+    const pages = [{ page: 1, sourcePage: 50, text: '', image: 'data:image/jpeg;base64,AA==' }];
+    const result = await invoke({ confirmedDeidentified: true, pages });
+    assert.equal(result.status, 429);
+    assert.equal(result.headers['Retry-After'], '17');
+    assert.match(result.body.error, /busy/);
+    assert.equal(result.body.candidates, undefined);
+  } finally {
+    global.fetch = previousFetch;
+    if (previousKey === undefined) delete process.env.MINIMAX_API_KEY; else process.env.MINIMAX_API_KEY = previousKey;
+  }
+});
+
 test('API sends only the bounded page payload to MiniMax and returns validated candidates without persisting input', async () => {
   const previousKey = process.env.MINIMAX_API_KEY, previousFetch = global.fetch;
   process.env.MINIMAX_API_KEY = 'synthetic-test-key';

@@ -38,11 +38,14 @@ deployment.
 The public extraction endpoint is same-origin, size/page bounded, and
 rate-limited to five requests per minute per IP by Vercel Firewall. This is an
 abuse and cost control, not user authentication or patient-data governance.
-PDF files are currently limited to 24 pages and 12 MiB. The browser sends
+PDF files are currently limited to 50 pages and 12 MiB. The browser sends
 sequential batches of at most six rendered pages, checks each encoded request
 before sending, and retains the original PDF page citation on every returned
-candidate. A 24-page extraction uses at most four endpoint requests; the
-existing five-request-per-minute limit remains in force.
+candidate. A 50-page extraction uses nine endpoint batches, with request starts
+at least 12.2 seconds apart to respect the existing five-request-per-minute
+limit. Explicit throttling responses allow at most two automatic retries with
+bounded Retry-After waits. Consent withdrawal, file replacement, and reset
+cancel pending requests and waits. Large documents can take several minutes.
 Numeric candidates use a deterministic allowlist for glucose (mmol/L to
 mg/dL), creatinine (μmol/L to mg/dL), and albumin (g/L to g/dL). The printed
 value and unit remain in provenance alongside the normalized entry value;

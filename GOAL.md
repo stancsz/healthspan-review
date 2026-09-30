@@ -45,7 +45,7 @@ assignment remains open. Visual review also found and fixed the visible
 clinical-CSV file input that caused horizontal overflow. The PDF feature does
 not advance IR1, IR3,
 patient-data governance, or E-005.
-On 2026-09-29, PDF intake was extended from eight to 24 pages per source file
+At the 2026-09-29 checkpoint, PDF intake was extended from eight to 24 pages per source file
 (12 MiB maximum), with sequential six-page requests and original PDF page
 citations preserved in returned candidates. The production endpoint accepted
 four synthetic batches and returned measurements on original pages 1, 7, 13,
@@ -68,6 +68,20 @@ NHANES files in a workstation path. Always-run synthetic builder tests now
 cover those modules, while three exact raw-data receipt comparisons remain
 available with `HEALTHSPAN_NHANES_DATA_ROOT`. Without those external files, CI
 must explicitly report three skips; it does not prove raw-data regeneration.
+The 2026-09-30 extension increases the PDF cap to 50 pages / 12 MiB, using
+nine six-page-or-smaller batches paced at least 12.2 seconds apart. The live
+synthetic browser run completed all nine requests with HTTP 200, preserved six
+candidate citations including pages 49/50, displayed the original page-50
+preview, and entered only three explicitly selected values. Independent
+readback of the downloaded 15,721-byte packet confirmed source pages 1/49/50,
+printed values/dates, human confirmation, and no PDF/image payload. Consent
+withdrawal cancelled a pacing wait; a 51-page PDF failed locally without a
+POST. The prepared snapshot passes 68 Node tests and all 20 canonical checks;
+Python reports 176 passed and three external-data skips. Production evidence
+is retained in `docs/reviews/pdf-capacity-50-2026-09-30/`. This supersedes the
+earlier multi-page browser gap for the tested selectable-text synthetic input;
+it does not establish clinical readiness. LOCAL-REVIEW-1 remains active and
+E-005 remains blocked.
 DOCS-GDE-1 is complete and retained
 under `goals/completed/documentation-governance/`. It must preserve one
 consistent statement of project state across this file, `ROADMAP.md`, `EVAL.md`,

@@ -42,10 +42,10 @@ unit, date, page, and human confirmation for every value.
 | L5 | The packet can be downloaded as deterministic JSON and printed locally without raw CSV or patient identifiers. | UI contract tests and scoped print mode. |
 | L6 | Governance surfaces agree and the pack is ready for the five-user IR1 comparison. | GOAL, ROADMAP, Wiki, EVAL/evidence, protocol, and Project #4 reconciliation. |
 | L7 | Deterministic age estimates for all major categories appear alongside current metrics for complete and partial inputs, record the fields used, and survive JSON/MCP export. | Synthetic browser/MCP evidence shows all 17 category estimates, including `Joint age: 35 years`; partial-input evidence shows coverage for each estimate. |
-| L8 | A PDF can be opened in the browser and mapped by an AI service to candidates in the existing 35-field schema, including selectable-text and scanned-page input, for source files up to 24 pages. | Synthetic text and scanned PDFs exercise extraction, page rendering, bounded same-origin API requests, and safe handling of malformed/encrypted/oversized inputs. A live synthetic 24-page test exercised four sequential API batches and retained candidates from original pages 1, 7, 13, and 19; the 24-page file-picker-to-export browser flow remains unverified. |
+| L8 | A PDF can be opened in the browser and mapped by an AI service to candidates in the existing 35-field schema, including selectable-text and scanned-page input, for source files up to 50 pages. | Synthetic text and scanned PDFs exercise extraction, page rendering, bounded same-origin API requests, and safe handling of malformed/encrypted/oversized inputs. The 50-page acceptance run requires nine paced batches, original page-49/50 citations, human confirmation/export, page-51 rejection, and cancellation during a pacing wait; execution evidence is recorded below. |
 | L9 | Each candidate retains its source page, short supporting excerpt, printed value/unit/date, and normalized candidate; ambiguous, unsupported, conflicting, or out-of-range values remain visibly flagged. | Review UI and exported packet preserve field-level evidence and warnings; live PDF/API checks verify supported conversions, source conflict flags, and ambiguous-date warnings. The live browser corrected an ambiguous date, cleared the warning, recalculated edited-value conflicts, and reached packet-ready state. A read-only parse of the downloaded 15,281-byte JSON confirmed the corrected ISO date, retained printed date, confirmed provenance, and absence of PDF/image payloads. |
 | L10 | AI suggestions never silently become record values: the user can edit, confirm, or dismiss candidates individually before they enter the review ledger. | Browser workflow proves unconfirmed candidates do not alter the record; accepted values retain AI-extracted plus human-confirmed provenance. |
-| L11 | The PDF itself stays in the browser; only bounded, minimized extracted text/page images are sent to the same-origin AI function after the user reviews a disclosure and confirms de-identification. No PDF, text, candidate response, API key, or identifier is persisted or body-logged by the app. | Function/API inspection and live runtime review verify consent gating, a 12 MiB / 24-page document limit, six-page / 3.7 MB client-preflight batches, server-only credentials, a 5-request/minute/IP Vercel Firewall rule, body-free application logs, no browser storage, and fail-closed behavior. |
+| L11 | The PDF itself stays in the browser; only bounded, minimized extracted text/page images are sent to the same-origin AI function after the user reviews a disclosure and confirms de-identification. No PDF, text, candidate response, API key, or identifier is persisted or body-logged by the app. | Function/API inspection and live runtime review verify consent gating, a 12 MiB / 50-page document limit, six-page / 3.7 MB client-preflight batches, server-only credentials, a 5-request/minute/IP Vercel Firewall rule, body-free application logs, no browser storage, and fail-closed behavior. |
 | L12 | The reviewed app is deployed at `https://healthspan-review.vercel.app/` and the PDF-to-confirmed-record path is deeply exercised on that live endpoint. | Deployment identity, live routes, synthetic text/scanned PDF walkthroughs, API behavior, failure cases, and regression of manual/CSV/sample/export routes are recorded. The current app-level flow is deeply exercised at the generated alias; exact-hostname ownership remains unresolved. |
 
 ### Constraints / invariants
@@ -138,11 +138,12 @@ provenance rules, and research-only boundary.
   preflight; preserve original source-page citations and keep full-resolution
   page previews in the browser. Test batch boundaries, size limits, malformed
   citations, and cross-batch same-date conflict classification.
-- [ ] Repeat the complete production 24-page browser picker → consent → four
+- [x] Verify the extended 50-page production browser picker → consent → nine
   sequential extraction batches → candidate review → page preview → confirmed
   packet-export workflow. The current live synthetic test exercised the four
   production API batches directly; prior live picker-to-export evidence covers
-  single-page PDFs.
+  single-page PDFs. The new 50-page run covered original pages 49/50,
+  human confirmation/export, page-51 rejection, and cancellation while waiting.
 - [x] Complete a browser file-picker → ambiguous-date correction → confirmed
   entry → packet-export run using a synthetic PDF in Codex's isolated browser.
   The valid ISO correction cleared the warning, edited glucose values
@@ -321,8 +322,51 @@ without those files; three exact raw-data comparisons remain conditional on
 `HEALTHSPAN_NHANES_DATA_ROOT`. CI without those inputs must report three skips
 and cannot claim exact raw-data receipt regeneration.
 
-The extraction API and single-page browser slices are verified, while the
-complete 24-page production browser flow remains open. The goal also
+The historical 24-page browser gap is superseded by the complete synthetic
+50-page production browser run recorded below. The goal still
 remains active through the externally run IR1 comparison: five intended users,
 including the manual-workflow comparison and preregistered interpretation
 thresholds, are not yet available and no user-value result is claimed.
+
+### PDF capacity acceptance, 2026-09-30
+
+The prepared 50-page snapshot was deployed as Ready production deployment
+`dpl_AtSVJq3KXqnZmmv3uxNfy9zDHNtR` at the generated alias. The importer, helper,
+workbench JS/HTML, and candidate helper served byte-identically to source.
+The complete synthetic browser run inspected 50 pages locally, then completed
+nine sequential HTTP-200 extraction requests with source spans 1–6 through
+49–50. Network evidence shows a minimum start gap of 12,200.902 ms, maximum
+request body of 162,738 bytes, and no source PDF/file name in the requests.
+Six candidates cited original pages 1, 7, 13, 19, 49, and 50. Cross-batch
+same-date conflicts were visibly flagged. Before human selection, record steps
+remained disabled; no candidates entered automatically. Page 50's preview
+showed the synthetic source, date, and albumin 4.5 g/dL. Selected glucose from
+page 1, HbA1c 6.0% from page 49, and albumin 4.5 g/dL from page 50 entered the
+ledger with confirmed provenance. The download-event API timed out, but the
+actual new local JSON download was recovered and independently parsed: 15,721
+bytes, three confirmed ledger values, retained source pages/printed values/
+dates, and no PDF/image payload. Screenshots, network metadata, the synthetic
+packet, and a receipt are retained in `docs/reviews/pdf-capacity-50-2026-09-30/`.
+
+A separate first run stopped during the pages 13–18 pacing wait after consent
+withdrawal; only its first two POSTs occurred, and its partial candidates were
+not entered. A 51-page fixture was rejected locally with extraction disabled
+and zero POSTs. Deterministic tests cover 429 retries, numeric/date Retry-After,
+shared cooldown after final throttling, bounded waits, and cancellation.
+The live success run returned no 429, so live throttling recovery is not
+claimed. Full 50-page scanned-only input has not been separately exercised;
+the existing single-page scanned-PDF receipt is retained.
+
+Local checks: 68/68 Node, 176 Python passed / three external-data comparisons
+skipped, 20/20 canonical checks, and production build with zero excluded
+test/review/raw/model/environment artifacts. Remote Linux/Windows verification
+and Pages deployment passed source-cleanup commit `1feff10`; the capacity
+commit's remote outcome is recorded separately. This completes the capacity
+slice only. IR1 intended-user sessions, exact-hostname ownership, and E-005
+remain open/blocked as previously recorded.
+
+Learning: document caps and request budgets must be checked together. A
+50-page file needs nine batches under the unchanged six-page request limit;
+pacing and cancellable throttling recovery preserve the published firewall
+control. A real picker-to-export run and downloaded-byte readback verify the
+integration beyond API-only receipts.

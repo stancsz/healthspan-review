@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-30",
+  "scope": "synthetic PDF capacity extension, 24 to 50 pages",
+  "alias": "https://healthspan-review-gules.vercel.app/",
+  "tested_deployment": "dpl_AtSVJq3KXqnZmmv3uxNfy9zDHNtR",
+  "source_snapshot": "prepared capacity changes after 1feff10; served UI/helper assets matched source bytes",
+  "limits": {
+    "document_pages": 50,
+    "document_bytes": 12582912,
+    "batch_pages": 6,
+    "request_bytes": 3700000,
+    "minimum_request_interval_ms": 12200,
+    "max_429_retries": 2,
+    "maximum_automatic_retry_wait_ms": 120000
+  },
+  "local_checks": {
+    "node_passed": 68,
+    "python_passed": 176,
+    "python_skipped_external_data_comparisons": 3,
+    "canonical_checks_passed": 20,
+    "excluded_bundle_artifacts": 0
+  },
+  "browser_acceptance": {
+    "local_inspected_pages": 50,
+    "successful_post_batches": 9,
+    "all_post_statuses": 200,
+    "minimum_observed_start_gap_ms": 12200.901999982307,
+    "maximum_observed_request_bytes": 162738,
+    "candidate_count": 6,
+    "candidate_source_pages": [1, 7, 13, 19, 49, 50],
+    "page_50_preview_verified": true,
+    "human_confirmed_ledger_pages": [1, 49, 50],
+    "download_bytes": 15721,
+    "download_independently_parsed": true,
+    "download_contains_pdf_or_image_payload": false,
+    "download_event_api": "timed out; actual new local file recovered and parsed",
+    "withdraw_consent_during_wait": "stopped before pages 13-18; only two first-run POSTs",
+    "page_51_rejection": "local; extraction disabled; zero POSTs"
+  },
+  "remote_source_cleanup": {
+    "commit": "1feff10a1cc4acbfca220b2d962cacc91ee5cd74",
+    "verify_run": 36738938047,
+    "pages_run": 36738937594,
+    "linux_windows_and_pages": "passed"
+  },
+  "not_proven": [
+    "live 429 recovery; deterministic tests only",
+    "full 50-page scanned-only workflow",
+    "clinical validity or patient-data governance",
+    "intended-user IR1 acceptance",
+    "exact healthspan-review.vercel.app hostname ownership"
+  ],
+  "clinical_gate": "E-005 blocked"
+}

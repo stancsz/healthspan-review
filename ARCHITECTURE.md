@@ -55,6 +55,12 @@ receipts and `/readyz` remain fail-closed when production controls are absent.
   confirmation; it never stores source content in the app. MiniMax processing
   and retention remain governed by its current terms and privacy policy.
 - AI-extracted values are untrusted candidates with page/evidence provenance.
+  Source files are limited to 50 pages / 12 MiB; requests carry at most six
+  pages / 3.7 MB. A per-tab PDF scheduler serializes batch starts with a
+  12.2-second minimum gap, preserves upstream Retry-After cooldowns across
+  manual restarts, and cancels fetches and waits when consent is withdrawn,
+  the file changes, or the record resets. Two explicit 429 retries are allowed;
+  automatic waits beyond 120 seconds fail with retry-later guidance.
   They enter the measurement ledger only after deterministic validation and
   explicit human confirmation; missing fields stay missing.
 - Numeric PDF conversion is limited to explicit glucose (mmol/L to mg/dL),
