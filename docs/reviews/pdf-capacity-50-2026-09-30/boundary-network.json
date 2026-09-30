@@ -1,0 +1,50 @@
+{
+  "consentWithdrawal": {
+    "observedWaitingSpan": "13-18",
+    "observedUiStatus": "Extraction stopped because consent was withdrawn.",
+    "requests": [
+      {
+        "requestId": "13544.17",
+        "startedAt": 195154.341199,
+        "sourcePages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "status": 200
+      },
+      {
+        "requestId": "13544.18",
+        "startedAt": 195166.560188,
+        "sourcePages": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "status": 200
+      }
+    ],
+    "nextObservedPostSourcePages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "nextPostBelongsTo": "explicitly restarted full run"
+  },
+  "page51": {
+    "observedUiStatus": "PDFs must contain 1 to 50 pages.",
+    "observedAnalyzeEnabled": false,
+    "networkCursorStart": 111,
+    "networkCursorEnd": 115,
+    "observedExtractionPosts": []
+  }
+}

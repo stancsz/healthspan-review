@@ -67,9 +67,11 @@ PDF files are limited to 50 pages / 12 MiB. The browser processes documents in
 sequential six-page batches, with a 3.7 MB UTF-8 preflight per request, and
 preserves original page numbers in candidate provenance. A synthetic
 prior 24-page production API run completed four batches and returned candidates on
-original pages 1, 7, 13, and 19. The production picker-to-export flow for a
-24-page document remains unverified; prior interactive live evidence covers
-single-page PDFs. The 50-page extension uses nine batches with request starts
+original pages 1, 7, 13, and 19. At that historical checkpoint, the production
+24-page picker-to-export flow had not yet been exercised. The live 50-page
+selectable-text workflow documented below supersedes that gap; prior
+interactive evidence at that checkpoint covered single-page PDFs. The
+50-page extension uses nine batches with request starts
 at least 12.2 seconds apart, bounded throttling retries, and cancellation of
 both requests and waits. Larger documents can take several minutes.
 
@@ -134,8 +136,12 @@ POSTs. Node checks pass 68/68; Python reports 176 passed and three external-data
 skips; the canonical verifier passes 20/20. The live success run had no 429;
 bounded retry/cooldown behavior is deterministic-test evidence. A full
 50-page scanned-only run has not been separately exercised. Source-cleanup
-commit `1feff10` passed remote Linux/Windows and Pages; the capacity commit
-requires its own remote result. Evidence is in
+commit `1feff10` passed remote Linux/Windows and Pages. Published capacity code
+commit `c899c94` also passed remote Linux/Windows verify `36740473800` and Pages
+verification/deployment `36740473857`. Ready Vercel deployment
+`dpl_9QhSvPvdDKBzpfED3b4ZkcUYsbQW` has matching Git commit metadata and source
+asset hashes, recorded in `publication.json`. Separate sanitized cancellation/
+rejection observations are retained in `boundary-network.json`. Evidence is in
 `docs/reviews/pdf-capacity-50-2026-09-30/`. The old 24-page UI gap is superseded
 for the tested selectable-text workflow.
 

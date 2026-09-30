@@ -4,6 +4,8 @@
   "alias": "https://healthspan-review-gules.vercel.app/",
   "tested_deployment": "dpl_AtSVJq3KXqnZmmv3uxNfy9zDHNtR",
   "source_snapshot": "prepared capacity changes after 1feff10; served UI/helper assets matched source bytes",
+  "publication_receipt": "publication.json",
+  "boundary_observation_receipt": "boundary-network.json",
   "limits": {
     "document_pages": 50,
     "document_bytes": 12582912,

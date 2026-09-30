@@ -27,8 +27,11 @@ pages 1/49/50 survived readback of the downloaded 15,721-byte JSON. Source page
 50 preview, cancellation during a pacing wait, and local page-51 rejection
 without a POST were verified. Evidence is retained under
 `docs/reviews/pdf-capacity-50-2026-09-30/`. Remote Linux/Windows and Pages passed
-the preceding source-cleanup commit `1feff10`; the capacity commit needs its own
-remote CI result. The historical 24-page
+the preceding source-cleanup commit `1feff10`. Capacity code commit `c899c94`
+also passed remote verify `36740473800` on Linux/Windows and Pages
+`36740473857`. Ready Vercel deployment `dpl_9QhSvPvdDKBzpfED3b4ZkcUYsbQW` has
+matching Git commit metadata and live UI/helper hashes, retained in
+`publication.json` beside the browser receipt. The historical 24-page
 API receipt below remains a prior checkpoint, not proof of this extension.
 
 **Current execution priority: LOCAL-REVIEW-1, active (Local Measurement Review Pack with AI-assisted PDF entry).**

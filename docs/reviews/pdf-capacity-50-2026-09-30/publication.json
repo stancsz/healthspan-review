@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-30",
+  "source_commit": "c899c94f5a5e2819f1b60341b40b21b937733751",
+  "production_deployment": "dpl_9QhSvPvdDKBzpfED3b4ZkcUYsbQW",
+  "deployment_git_metadata_commit": "c899c94f5a5e2819f1b60341b40b21b937733751",
+  "ready_state": "READY",
+  "alias": "https://healthspan-review-gules.vercel.app/",
+  "verify_run": 36740473800,
+  "pages_run": 36740473857,
+  "linux_windows_pages": "passed",
+  "assets": [
+    {
+      "path": "/docs/pdf-batches.js",
+      "status": 200,
+      "sha256": "861a6205857a5cb22ddcf510bebf5e8cc3265293100928be4686858648e4e003",
+      "matches_source": true
+    },
+    {
+      "path": "/docs/pdf-import.mjs",
+      "status": 200,
+      "sha256": "8bfb558eca6d9380419ec9a7d946c80fea267dd92009698f8d8ca5b77f819a8d",
+      "matches_source": true
+    },
+    {
+      "path": "/workbench.js",
+      "status": 200,
+      "sha256": "f9941c4eff52c0de90a9d0ebd97eaf32e752678cc710c142acc2db597fc33954",
+      "matches_source": true
+    },
+    {
+      "path": "/workbench.html",
+      "status": 200,
+      "sha256": "557f90452ed34c2b3d323c3140a4fac1a04484888057c3e266bbb1ee5da77475",
+      "matches_source": true
+    },
+    {
+      "path": "/docs/pdf-candidate-review.js",
+      "status": 200,
+      "sha256": "06b4cf0a2cd2f4e9ed75652f5dca4717201775b9ceee93beadb1a6e7686235da",
+      "matches_source": true
+    }
+  ]
+}

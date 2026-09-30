@@ -82,6 +82,12 @@ is retained in `docs/reviews/pdf-capacity-50-2026-09-30/`. This supersedes the
 earlier multi-page browser gap for the tested selectable-text synthetic input;
 it does not establish clinical readiness. LOCAL-REVIEW-1 remains active and
 E-005 remains blocked.
+The published capacity code is commit `c899c94`; remote verify run
+`36740473800` passed Linux/Windows and Pages run `36740473857` passed verification
+and deployment. Vercel deployment `dpl_9QhSvPvdDKBzpfED3b4ZkcUYsbQW` is Ready,
+its Git metadata matches that exact commit, and the live UI/helper assets match
+source hashes. `docs/reviews/pdf-capacity-50-2026-09-30/publication.json` records
+this publication checkpoint separately from the prepared-snapshot browser run.
 DOCS-GDE-1 is complete and retained
 under `goals/completed/documentation-governance/`. It must preserve one
 consistent statement of project state across this file, `ROADMAP.md`, `EVAL.md`,

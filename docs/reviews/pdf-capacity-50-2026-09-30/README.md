@@ -14,6 +14,13 @@ All source and exported values here are synthetic test data, not a patient.
   independently parsed. Its confirmed ledger cites pages 1, 49, and 50.
 - `51-page-rejection.jpg` shows the local limit rejection before any POST.
 - `receipt.json` records counts, acceptance outcomes, and remaining limits.
+- `boundary-network.json` retains the first two requests of the cancelled
+  run, the next request belonging to the explicitly restarted full run, and
+  the observed page-51 rejection state with an empty POST observation window.
+- `publication.json` records published capacity code `c899c94`, its passing
+  Linux/Windows and Pages runs, Ready Vercel deployment with matching Git
+  metadata, and live source-asset hashes. This is a separate publication
+  checkpoint after the prepared-snapshot browser run.
 
 The download-event API timed out; the new file saved in Downloads was recovered
 and parsed. Screenshots alone are not proof of exported bytes. The live run

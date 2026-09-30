@@ -125,3 +125,8 @@ The prepared snapshot passes 68 Node tests, 176 Python tests with three
 external-data skips, and all 20 canonical checks. Screenshots and receipts are
 in `docs/reviews/pdf-capacity-50-2026-09-30/`. The broader goal remains active;
 IR1 participation and E-005 are unchanged.
+Published capacity code commit `c899c94` passed remote Linux/Windows verify
+`36740473800` and Pages verification/deployment `36740473857`. Ready Vercel
+deployment `dpl_9QhSvPvdDKBzpfED3b4ZkcUYsbQW` has matching Git commit metadata
+and live UI/helper hashes. `publication.json` records this publication checkpoint;
+`boundary-network.json` retains the separate cancellation/rejection observations.

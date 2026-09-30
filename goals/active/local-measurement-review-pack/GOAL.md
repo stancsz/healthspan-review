@@ -360,8 +360,13 @@ the existing single-page scanned-PDF receipt is retained.
 Local checks: 68/68 Node, 176 Python passed / three external-data comparisons
 skipped, 20/20 canonical checks, and production build with zero excluded
 test/review/raw/model/environment artifacts. Remote Linux/Windows verification
-and Pages deployment passed source-cleanup commit `1feff10`; the capacity
-commit's remote outcome is recorded separately. This completes the capacity
+and Pages deployment passed source-cleanup commit `1feff10`. Published capacity
+code commit `c899c94` passed remote verify `36740473800` on Linux/Windows and
+Pages `36740473857`. Ready deployment `dpl_9QhSvPvdDKBzpfED3b4ZkcUYsbQW` has
+matching Git commit metadata; live UI/helper assets match source SHA-256 hashes.
+`publication.json` retains that source/deployment checkpoint, and
+`boundary-network.json` retains sanitized observed cancellation/rejection
+requests and UI states. This completes the capacity
 slice only. IR1 intended-user sessions, exact-hostname ownership, and E-005
 remain open/blocked as previously recorded.
 
