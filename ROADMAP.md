@@ -7,7 +7,7 @@ software check is green.
 
 ## Current position
 
-**Current execution priority: LOCAL-REVIEW-1, active (Local Measurement Review Pack v0.1).**
+**Current execution priority: LOCAL-REVIEW-1, active (Local Measurement Review Pack with AI-assisted PDF entry).**
 Owner: implementation agent with project-owner acceptance. VALUE-TOKEN-1 is complete as a bounded measurement apparatus, while token savings remain unverified. The superseded T1
 showcase contract is retained at
 `goals/completed/trustworthy-research-showcase/GOAL.md`; the completed
@@ -33,6 +33,50 @@ The immediate LOCAL-REVIEW-1 order is: ship and verify the local review packet,
 then run the prespecified five-user IR1 comparison. Clinical-review readiness,
 scientific validation, human acceptance, staging, and clinical approval retain
 their existing IR dependencies and are not advanced by this token measurement.
+The live PDF extension now has selectable/scanned and multi-value picker-to-
+export evidence, including supported unit conversions and same-date conflict
+selection. The live browser completed synthetic extraction, date correction
+with warning removal, conflict recalculation after an edit, human confirmation,
+and packet-ready export status. The download control reported local completion,
+and a follow-up read-only parse of the 15,281-byte JSON confirmed the corrected
+and printed dates, human-confirmed provenance, and absence of PDF/image
+payloads. User-facing workbench and usage docs describe external AI processing
+without naming its implementation provider, while retaining consent and the
+service privacy-policy link. Visual browser review caught and fixed an exposed
+clinical CSV chooser that caused horizontal overflow. The prior Ready production deployment was
+`dpl_1ouEib2kDnGuxcG4amcGyxeY7Gjb`; root, workbench, manual, review-helper, and
+API method-guard routes are verified. A synthetic live API request returned
+equivalent converted glucose candidates as duplicates and flagged/preserved an
+ambiguous HbA1c date. The deployed safeguards recompute duplicate/conflict
+groups after date correction, prepare confirmation transactionally, and
+exclude blank/invalid values from duplicate warnings. At that checkpoint the
+focused suite passed 49 tests and the canonical verifier passed 20/20 with
+E-005 blocked. Exact-
+hostname evidence remains open.
+The PDF source limit is now 24 pages / 12 MiB. The browser makes four
+sequential six-page requests at most, preflights each encoded request, and
+preserves original page numbers through the API response. The corrected
+production API was exercised with all four batches from a synthetic 24-page
+PDF; it returned candidates on source pages 1, 7, 13, and 19. Local tests cover
+batch splits, payload bounds, citation validation, and cross-batch conflict
+classification. The 24-page production file-picker-to-export UI sequence has
+not yet been repeated; previous live file-picker evidence covered single-page
+PDFs. The current Ready production deployment is
+`https://healthspan-review-gules.vercel.app/`; the full 56-test Node suite, docs
+verification, and all 20 canonical checks pass with E-005 blocked. The
+feature's research-only boundary and E-005 status do not change.
+
+Source publication checkpoint, 2026-09-30: feature commit `b03b5fc` packages
+the PDF source, regression tests, pinned upstream PDF.js/license, binary PDF
+fixtures, and deployment exclusions. Owner: implementation agent. Local exit
+evidence: 56/56 Node tests, 20/20 canonical checks, and a passing production
+build with no test/review/raw-data/model/environment files in its bundle.
+The 27 PDF/workbench checks also run in Linux/Windows CI and the Pages gate.
+Missing or malformed Origin headers now fail closed in source. Vercel has no
+connected Git repository; the existing manual deployment is independent of
+this source checkpoint. Remote CI, same-SHA Vercel verification, and the full
+24-page browser flow require their own evidence; LOCAL-REVIEW-1 stays active.
+
 Order: reconcile public claims and candidate identity; implement a measurement-first
 experience; verify visual/behavior states and human comprehension; publish and
 inspect the actual URL. T1 closes only with T1.1-T1.8 evidence and IR0-IR3
@@ -49,6 +93,32 @@ engine-forward and promotional language with availability boundaries, and uses
 a calmer clinical-research palette. Its exit evidence is the documented local
 verifier and browser review, followed by an owner-authorized publication and
 same-SHA live inspection. It does not advance E-005, IR1, or any clinical claim.
+The active LOCAL-REVIEW-1 slice adds optional MiniMax-M3 PDF extraction to the
+Vercel workbench. The PDF remains in the browser; only bounded extracted text
+and rendered pages may be transmitted after the per-document processing notice
+and de-identification confirmation. Candidates retain page, evidence, printed
+value/unit/date, and validation state, and require explicit human confirmation.
+The MiniMax key is server-only; same-origin checks, request bounds, and a
+5-request/minute/IP Vercel Firewall rule protect the public function. The new
+project is live at `https://healthspan-review-gules.vercel.app/`. The live
+workbench has completed selectable, scanned, and multi-value synthetic PDF
+intake through candidate review, source-page preview, edit/confirm, and JSON
+export. Malformed, encrypted, and over-12 MB files were rejected locally.
+Root/workbench/manual and the existing synthetic sample are smoke-checked.
+Supported unit conversions and same-date conflict choice are verified.
+Equivalent normalized values are marked as duplicates in deterministic tests;
+the live API flags ambiguous dates and preserves their printed form. The live
+browser corrected an ambiguous date, cleared its warning, recalculated edited-
+value conflicts, accepted explicit human selections, and reached packet-ready
+state; the app reported local download completion. The initial browser
+integration did not expose the bytes, but a later read-only parse of the exact
+15,281-byte download verified the exported dates, provenance, and absence of
+PDF/image payloads.
+Vercel rejected assignment
+of the exact requested `healthspan-review.vercel.app` alias because it is
+already in use; the existing deployment remains intact. Exact-hostname
+assignment requires its owner to release or transfer it. This work does not
+clear the five-user IR1 study, patient-data governance, or E-005.
 On 2026-09-19, a separate owner-private ChatGPT Sites interaction prototype
 was published to test the clinician-facing flow with a fixed synthetic record:
 review provenance and missingness first, inspect a transparent FI denominator,

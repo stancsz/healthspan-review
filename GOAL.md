@@ -11,10 +11,57 @@ reconcile visibility, licensing and public wording; private source is not verifi
 
 ## Active execution goal
 
-[LOCAL-REVIEW-1: Local Measurement Review Pack v0.1](goals/active/local-measurement-review-pack/GOAL.md)
+[LOCAL-REVIEW-1: Local Measurement Review Pack with AI-assisted PDF entry](goals/active/local-measurement-review-pack/GOAL.md)
 is the single active execution contract. VALUE-TOKEN-1 is complete as a bounded
 measurement apparatus under `goals/completed/frontier-value-measurement/`; its
 receipt still says `real_paired_runs: false`, so token savings remain unverified.
+The active LOCAL-REVIEW-1 contract now also includes opt-in, source-cited
+MiniMax PDF extraction into human-confirmed 35-field entry. The feature is
+deployed at `healthspan-review-gules.vercel.app` with a 5-request/minute/IP
+Vercel Firewall rule. The requested `healthspan-review.vercel.app` hostname
+is already in use and Vercel rejected alias assignment; its existing
+deployment was left intact. Selectable and scanned PDF picker-to-export
+workflows, plus malformed, encrypted, and oversized input rejection, have now
+been exercised in the live workbench at the generated alias. Supported
+glucose, creatinine, and albumin unit conversions and same-date conflict choice
+also passed with printed and normalized values retained in export provenance.
+The live API flags an ambiguous printed date, and deterministic tests cover
+equivalent duplicates and date correction guards. The latest local worktree
+also recalculates duplicate/conflict groups after date correction, prepares
+confirmation transactionally, clears the date warning after a valid correction,
+and excludes blank/invalid values from duplicate warnings; the focused suite
+passed 49 tests and all 20 canonical checks at that checkpoint. Those
+safeguards were included in Ready production deployment
+`dpl_1ouEib2kDnGuxcG4amcGyxeY7Gjb`. The live
+browser completed synthetic PDF extraction, date correction, conflict
+recalculation, human confirmation, and reached a packet-ready screen whose
+download control reported local completion. A follow-up read-only parse of the
+15,281-byte downloaded JSON confirmed the corrected ISO date alongside its
+printed date, human-confirmed provenance, and absence of source PDF/image
+payloads. The workbench and public usage copy now describe an external AI
+service without naming its implementation provider while retaining a
+third-party processing notice and service privacy-policy link. Exact-hostname
+assignment remains open. Visual review also found and fixed the visible
+clinical-CSV file input that caused horizontal overflow. The PDF feature does
+not advance IR1, IR3,
+patient-data governance, or E-005.
+On 2026-09-29, PDF intake was extended from eight to 24 pages per source file
+(12 MiB maximum), with sequential six-page requests and original PDF page
+citations preserved in returned candidates. The production endpoint accepted
+four synthetic batches and returned measurements on original pages 1, 7, 13,
+and 19. The latest Ready production deployment serves
+`https://healthspan-review-gules.vercel.app/`. The full 56-test Node suite, docs
+verification, and all 20 canonical checks pass with E-005 blocked. This
+verifies the live extraction route and page mapping; the 24-page
+file-picker-to-export browser sequence remains unverified and is recorded as
+open work in the active contract.
+The 2026-09-30 source checkpoint is feature commit `b03b5fc`: PDF intake,
+synthetic fixtures, pinned upstream PDF.js/license, deployment exclusions, and
+27 PDF/workbench checks in Linux/Windows CI and the Pages publication gate.
+The full local Node suite passes 56/56 and the canonical verifier passes 20/20.
+The source now rejects missing or malformed Origin headers; the earlier
+manually deployed Vercel runtime is not a same-SHA verification of this source
+checkpoint. The Vercel project has no connected Git repository.
 DOCS-GDE-1 is complete and retained
 under `goals/completed/documentation-governance/`. It must preserve one
 consistent statement of project state across this file, `ROADMAP.md`, `EVAL.md`,

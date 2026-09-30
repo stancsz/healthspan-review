@@ -49,6 +49,25 @@ receipts and `/readyz` remain fail-closed when production controls are absent.
 - A passing software verifier proves software behavior only. It does not prove
   clinical validity, fairness, treatment effect, or production readiness.
 - Local SECA files remain browser-local during the showcase workflow.
+- PDF originals remain in the browser. The optional AI intake sends only
+  bounded extracted text and rendered page images to a same-origin Vercel
+  function and MiniMax after per-file disclosure and de-identification
+  confirmation; it never stores source content in the app. MiniMax processing
+  and retention remain governed by its current terms and privacy policy.
+- AI-extracted values are untrusted candidates with page/evidence provenance.
+  They enter the measurement ledger only after deterministic validation and
+  explicit human confirmation; missing fields stay missing.
+- Numeric PDF conversion is limited to explicit glucose (mmol/L to mg/dL),
+  creatinine (μmol/L to mg/dL), and albumin (g/L to g/dL) rules. Preserve the
+  printed value/unit with the normalized value; reject missing or unsupported
+  units. Same-field, same-date disagreement requires one explicit selection,
+  equivalent values are labeled duplicate sources, and ambiguous dates require
+  explicit correction before entry. Generic glucose evidence cannot populate
+  fasting glucose.
+- MiniMax credentials are server-only. The public PDF function enforces
+  same-origin request checks, bounded inputs, and a Vercel Firewall rate limit
+  of five POST requests per minute per IP. Application code excludes request
+  and response bodies from logs.
 - Documentation must distinguish product intent, architecture, active execution
   work, and retained evidence. Historical receipts do not certify later edits.
 

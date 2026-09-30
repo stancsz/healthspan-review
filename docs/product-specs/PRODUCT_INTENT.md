@@ -11,7 +11,9 @@ Durable direction: [`NORTHSTAR.md`](../../NORTHSTAR.md)
 Build a clinician-first, measurement-first research demonstration that lets a
 reviewer inspect synthetic assessments, observed measurements, FI denominator,
 missing inputs, provenance, and safe next discussion points. The public surface
-must communicate a bounded research prototype, not a clinical service.
+must communicate a bounded research prototype, not a clinical service. Add
+optional AI-assisted PDF field extraction that stages source-cited measurement
+candidates for human review.
 
 ## Primary users
 
@@ -23,9 +25,32 @@ the evidence.
 
 The product currently supports deterministic measurement and report behavior,
 local SECA parsing, synthetic examples, and a documented development interface.
-It does not support diagnosis, treatment decisions, mortality or lifespan
-prediction, validated biological age, numeric system ages, patient-data hosting,
-or a clinically approved deployment.
+The optional PDF intake may send bounded extracted text and rendered page images
+to an external AI service only after a per-document disclosure and user
+confirmation that direct identifiers have been removed. The app does not claim
+to detect or remove every identifier, does not persist these contents, and does
+not control the service's retention. The user-facing interface describes the
+external processing and links to the service privacy policy without naming
+implementation or deployment providers. It does not support diagnosis,
+treatment decisions, mortality or lifespan prediction, validated biological
+age, numeric system ages, patient-data hosting, or a clinically approved
+deployment.
+The public extraction endpoint is same-origin, size/page bounded, and
+rate-limited to five requests per minute per IP by Vercel Firewall. This is an
+abuse and cost control, not user authentication or patient-data governance.
+PDF files are currently limited to 24 pages and 12 MiB. The browser sends
+sequential batches of at most six rendered pages, checks each encoded request
+before sending, and retains the original PDF page citation on every returned
+candidate. A 24-page extraction uses at most four endpoint requests; the
+existing five-request-per-minute limit remains in force.
+Numeric candidates use a deterministic allowlist for glucose (mmol/L to
+mg/dL), creatinine (μmol/L to mg/dL), and albumin (g/L to g/dL). The printed
+value and unit remain in provenance alongside the normalized entry value;
+missing or unsupported units are not guessed. Same-date distinct values for
+one field are flagged and require one explicit user choice. Generic glucose
+evidence is not treated as fasting glucose. Equivalent same-date values are
+marked as duplicate sources rather than conflicts, and ambiguous or impossible
+printed dates remain flagged until the user enters an unambiguous date.
 
 ## Evidence contract
 
