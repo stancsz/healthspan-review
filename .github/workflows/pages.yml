@@ -37,6 +37,7 @@ jobs:
           node --check docs/intake-form.js
           node --check docs/site.js
           node --test tests/site_parser.test.cjs
+          node --test api/extract-pdf.test.js tests/workbench.test.cjs tests/test_pdf_intake_contract.js tests/pdf_candidate_review.test.cjs tests/pdf_batches.test.cjs
 
       - name: Regenerate and verify the synthetic demo artifact
         run: uv run python scripts/build_demo_data.py --check

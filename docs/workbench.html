@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#f4f0e8" />
   <title>Healthspan Review · Clinician workspace</title>
-  <meta name="description" content="A local-first measurement review workspace for clinicians. Inspect a SECA export, missing inputs, FI denominator status, and a printable research review packet." />
+  <meta name="description" content="A research-use-only measurement review workspace with local CSV input and optional, consent-gated AI extraction from PDF reports." />
   <link rel="stylesheet" href="workbench.css" />
 </head>
 <body>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="header-meta">
-      <span class="local-badge"><span class="local-dot"></span>Local only</span>
+      <span class="local-badge"><span class="local-dot"></span>Local review · optional AI</span>
       <a href="/docs/index.html#evidence">Evidence &amp; limits</a>
     </div>
   </header>
@@ -27,7 +27,7 @@
   <div class="trust-bar">
     <div class="trust-bar-inner">
       <strong>Research-use-only</strong>
-      <span>Data stays in this browser tab. Nothing is uploaded.</span>
+      <span>CSV files stay local. PDF extraction sends selected page content to an external AI service only after confirmation.</span>
       <span class="trust-separator">•</span>
       <span>No diagnosis or treatment advice. Age estimates are for research and wellness review.</span>
     </div>
@@ -62,7 +62,7 @@
         <div class="view-heading">
           <p class="eyebrow">01 · Start with what was actually measured</p>
           <h2 id="import-title">Open a measurement record.</h2>
-          <p class="lede">Choose a SECA TableView CSV from this device. It is parsed in your browser, not sent to a server. You can also use the synthetic sample to see the complete workflow.</p>
+          <p class="lede">Choose a SECA TableView CSV or clinical inputs CSV from this device. CSVs are parsed in your browser. Optional PDF extraction sends selected page content to an external AI service only after a separate confirmation.</p>
         </div>
 
         <div class="source-grid">
@@ -86,6 +86,51 @@
           </div>
         </div>
 
+        <section class="pdf-import-card" aria-labelledby="pdf-import-title">
+          <div class="pdf-import-heading">
+            <div>
+              <p class="source-kicker">Source 03 · AI-assisted entry</p>
+              <h3 id="pdf-import-title">Extract measurements from a PDF</h3>
+              <p>PDFs up to 24 pages and 12 MB are inspected in this browser. The original PDF is not uploaded; review results keep their original page references.</p>
+            </div>
+            <div class="pdf-import-actions">
+              <input id="pdf-file" type="file" accept=".pdf,application/pdf" />
+              <button id="choose-pdf" class="button button-quiet" type="button">Choose PDF</button>
+              <span id="pdf-file-name" class="pdf-file-name">No PDF selected</span>
+            </div>
+          </div>
+          <div class="external-processing-note">
+            <strong>Before AI extraction</strong>
+            <span>After you confirm below, bounded text and rendered page images leave this browser for processing by an external AI service. Review the <a href="https://platform.minimax.io/protocol/privacy-policy" target="_blank" rel="noreferrer">AI service privacy policy</a> for its data handling and retention. This app cannot remove every identifier. Do not submit names, contact details, record numbers, or documents you are not authorized to share.</span>
+          </div>
+          <label class="pdf-consent-row" for="pdf-ai-consent">
+            <input id="pdf-ai-consent" type="checkbox" />
+            <span>I confirm this PDF is de-identified, I am authorized to share it, and I consent to sending its selected page content to an external AI service for measurement extraction.</span>
+          </label>
+          <div class="pdf-import-actions">
+            <button id="analyze-pdf" class="button button-primary" type="button" disabled>Review PDF with AI <span>↗</span></button>
+            <p id="pdf-status" class="status-line" role="status" aria-live="polite">Choose a PDF to inspect it locally.</p>
+          </div>
+        </section>
+
+        <section id="pdf-candidate-panel" class="panel pdf-candidate-panel" aria-labelledby="pdf-candidate-title" hidden>
+          <div class="panel-heading">
+            <div><p class="eyebrow">AI draft · verify against the source</p><h3 id="pdf-candidate-title">Measurement candidates</h3></div>
+            <span id="pdf-candidate-tag" class="panel-tag"></span>
+          </div>
+          <p class="panel-copy">Nothing is entered automatically. Check each value against its cited PDF page. Edit the value or confirm a flagged date before entry. Supported glucose, creatinine, and albumin units may be converted into the entry unit shown; the printed value and source unit remain in the packet. Conflicting values and equivalent duplicates for one field/date are flagged; select only one source.</p>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Use</th><th scope="col">Field</th><th scope="col">Printed value</th><th scope="col">Value to enter</th><th scope="col">Source → entry unit</th><th scope="col">Date to enter</th><th scope="col">Evidence</th><th scope="col">Review</th></tr></thead><tbody id="pdf-candidate-rows"></tbody></table></div>
+          <div class="review-footer-actions">
+            <button id="apply-pdf-candidates" class="button button-primary" type="button" disabled>Enter selected values in review</button>
+            <button id="discard-pdf-candidates" class="button button-quiet" type="button">Discard suggestions</button>
+            <p id="pdf-apply-status" class="status-line" role="status" aria-live="polite"></p>
+          </div>
+        </section>
+        <dialog id="pdf-page-dialog" class="pdf-page-dialog" aria-labelledby="pdf-page-dialog-title">
+          <div class="panel-heading"><h3 id="pdf-page-dialog-title">PDF source page</h3><button id="close-pdf-page" class="button button-quiet" type="button">Close</button></div>
+          <img id="pdf-page-image" alt="Locally rendered source PDF page for candidate review" />
+        </dialog>
+
         <div class="import-options">
           <button id="load-sample" class="button button-primary" type="button">Open complete synthetic case <span>↗</span></button>
           <button id="load-seca-preview" class="button button-quiet" type="button">Open SECA-only preview</button>
@@ -99,7 +144,7 @@
           <div class="privacy-icon" aria-hidden="true">⌁</div>
           <div>
             <h3>Designed for a private workstation</h3>
-            <p>This workspace has no upload endpoint, account database, or remote processing path. Closing the tab clears the working record. Use your clinic's own approved retention and privacy procedures for anything you choose to print.</p>
+            <p>CSV parsing and PDF inspection happen in your browser. If you confirm PDF extraction, selected text and rendered pages are sent to an external AI service for processing. The app does not save the PDF or request body; closing the tab clears its in-memory working copy. The AI service's published privacy policy governs its processing and retention.</p>
           </div>
         </div>
       </section>
@@ -144,7 +189,7 @@
         <section id="clinical-panel" class="panel clinical-panel" aria-labelledby="clinical-title" hidden>
           <div class="panel-heading"><div><p class="eyebrow">Clinical input ledger</p><h3 id="clinical-title">Context from the second source</h3></div><span id="clinical-tag" class="panel-tag"></span></div>
           <p id="clinical-copy" class="panel-copy">Values from the clinical CSV are shown separately from the equipment export.</p>
-          <div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th></tr></thead><tbody id="clinical-rows"></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th><th scope="col">Source detail</th></tr></thead><tbody id="clinical-rows"></tbody></table></div>
         </section>
 
         <section id="complete-panel" class="panel complete-panel" aria-labelledby="complete-title" hidden>
@@ -208,8 +253,10 @@
 
   <footer class="app-footer"><span>Healthspan Review · local measurement review v0.1</span><a href="/docs/index.html">Read the full evidence record</a><span>Clinical use: forbidden</span></footer>
 
-  <script src="seca-parser.js?v=review-v3"></script>
-  <script src="clinical-parser.js?v=review-v1"></script>
-  <script src="workbench.js?v=review-v3"></script>
+  <script src="/docs/seca-parser.js?v=review-v4"></script>
+  <script src="/docs/clinical-parser.js?v=review-v2"></script>
+  <script src="/docs/pdf-batches.js?v=pdf-batch-v1"></script>
+  <script src="/docs/pdf-candidate-review.js?v=review-v1"></script>
+  <script type="module" src="/docs/workbench.js?v=pdf-ai-v2"></script>
 </body>
 </html>

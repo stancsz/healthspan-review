@@ -2,8 +2,8 @@
   "framework": null,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/docs/workbench.html" },
-    { "source": "/workbench", "destination": "/docs/workbench.html" },
+    { "source": "/", "destination": "/docs/workbench" },
+    { "source": "/workbench", "destination": "/docs/workbench" },
     { "source": "/workbench.css", "destination": "/docs/workbench.css" },
     { "source": "/workbench.js", "destination": "/docs/workbench.js" },
     { "source": "/seca-parser.js", "destination": "/docs/seca-parser.js" },
@@ -11,7 +11,7 @@
     { "source": "/example-seca-tableview.csv", "destination": "/docs/example-seca-tableview.csv" },
     { "source": "/example-clinical-inputs.csv", "destination": "/docs/example-clinical-inputs.csv" },
     { "source": "/example-complete-synthetic.json", "destination": "/docs/example-complete-synthetic.json" },
-    { "source": "/manual", "destination": "/docs/manual.html" },
+    { "source": "/manual", "destination": "/docs/manual" },
     { "source": "/manual.css", "destination": "/docs/manual.css" },
     { "source": "/manual.js", "destination": "/docs/manual.js" }
   ]

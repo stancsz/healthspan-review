@@ -1022,6 +1022,11 @@ def _failures(root: Path, test_count: int, node_test_count: int) -> list[str]:
         for path in (root / relative).rglob("*"):
             if (
                 not path.is_file()
+                # Pinned upstream PDF.js minified assets contain ordinary
+                # JavaScript substrings that collide with the synthetic-data
+                # identifier scan. Their provenance/license is checked via
+                # docs/vendor/pdfjs/README.md instead.
+                or path.is_relative_to(root / "docs" / "vendor" / "pdfjs")
                 or path.name == "verify_docs.py"
                 or path.suffix == ".pyc"
                 or path.suffix

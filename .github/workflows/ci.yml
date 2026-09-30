@@ -64,6 +64,8 @@ jobs:
           uv run python scripts/build_test_receipt.py --check
           uv run python scripts/run_external_validation_report.py --check
           uv run python scripts/verify_docs.py
+      - name: Verify PDF intake and clinician workbench
+        run: node --test api/extract-pdf.test.js tests/workbench.test.cjs tests/test_pdf_intake_contract.js tests/pdf_candidate_review.test.cjs tests/pdf_batches.test.cjs
 
   test-windows:
     runs-on: windows-latest
@@ -95,6 +97,8 @@ jobs:
           uv run python scripts/verify_docs.py
           uv run python scripts/validate_training_manifest.py docs/TRAINING_MANIFEST_TEMPLATE.json
           uv run python scripts/review_nhanes_intake.py --help
+      - name: Verify PDF intake and clinician workbench
+        run: node --test api/extract-pdf.test.js tests/workbench.test.cjs tests/test_pdf_intake_contract.js tests/pdf_candidate_review.test.cjs tests/pdf_batches.test.cjs
       - name: Build and smoke-test the Windows wheel installation
         shell: pwsh
         run: |

@@ -1,9 +1,11 @@
+import { analyzePdfLocally } from './pdf-import.mjs';
+
 (function () {
   "use strict";
 
   var secaParser = window.FrailtySecaParser;
   var clinicalParser = window.HealthspanClinicalParser;
-  var state = { parsed: null, clinical: null, source: "", packet: null, active: "import", warnings: [] };
+  var state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] };
   var valueLabels = {
     bmi: "Body mass index", height_cm: "Height", weight_kg: "Weight", fat_mass_kg: "Fat mass",
     fat_free_mass_kg: "Fat-free mass", estimated_height_cm: "Estimated height", ffmi: "FFMI",
@@ -37,6 +39,11 @@
         merged[spec.name] = value; provenance[spec.name] = "Clinical inputs CSV"; units[spec.name] = unitFor(spec.name, state.clinical.units);
       });
     }
+    if (state.pdfClinical) clinicalParser.specs.forEach(function (spec) {
+      var value = state.pdfClinical.values[spec.name];
+      if (!present(value)) return;
+      merged[spec.name] = value; provenance[spec.name] = "PDF · user-confirmed"; units[spec.name] = unitFor(spec.name, state.pdfClinical.units);
+    });
     return { values: merged, provenance: provenance, units: units, warnings: warnings };
   }
 
@@ -65,14 +72,14 @@
       source: { seca: base ? base.source : null, clinical: state.clinical ? { format: "canonical clinical inputs CSV", label: "Local clinical inputs CSV" } : null },
       measurement_ledger: base ? base.measurement_ledger : [],
       segment_ledger: base ? base.segment_ledger : [],
-      clinical_ledger: clinicalLedger,
+      clinical_ledger: clinicalLedger.concat(state.pdfClinical ? clinicalParser.specs.filter(function (spec) { return present(state.pdfClinical.values[spec.name]); }).map(function (spec) { var source = state.pdfProvenance[spec.name] || {}, entry = { field: spec.name, value: state.pdfClinical.values[spec.name], unit: unitFor(spec.name, state.pdfClinical.units), provenance: source }; return pdfCandidateReview.toLedgerRecord(entry, spec); }) : []),
       complete_profile: { present_count: completeProfile.filter(function (row) { return present(row.value); }).length, total_count: completeProfile.length, fields: completeProfile },
       parsing_review: { unmapped_labels: state.parsed ? state.parsed.unmappedLabels : [], unit_warnings: (state.parsed && state.parsed.latest ? state.parsed.latest.warnings : []).concat(state.clinical ? state.clinical.warnings : []), derivations: state.parsed && state.parsed.latest ? state.parsed.latest.derivations : [], merge_warnings: merged.warnings },
       assessment_readiness: { assessment_ready: ready.assessmentReady, missing_requirements: ready.missingRequirements, blood_values_present: ready.bloodCount, history_values_present: ready.historyCount, note: "This is an input-completeness check, not a clinical assessment." },
       frailty_index: { status: "not_computed_in_browser_review", numerator: null, denominator: null, coverage_caveat: "The browser review does not compute an FI. Missing values must not be imputed." },
       comparison: base ? base.comparison : { status: "unavailable", basis: null, measurement_deltas: {}, segmental_deltas: {}, caveat: "A SECA comparison requires two dated scans." },
       estimated_ages: state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : clinicalParser.estimateAgeSignals(merged.values),
-      boundaries: ["No diagnosis or treatment advice.", "Estimated age signals are informational heuristic estimates, not a diagnosis or treatment recommendation.", "E-005 remains blocked.", "Generated locally; no source CSV or patient identifier is included."]
+      boundaries: ["No diagnosis or treatment advice.", "Estimated age signals are informational heuristic estimates, not a diagnosis or treatment recommendation.", "E-005 remains blocked.", "Generated locally; no original source document or patient identifier is included.", "PDF values were suggested by AI and entered only after user confirmation."]
     };
   }
 
@@ -128,10 +135,12 @@
     $("#parser-notes").innerHTML = notes.map(function (note) { return '<div class="note-block ' + note[2] + '"><h4>' + escapeHtml(note[0]) + '</h4><p>' + escapeHtml(note[1]) + '</p></div>'; }).join("");
   }
   function renderClinical(merged) {
-    if (!state.clinical) { $("#clinical-panel").hidden = true; return; }
-    var count = state.clinical.presentFields.length; $("#clinical-panel").hidden = false; $("#clinical-tag").textContent = count + " fields";
-    $("#clinical-copy").textContent = state.clinical.complete ? "The clinical CSV contains all 35 canonical fields. Values remain separate from the SECA source ledger." : count + " canonical fields were supplied. Missing fields remain explicitly absent.";
-    $("#clinical-rows").innerHTML = clinicalParser.specs.filter(function (spec) { return present(state.clinical.values[spec.name]); }).map(function (spec) { return '<tr><td>' + escapeHtml(spec.label) + '<br><small class="field-name">' + escapeHtml(spec.name) + '</small></td><td>' + escapeHtml(formatValue(state.clinical.values[spec.name])) + '</td><td>' + escapeHtml(unitFor(spec.name, state.clinical.units)) + '</td><td>' + escapeHtml(categoryLabels[spec.category]) + '</td><td class="derived-label">Clinical CSV</td></tr>'; }).join("");
+    if (!state.clinical && !state.pdfClinical) { $("#clinical-panel").hidden = true; return; }
+    var csvRows = state.clinical ? clinicalParser.specs.filter(function (spec) { return present(state.clinical.values[spec.name]); }).map(function (spec) { return '<tr><td>' + escapeHtml(spec.label) + '<br><small class="field-name">' + escapeHtml(spec.name) + '</small></td><td>' + escapeHtml(formatValue(state.clinical.values[spec.name])) + '</td><td>' + escapeHtml(unitFor(spec.name, state.clinical.units)) + '</td><td>' + escapeHtml(categoryLabels[spec.category]) + '</td><td class="derived-label">Clinical CSV</td><td>Local CSV input</td></tr>'; }).join("") : "";
+    var pdfRows = state.pdfClinical ? clinicalParser.specs.filter(function (spec) { return present(state.pdfClinical.values[spec.name]); }).map(function (spec) { var src = state.pdfProvenance[spec.name] || {}; return '<tr><td>' + escapeHtml(spec.label) + '<br><small class="field-name">' + escapeHtml(spec.name) + '</small></td><td>' + escapeHtml(formatValue(state.pdfClinical.values[spec.name])) + '</td><td>' + escapeHtml(unitFor(spec.name, state.pdfClinical.units)) + '</td><td>' + escapeHtml(categoryLabels[spec.category]) + '</td><td class="derived-label">PDF · user-confirmed</td><td>Page ' + escapeHtml(src.page || "?") + ': ' + escapeHtml(src.evidence || "") + '</td></tr>'; }).join("") : "";
+    var count = clinicalParser.specs.filter(function (spec) { return present(merged.values[spec.name]); }).length; $("#clinical-panel").hidden = false; $("#clinical-tag").textContent = count + " fields";
+    $("#clinical-copy").textContent = "Values from local CSV input and user-confirmed PDF candidates. Missing fields remain explicitly absent.";
+    $("#clinical-rows").innerHTML = csvRows + pdfRows;
   }
   function renderEstimatedAges() {
     var estimates = state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : clinicalParser.estimateAgeSignals((state.parsed && state.parsed.latest && state.parsed.latest.values) || {});
@@ -146,8 +155,119 @@
   }
   function downloadPacket() { if (!state.packet) return; var blob = new Blob([JSON.stringify(state.packet, null, 2) + "\n"], { type: "application/json" }), url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = "local-measurement-review-pack-v0.2.json"; a.click(); URL.revokeObjectURL(url); $("#export-status").textContent = "Downloaded locally. The packet contains no original CSV or patient identifier."; showView("export"); }
   function printPacket() { if (!state.packet) return; showView("review"); window.print(); }
-  function reset() { state = { parsed: null, clinical: null, source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; setStatus("No record open.", false); showView("import"); }
+  function reset() { state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; setStatus("No record open.", false); showView("import"); }
   function fetchText(url) { return fetch(url, { cache: "no-store" }).then(function (response) { if (!response.ok) throw new Error(url + " returned " + response.status); return response.text(); }); }
+
+  var localPdf = null, pdfSelectionId = 0, activePdfController = null;
+  function updatePdfButton() { $("#analyze-pdf").disabled = !localPdf || !$("#pdf-ai-consent").checked; }
+  function setPdfStatus(message, error) { $("#pdf-status").textContent = message; $("#pdf-status").style.color = error ? "var(--rust)" : "var(--forest)"; }
+  function choosePdf(file) {
+    pdfSelectionId++;
+    if (activePdfController) { activePdfController.abort(); activePdfController = null; }
+    localPdf = null; state.pdfPages = []; state.pdfCandidates = []; $("#pdf-candidate-panel").hidden = true;
+    $("#pdf-ai-consent").checked = false; updatePdfButton();
+    if (!file) return;
+    var selectionId = pdfSelectionId;
+    $("#pdf-file-name").textContent = file.name.slice(0, 80); setPdfStatus("Reading and rendering locally…", false);
+    analyzePdfLocally(file).then(function (result) { if (selectionId !== pdfSelectionId) return; localPdf = result; state.pdfPages = result.pages; setPdfStatus(result.pageCount + " page(s) inspected locally. No content has been sent.", false); updatePdfButton(); }).catch(function (error) { if (selectionId !== pdfSelectionId) return; localPdf = null; setPdfStatus(error.message || "Could not read this PDF.", true); updatePdfButton(); });
+  }
+  function renderPdfCandidates(candidates) {
+    state.pdfCandidates = candidates; $("#pdf-candidate-panel").hidden = false; $("#pdf-candidate-tag").textContent = candidates.length + " candidate(s)";
+    $("#pdf-candidate-rows").innerHTML = candidates.map(function (candidate, index) {
+      var spec = clinicalParser.byName[candidate.field], value = candidate.value == null ? candidate.printedValue : candidate.value;
+      if (typeof candidate.baseIssue !== "string") candidate.baseIssue = candidate.issue || "";
+      var issue = candidate.issue || "";
+      var disabled = candidate.value == null || (candidate.baseIssue && !candidate.conflict && !candidate.duplicate && !candidate.dateIssue);
+      var dateValue = /^\d{4}-\d{2}-\d{2}$/.test(candidate.date || "") && !candidate.dateIssue ? candidate.date : "";
+      return '<tr><td><input class="pdf-candidate-use" type="checkbox" data-index="' + index + '" aria-label="Select ' + escapeHtml(candidate.field) + ' for entry" ' + (disabled ? "disabled" : "") + '></td><td>' + escapeHtml(spec ? spec.label : candidate.field) + '<br><small class="field-name">' + escapeHtml(candidate.field) + '</small></td><td>' + escapeHtml(candidate.printedValue) + '</td><td><input class="pdf-candidate-value" data-index="' + index + '" value="' + escapeHtml(value) + '" aria-label="Value to enter for ' + escapeHtml(candidate.field) + '"></td><td>' + escapeHtml(candidate.unit || "not printed") + (candidate.unitConverted ? ' → ' + escapeHtml(candidate.normalizedUnit) : '') + '</td><td><input class="pdf-candidate-date" data-index="' + index + '" type="date" value="' + dateValue + '" aria-label="Confirmed measurement date for ' + escapeHtml(candidate.field) + '">' + (candidate.date ? '<br><small>Printed: ' + escapeHtml(candidate.date) + '</small>' : '') + '</td><td><button class="text-button pdf-page-button" type="button" data-page="' + candidate.page + '">Page ' + candidate.page + '</button><br><small>' + escapeHtml(candidate.evidence) + '</small></td><td id="pdf-candidate-review-' + index + '" class="' + (issue ? "warning-label" : "derived-label") + '">' + escapeHtml(issue || "Check source") + (candidate.unitConverted ? ' · converted' : '') + '</td></tr>';
+    }).join("");
+    $("#apply-pdf-candidates").disabled = true;
+    document.querySelectorAll(".pdf-candidate-use").forEach(function (checkbox) { checkbox.addEventListener("change", function () {
+      if (this.checked) { var field = state.pdfCandidates[Number(this.dataset.index)].field; document.querySelectorAll(".pdf-candidate-use").forEach(function (other) { if (other !== checkbox && state.pdfCandidates[Number(other.dataset.index)].field === field) other.checked = false; }); }
+      $("#apply-pdf-candidates").disabled = !document.querySelector(".pdf-candidate-use:checked");
+    }); });
+    function refreshGroups() {
+      var rows = state.pdfCandidates.map(function (candidate, index) {
+        var spec = clinicalParser.byName[candidate.field], value = null;
+        try { value = clinicalParser.normalizeValue(document.querySelector('.pdf-candidate-value[data-index="' + index + '"]').value, spec); } catch (_) { }
+        return { field: candidate.field, value: value, date: document.querySelector('.pdf-candidate-date[data-index="' + index + '"]').value };
+      });
+      pdfCandidateReview.classifyCandidateRows(rows).forEach(function (flags, index) {
+        var candidate = state.pdfCandidates[index];
+        candidate.conflict = flags.conflict;
+        candidate.duplicate = flags.duplicate;
+        var enteredDate = document.querySelector('.pdf-candidate-date[data-index="' + index + '"]').value;
+        var messages = pdfCandidateReview.candidateReviewMessages(candidate, enteredDate, flags);
+        var cell = $("#pdf-candidate-review-" + index);
+        cell.textContent = messages.filter(Boolean).join("; ") || "Check source";
+        cell.className = messages.some(Boolean) ? "warning-label" : "derived-label";
+        if (candidate.unitConverted) cell.textContent += " · converted";
+      });
+    }
+    document.querySelectorAll(".pdf-candidate-value, .pdf-candidate-date").forEach(function (input) {
+      input.addEventListener("input", refreshGroups);
+      input.addEventListener("change", refreshGroups);
+    });
+    refreshGroups();
+    document.querySelectorAll(".pdf-page-button").forEach(function (button) { button.addEventListener("click", function () { var source = state.pdfPages.find(function (page) { return page.page === Number(button.dataset.page); }); if (source) { $("#pdf-page-image").src = source.image; $("#pdf-page-dialog").showModal(); } }); });
+  }
+
+  $("#choose-pdf").addEventListener("click", function () { $("#pdf-file").click(); });
+  $("#pdf-file").addEventListener("change", function () { choosePdf(this.files && this.files[0]); });
+  $("#pdf-ai-consent").addEventListener("change", function () {
+    if (!this.checked && activePdfController) { activePdfController.abort(); activePdfController = null; }
+    updatePdfButton();
+  });
+  $("#close-pdf-page").addEventListener("click", function () { $("#pdf-page-dialog").close(); });
+  $("#analyze-pdf").addEventListener("click", async function () {
+    if (!localPdf || !$("#pdf-ai-consent").checked) return;
+    var sourcePdf = localPdf, selectionId = pdfSelectionId, button = this, operationController = null; button.disabled = true; state.pdfCandidates = []; $("#pdf-candidate-panel").hidden = true; $("#pdf-apply-status").textContent = "";
+    try {
+      var batches = window.pdfBatches.splitPages(sourcePdf.pages), encoder = new TextEncoder();
+      batches.forEach(function (batch) {
+        var request = JSON.stringify({ confirmedDeidentified: true, pages: window.pdfBatches.requestPages(batch.pages) });
+        if (encoder.encode(request).byteLength > window.pdfBatches.MAX_REQUEST_BYTES) throw new Error("A PDF page batch is too large to send securely. Choose a lower-resolution PDF.");
+      });
+      setPdfStatus("Preparing " + batches.length + " batches. No content has been sent yet.", false);
+      var candidates = [];
+      for (var index = 0; index < batches.length; index++) {
+        if (selectionId !== pdfSelectionId || localPdf !== sourcePdf) return;
+        if (!$("#pdf-ai-consent").checked) throw new Error("Extraction stopped because consent was withdrawn.");
+        var batch = batches[index];
+        setPdfStatus("Sending pages " + batch.startPage + "–" + batch.endPage + " of " + sourcePdf.pageCount + " for extraction (" + (index + 1) + "/" + batches.length + ")…", false);
+        operationController = new AbortController(); activePdfController = operationController;
+        var response = await fetch('/api/extract-pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ confirmedDeidentified: true, pages: window.pdfBatches.requestPages(batch.pages) }), signal: operationController.signal });
+        if (activePdfController === operationController) activePdfController = null;
+        if (selectionId !== pdfSelectionId || localPdf !== sourcePdf) return;
+        var data = await response.json();
+        if (!response.ok) throw new Error("PDF extraction failed for pages " + batch.startPage + "–" + batch.endPage + ": " + (data.error || "Please try again."));
+        candidates = candidates.concat(window.pdfBatches.validateCandidatePages(data.candidates || [], batch.pages));
+      }
+      if (selectionId !== pdfSelectionId || localPdf !== sourcePdf) return;
+      renderPdfCandidates(candidates); setPdfStatus("Extraction complete. Verify every value against its source page before entry.", false);
+      $("#pdf-apply-status").textContent = candidates.length ? "" : "No supported measurement candidates were returned.";
+    } catch (error) {
+      if (selectionId === pdfSelectionId) setPdfStatus(error.name === "AbortError" ? "Extraction stopped because consent was withdrawn." : (error.message || "PDF extraction failed."), true);
+    }
+    finally { if (activePdfController === operationController) activePdfController = null; updatePdfButton(); }
+  });
+  $("#apply-pdf-candidates").addEventListener("click", function () {
+    var selected = Array.from(document.querySelectorAll(".pdf-candidate-use:checked"));
+    var selections = selected.map(function (checkbox) {
+      var index = Number(checkbox.dataset.index), candidate = state.pdfCandidates[index];
+      return { candidate: candidate, spec: clinicalParser.byName[candidate.field], valueText: document.querySelector('.pdf-candidate-value[data-index="' + index + '"]').value, enteredDate: document.querySelector('.pdf-candidate-date[data-index="' + index + '"]').value };
+    });
+    var prepared = pdfCandidateReview.prepareSelectedCandidates(selections, clinicalParser.normalizeValue);
+    if (!prepared.ok) { $("#pdf-apply-status").textContent = prepared.error; return; }
+    var values = clinicalParser.emptyValues(), units = {}, nextProvenance = Object.assign({}, state.pdfProvenance);
+    prepared.entries.forEach(function (entry) { values[entry.field] = entry.value; units[entry.field] = entry.unit; nextProvenance[entry.field] = entry.provenance; });
+    if (prepared.entries.some(function (entry) { return !present(entry.value); })) { $("#pdf-apply-status").textContent = "One or more edited values failed validation. Correct them before entry."; return; }
+    state.pdfProvenance = nextProvenance;
+    state.pdfClinical = clinicalParser.result(values, units, "User-confirmed AI-extracted PDF measurements"); state.source = state.source || "PDF measurements · user-confirmed";
+    var merged = mergeValues(), ready = readiness(merged.values); state.packet = buildPacket(merged, ready); renderReview(merged, ready); enableWorkflow(); showView("review");
+    $("#pdf-apply-status").textContent = selected.length + " user-confirmed value(s) entered. Provenance is attached to the local packet.";
+  });
+  $("#discard-pdf-candidates").addEventListener("click", function () { state.pdfCandidates = []; state.pdfPages = []; localPdf = null; $("#pdf-candidate-panel").hidden = true; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-page-image").removeAttribute("src"); updatePdfButton(); setPdfStatus("Local PDF content and suggestions cleared from this tab.", false); });
 
   $("#seca-file").addEventListener("change", function () { openFile(this.files && this.files[0], "seca"); }); $("#clinical-file").addEventListener("change", function () { openFile(this.files && this.files[0], "clinical"); });
   $("#load-sample").addEventListener("click", function () { var button = this; button.disabled = true; setStatus("Opening the complete synthetic case locally…", false); Promise.all([fetchText("example-seca-tableview.csv"), fetchText("example-complete-synthetic.json")]).then(function (parts) { loadRecord(secaParser.parseSecaCsv(parts[0]), clinicalParser.parseProfile(JSON.parse(parts[1]), "Complete synthetic clinical profile"), "Complete synthetic case · SECA + clinical profile"); }).catch(function (error) { setStatus("Complete synthetic case could not be loaded: " + error.message, true); }).finally(function () { button.disabled = false; }); });

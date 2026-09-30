@@ -73,7 +73,7 @@ a { color: inherit; }
 .source-kicker { margin: 0 0 5px; color: var(--forest); font: 700 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 .drop-zone h3 { margin: 0; font: 600 24px var(--serif); }
 .drop-zone p { margin: 5px 0 0; color: var(--ink-soft); font-size: 13px; }
-#seca-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+#seca-file, #clinical-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .file-label { color: var(--forest); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .import-options { flex-wrap: wrap; gap: 10px; margin-top: 17px; }
 .button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 12px; padding: 10px 16px; border: 1px solid var(--line-strong); border-radius: 7px; cursor: pointer; text-decoration: none; font-size: 13px; font-weight: 700; transition: transform .16s, background .16s, border-color .16s; }
@@ -88,6 +88,28 @@ a { color: inherit; }
 .privacy-icon { color: var(--forest); font: 28px var(--serif); }
 .privacy-card h3 { margin: 0; font-size: 14px; }
 .privacy-card p { margin: 5px 0 0; color: var(--ink-soft); font-size: 12px; }
+.pdf-import-card { margin-top: 18px; padding: 22px; border: 1px solid var(--line-strong); border-radius: 9px; background: var(--panel); }
+.pdf-import-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.pdf-import-heading h3 { margin: 4px 0 5px; font: 600 24px/1.05 var(--serif); }
+.pdf-import-heading p:not(.source-kicker) { margin: 0; color: var(--ink-soft); font-size: 12px; }
+.pdf-import-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.pdf-import-heading .pdf-import-actions { margin-top: 0; }
+#pdf-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.pdf-file-name { color: var(--ink-soft); font: 10px var(--mono); }
+.external-processing-note { display: grid; gap: 5px; margin-top: 17px; padding: 13px 15px; border-left: 3px solid var(--yellow); background: var(--yellow-soft); color: var(--ink-soft); font-size: 11px; line-height: 1.55; }
+.external-processing-note strong { color: var(--ink); font: 10px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.external-processing-note a { color: var(--forest); font-weight: 700; }
+.pdf-consent-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; color: var(--ink); font-size: 12px; line-height: 1.5; }
+.pdf-consent-row input { margin-top: 3px; accent-color: var(--forest); }
+.pdf-candidate-panel { margin-top: 18px; }
+.pdf-candidate-panel td { vertical-align: top; }
+.pdf-candidate-value { width: 110px; padding: 7px; border: 1px solid var(--line-strong); border-radius: 5px; font: 12px var(--mono); }
+.pdf-candidate-date { width: 140px; padding: 7px; border: 1px solid var(--line-strong); border-radius: 5px; font: 12px var(--mono); }
+.pdf-candidate-panel small { display: inline-block; max-width: 250px; color: var(--ink-soft); font-size: 10px; line-height: 1.4; }
+.pdf-page-dialog { width: min(1000px, 94vw); max-height: 92vh; padding: 20px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--panel); }
+.pdf-page-dialog::backdrop { background: rgba(20, 28, 25, .72); }
+.pdf-page-dialog img { display: block; max-width: 100%; max-height: 78vh; margin: 0 auto; object-fit: contain; }
+.warning-label { color: #984c2c; }
 .compact-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; max-width: none; }
 .compact-heading h2 { font-size: clamp(35px, 4.5vw, 56px); }
 .record-status { margin-top: 26px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,254,250,.65); color: var(--ink-soft); font: 11px var(--mono); }
@@ -162,6 +184,6 @@ td:nth-child(4) { color: var(--forest); font-size: 11px; }
 .empty-state { margin: 0; color: var(--ink-soft); font-size: 12px; }
 .app-footer { display: flex; justify-content: space-between; gap: 15px; padding: 15px clamp(20px, 4vw, 64px); border-top: 1px solid var(--line); color: var(--ink-soft); background: var(--paper); font: 10px var(--mono); }
 .app-footer a { color: var(--forest); }
-@media (max-width: 950px) { .app-shell { grid-template-columns: 220px minmax(0,1fr); } .sidebar { padding-inline: 24px; } .summary-cards { grid-template-columns: repeat(2,1fr); } .review-grid, .lower-grid, .source-grid { grid-template-columns: 1fr; } }
+@media (max-width: 950px) { .pdf-import-heading { display: block; } .pdf-import-heading .pdf-import-actions { margin-top: 14px; } .app-shell { grid-template-columns: 220px minmax(0,1fr); } .sidebar { padding-inline: 24px; } .summary-cards { grid-template-columns: repeat(2,1fr); } .review-grid, .lower-grid, .source-grid { grid-template-columns: 1fr; } }
 @media (max-width: 680px) { .app-header { align-items: flex-start; } .header-meta { gap: 9px; flex-direction: column; align-items: flex-end; } .trust-bar-inner { align-items: flex-start; flex-wrap: wrap; } .trust-separator { display: none; } .app-shell { display: block; } .sidebar { padding: 27px 20px 23px; border-right: 0; border-bottom: 1px solid var(--line); } .sidebar h1 { max-width: none; font-size: 31px; } .workflow-nav { grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 24px; } .workflow-step { display: block; padding: 9px 7px; } .workflow-step strong { margin-top: 7px; font-size: 11px; } .workflow-step small { font-size: 9px; } .sidebar-footnote { display: none; } .workspace { padding: 35px 16px 55px; } .view-heading h2 { font-size: 44px; } .lede { font-size: 15px; } .drop-zone { margin-top: 31px; padding: 23px; } .drop-icon { width: 43px; height: 43px; } .drop-zone h3 { font-size: 21px; } .compact-heading { display: block; } .heading-actions { margin-top: 14px; } .notes-grid { grid-template-columns: 1fr; } .app-footer { flex-direction: column; } }
 @media print { body { background: white; } .app-header, .trust-bar, .sidebar, .app-footer, .review-footer-actions, .heading-actions { display: none !important; } .app-shell { display: block; min-height: 0; } .workspace { padding: 0; background: white; } .view { display: none !important; } #review-view { display: block !important; } .panel, .record-status, .summary-card { break-inside: avoid; border-color: #bbb; } .fi-panel { background: #edf3ee; color: #1e2e2b; border-color: #bbb; } .fi-panel .eyebrow, .fi-panel .panel-copy, .boundary-note span, .boundary-note strong { color: #1e2e2b; } .panel h3 { font-size: 19px; } }

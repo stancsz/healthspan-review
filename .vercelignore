@@ -14,3 +14,6 @@ docs/reviews/
 htmlcov/
 models/
 data/raw/
+.env*
+tests/**
+**/*.test.js

@@ -10,11 +10,11 @@ const js = fs.readFileSync(path.join(root, "docs", "workbench.js"), "utf8");
 const vercel = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
 
 test("Vercel root routes to the clinician workspace", () => {
-  assert.ok(vercel.rewrites.some((route) => route.source === "/" && route.destination === "/docs/workbench.html"));
-  assert.ok(vercel.rewrites.some((route) => route.source === "/workbench" && route.destination === "/docs/workbench.html"));
+  assert.ok(vercel.rewrites.some((route) => route.source === "/" && route.destination === "/docs/workbench"));
+  assert.ok(vercel.rewrites.some((route) => route.source === "/workbench" && route.destination === "/docs/workbench"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/workbench.css" && route.destination === "/docs/workbench.css"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/workbench.js" && route.destination === "/docs/workbench.js"));
-  assert.ok(vercel.rewrites.some((route) => route.source === "/manual" && route.destination === "/docs/manual.html"));
+  assert.ok(vercel.rewrites.some((route) => route.source === "/manual" && route.destination === "/docs/manual"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/clinical-parser.js" && route.destination === "/docs/clinical-parser.js"));
   assert.match(html, /id="drop-zone"/);
   assert.match(html, /id="clinical-file"/);
@@ -28,9 +28,15 @@ test("Vercel root routes to the clinician workspace", () => {
   assert.match(html, /Estimated age signals/);
 });
 
-test("clinician workspace keeps the local-only safety boundary visible", () => {
-  assert.match(html, /Data stays in this browser tab/);
-  assert.match(html, /Nothing is uploaded/);
+test("clinician workspace discloses optional external PDF processing", () => {
+  assert.match(html, /CSV files stay local/);
+  assert.match(html, /original PDF is not uploaded/);
+  assert.match(html, /text and rendered page images leave this browser for processing by an external AI service/);
+  assert.match(html, /up to 24 pages and 12 MB/i);
+  assert.match(html, /pdf-batches\.js/);
+  assert.match(html, /I consent to sending its selected page content to an external AI service/);
+  assert.doesNotMatch(html, /MiniMax|Vercel function/);
+  assert.doesNotMatch(js, /MiniMax/);
   assert.match(html, /No diagnosis or treatment advice\. Age estimates are for research and wellness review/);
   assert.match(html, /Clinical use: forbidden/);
   assert.match(js, /buildMeasurementReviewPack/);
@@ -52,6 +58,7 @@ test("workspace exposes accessible actions and print styling", () => {
   assert.match(css, /@media print/);
   assert.match(css, /\.fi-panel/);
   assert.match(css, /\.segment-panel/);
+  assert.match(css, /#seca-file, #clinical-file\s*\{[^}]*opacity: 0;/);
   assert.match(html, /Segment readings/);
 });
 
