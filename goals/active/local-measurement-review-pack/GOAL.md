@@ -311,6 +311,10 @@ pinned upstream PDF.js/license, and PDF checks in Linux/Windows CI and the
 Pages gate. The full local Node suite passes 56/56 and the canonical verifier
 passes 20/20. The earlier manual Vercel deployment is independent of this
 source checkpoint; no connected Git repository is configured for Vercel.
+Remote runs for `74e91af` failed at Python test collection because CI omitted
+the declared `data` extra needed by three pandas receipt tests. The dependency
+setup is corrected; the failed runs are retained as failure evidence and do
+not verify the PDF checks that had not yet executed.
 
 The extraction API and single-page browser slices are verified, while the
 complete 24-page production browser flow remains open. The goal also

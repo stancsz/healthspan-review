@@ -27,7 +27,7 @@ jobs:
       - name: Install locked documentation dependencies
         run: |
           python -m pip install uv==0.11.28
-          uv sync --locked --extra dev
+          uv sync --locked --extra dev --extra data
       - name: Verify public evidence and Pages parser
         run: |
           uv run python -m pytest -q

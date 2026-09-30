@@ -76,6 +76,11 @@ Missing or malformed Origin headers now fail closed in source. Vercel has no
 connected Git repository; the existing manual deployment is independent of
 this source checkpoint. Remote CI, same-SHA Vercel verification, and the full
 24-page browser flow require their own evidence; LOCAL-REVIEW-1 stays active.
+The first remote runs for `74e91af` failed before PDF checks because three
+Python receipt tests import pandas while the CI environments omitted the
+`data` extra. The workflows now install that declared extra alongside their
+existing dependencies. Remote execution of the repair must be checked before
+claiming a remote software pass.
 
 Order: reconcile public claims and candidate identity; implement a measurement-first
 experience; verify visual/behavior states and human comprehension; publish and
