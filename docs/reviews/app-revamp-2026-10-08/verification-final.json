@@ -1,0 +1,128 @@
+{
+  "checks": [
+    {
+      "duration_ms": 42.21,
+      "name": "locked-resolution",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 125.94,
+      "name": "ruff",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 127.82,
+      "name": "ruff-format",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 291.244,
+      "name": "compile",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 12283.708,
+      "name": "python-tests",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 439.259,
+      "name": "pages-metadata-unit",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 55.675,
+      "name": "pages-seca-syntax",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 53.601,
+      "name": "pages-intake-syntax",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 55.032,
+      "name": "pages-site-syntax",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 319.562,
+      "name": "pages-tests",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 2042.0,
+      "name": "test-receipt",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 307.642,
+      "name": "demo-artifact",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 256.134,
+      "name": "external-fixture",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 2275.017,
+      "name": "external-report",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 105.817,
+      "name": "training-manifest",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 116.239,
+      "name": "system-age-manifest",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 255.039,
+      "name": "training-split-smoke",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 4200.655,
+      "name": "external-validation-smoke",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 1983.621,
+      "name": "documentation",
+      "returncode": 0,
+      "status": "passed"
+    },
+    {
+      "duration_ms": 3602.388,
+      "name": "serving-contract-smoke",
+      "returncode": 0,
+      "status": "passed"
+    }
+  ],
+  "clinical_gate": "E-005 blocked",
+  "include_serving": true,
+  "schema_version": 1,
+  "status": "passed"
+}

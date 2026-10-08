@@ -405,7 +405,7 @@ User-authorized complete app revamp/commit/deployment is a delivery slice of thi
 active contract. The coordinated app includes synthetic companion, measurements,
 manual entry and evidence archive. Edits require fresh manual review; workspace
 reset closes old review/export; unsupported ages remain withheld everywhere.
-Independent local review is READY; publication is pending. The canonical gate passes 20/20;
+Independent local and live review is READY; the bounded app publication is complete. The canonical gate passes 20/20;
 the broader contract stays active for intended-user, governance and hostname gaps.
 
 **Skill learning:** reuse the established exact-source/asset publication check from
@@ -413,7 +413,7 @@ the 50-page release. The new independent review exposed stale local exports that
 surface-regex tests missed; behavioral edit-after-review and reset-after-export
 checks now govern acceptance. Advisor screenshot guidance changed the layout,
 disclosure typography and form width (`decision_changed: true`, initial 6,326 tokens).
-Next: independent targeted rechecks, commit and exact-source live verification.
+Published runtime/pipeline checkpoint: `55722fc`; 85 app Node tests, 20 canonical checks, Linux/Windows CI, Pages deployment and Vercel exact-source/asset verification pass. Receipt: `docs/reviews/app-revamp-2026-10-08/publication.json`.
 
 
 Acceptance learning: final independent browser review verified actual file pickers,
@@ -422,4 +422,4 @@ containment. Full app Node suites are now in the canonical gate and portable CI
 commands. Table clipping is contained in labelled keyboard-scroll regions with
 visible hints. Reduced-motion/instant scroll avoids invalid moving-viewport
 captures; screenshot paths alone did not establish what was actually visible.
-The next owner action is commit/deploy and live source/asset verification.
+Recovery learning: avoid blind Pages reruns after eventual artifact visibility creates duplicate names. Use an attempt-specific artifact, a bounded visibility check and read-only Actions permission; the repaired remote run passed. The next owner action belongs to the existing user-study/governance work, not another app acceptance loop.

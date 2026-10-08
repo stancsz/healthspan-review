@@ -35,3 +35,17 @@ Expected: the evidence archive has a canonical base that resolves its assets, da
 Learning: Vercel's index clean-URL redirect can remove the final slash and change every relative URL's base. A live main-route smoke is insufficient; exercise the evidence destination's canonical URL and asset responses after navigation.
 
 The conditional base repair closes the observed failure while leaving Pages-relative routes intact. Native browser navigation can finish after a tool's navigation expectation times out; final live DOM/URL observations were used to distinguish actual page readiness from the expectation's timeout. No extra product changes or permission expansion were performed by this reviewer.
+
+## Independent publication closeout
+
+The release reviewer independently checked the final goal, roadmap, EVAL, active
+contract, Wiki028, publication receipt and pipeline recovery record: READY for
+bounded APP-REVAMP-1 publication. GitHub API readback confirmed exact source
+`55722fcfbb529c625226cc305875224f891f9191` with Linux/Windows verification
+run37812128667 and Pages run37812128310 both successful. All eleven receipt
+asset hashes match the runtime checkout; Windows checkout versus Git-blob line
+endings are distinguished. No unsupported clinical completion was found.
+LOCAL-REVIEW-1 remains active, E-005 blocked, and the recorded user-study,
+governance, hostname and human accessibility limits remain open. Actual remote
+Wiki/board mutations and readback are integrator-owned governance evidence in
+publication.json, separate from this independent document/source review.

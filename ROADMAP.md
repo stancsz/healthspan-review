@@ -1,7 +1,5 @@
 # Production roadmap
 
-
-
 This roadmap turns the repository goal into the shortest safe path to a
 
 clinician-first, investor-visible research product. It is ordered by
@@ -10,25 +8,15 @@ dependency: later stages must not be treated as complete because an earlier
 
 software check is green.
 
-
-
 ## Current position
 
-
-
-
-
 ### APP-REVAMP-1 — Complete app revamp and publication, 2026-10-08
-
-
 
 Priority: P0 for the authorized publication slice. Owner: Codex integrator;
 
 companion implementation: companion builder; independent acceptance: release reviewer.
 
-Status: live synthetic app independently accepted; final publication-pipeline repair and reconciliation in progress. Depends on LOCAL-REVIEW-1 and FRM-1 withholding.
-
-
+Status: Done for the bounded research-app publication; independent local and live acceptance passed. Depends on LOCAL-REVIEW-1 and FRM-1 withholding.
 
 1. Revamp the synthetic companion, measurement workspace, manual entry and
 
@@ -48,9 +36,7 @@ Status: live synthetic app independently accepted; final publication-pipeline re
 
    Project #4 with the bounded publication evidence.
 
-
-
-Current publication: feature `5f332e5` passed Linux/Windows and Pages; Vercel `cfc87c7` fixes the evidence clean-route base and passed live recheck. Its Pages verification passed, but artifact lookup failed at deployment (zero visible, then duplicate names on rerun). A reviewed unique-attempt artifact/visibility repair is being published; final pipeline success remains pending.
+Published checkpoint `55722fcfbb529c625226cc305875224f891f9191`: Linux/Windows verification [37812128667](https://github.com/stancsz/healthspan-review/actions/runs/37812128667) and Pages [37812128310](https://github.com/stancsz/healthspan-review/actions/runs/37812128310) passed. Ready Vercel deployment `dpl_77LCnpVdFSno4q9norVLXoe1q3CL` reports that source SHA; live routes/assets and evidence navigation passed readback with no browser errors or failed responses.
 
 Exit evidence: independent READY for the synthetic/local app workflow, software
 
@@ -60,17 +46,9 @@ IR1 user study, patient-data governance and the exact requested hostname remain
 
 open; this release cannot close the broader LOCAL-REVIEW-1 contract.
 
-
-
-
-
 ### MyForme product reshape proposal, 2026-10-07
 
-
-
 Implementation checkpoint 2026-10-08: the study specified the buying loop and this work now includes local FRM-1 age-output removal plus a synthetic FRM-2 prototype. Independent behavior QA, responsive review, export readback, and board/Wiki synchronization are complete for this prototype checkpoint; no user-value, clinical, or hosting gate advances. The privacy-policy reread remains unverified.
-
-
 
 The [comparison and proposed clinic companion](docs/wiki/026-forme-product-reshape-2026-10-07.md)
 
@@ -84,8 +62,6 @@ active execution goal and E-005 remains blocked. Named human owners for the
 
 roles below are unassigned. The existing IR gates and study thresholds remain.
 
-
-
 | Order / ID | Priority | Status | Owner role | Depends on | Exit evidence |
 
 |---|---|---|---|---|---|
@@ -94,25 +70,17 @@ roles below are unassigned. The existing IR gates and study thresholds remain.
 
 | 1 / FRM-1 | P0 | Done | Implementation owner + independent QA; product steward | Existing withholding policy; before FRM-2 acceptance | Browser parser, manual entry, export and MCP withhold generated and caller-supplied ages. Focused and full Python/Node checks pass; independent browser review confirms withheld copy and no numeric output. Active L7 and Wiki 025 reconciled. E-005 remains blocked. |
 
-| 2 / FRM-2 | P1 | In Progress (synthetic prototype) | Implementation owner + product steward + independent QA | FRM-1 acceptance; steward-approved synthetic scope | Local prototype covers measured example → clinician draft/save → approval bound to synthetic snapshot/version → patient Today → check-in → follow-up export. Independent desktop/mobile review confirms draft privacy, approval version binding, edit/revoke/expiry locks and follow-up. Synthetic JSON export was read back. No clinic inbox, hosted patient service, real-data workflow or value study is included in this increment. |
+| 2 / FRM-2 | P1 | Done (synthetic prototype only) | Implementation owner + product steward + independent QA | FRM-1 acceptance; steward-approved synthetic scope | Local prototype covers measured example → clinician draft/save → approval bound to synthetic snapshot/version → patient Today → check-in → follow-up export. Independent desktop/mobile review confirms draft privacy, approval version binding, edit/revoke/expiry locks and follow-up. Synthetic JSON export was read back. No clinic inbox, hosted patient service, real-data workflow or value study is included in this increment. |
 
 | 3 / FRM-3 | P1 | Todo | Product owner + qualified clinician reviewers | Existing IR1 package; FRM-2 for plan-loop study | Existing five-user IR1/manual comparison retained; separate preregistered plan-loop study with actual review burden, errors and scope-comprehension results. Named people/dates and pass/stop rules before sessions. |
 
 | 4 / FRM-4 | P2 | Todo (downstream) | Clinical/governance/security/operations owners | FRM-3 value evidence; approved scope and applicable IR6/IR7 | Permitted use, tenant isolation, authenticated roles, consent/deletion including processors, approval audit, escalation and limited-pilot review. One wearable connector only after prerequisites. E-005 remains required for age/model claims. |
 
-
-
 FRM-1 removes heuristic age generation and pass-through in browser, manual-entry, export, and MCP paths. Browser FI remains explicitly not computed. FRM-2 is a synthetic local prototype only; clinician inbox and hosted care remain later scope. Project #4 has Status options only;
 
 priorities, dependencies and proposed role owners are recorded in item bodies.
 
-
-
-
-
 ### PDF capacity to 50 pages, 2026-09-30
-
-
 
 Priority: first. Owner: implementation agent. Status: complete for the PDF-capacity slice.
 
@@ -161,8 +129,6 @@ matching Git commit metadata and live UI/helper hashes, retained in
 `publication.json` beside the browser receipt. The historical 24-page
 
 API receipt below remains a prior checkpoint, not proof of this extension.
-
-
 
 **Current execution priority: LOCAL-REVIEW-1, active (Local Measurement Review Pack with AI-assisted PDF entry).**
 
@@ -280,8 +246,6 @@ verification, and all 20 canonical checks pass with E-005 blocked. The
 
 feature's research-only boundary and E-005 status do not change.
 
-
-
 Source publication checkpoint, 2026-09-30: feature commit `b03b5fc` packages
 
 the PDF source, regression tests, pinned upstream PDF.js/license, binary PDF
@@ -323,8 +287,6 @@ comparisons when `HEALTHSPAN_NHANES_DATA_ROOT` supplies the required files.
 The checked scientific receipts are unchanged. Missing raw inputs produce
 
 three explicit skips rather than a claim of exact regeneration in CI.
-
-
 
 Order: reconcile public claims and candidate identity; implement a measurement-first
 
@@ -528,15 +490,11 @@ The snapshot predates final candidate-reference reconciliation and is not
 
 pushed, published or remotely verified.
 
-
-
 The repository is a substantial research-use-only engineering prototype. The
 
 following surfaces have implementation or historical engineering evidence.
 
 This inventory is not a current release pass:
-
-
 
 - 35-feature input contract, minimum viable vector (MVV), deterministic
 
@@ -592,8 +550,6 @@ This inventory is not a current release pass:
 
   age-equivalent semantics, and governed external validation.
 
-
-
 The critical limitation is intentional: `E-005` remains blocked. No real
 
 external cohort, clinically reviewed cutoffs/reference panel, validated
@@ -605,8 +561,6 @@ development predictor and reference panel must not be used for clinical or
 real-person longevity decisions. Public Pages publication is limited to
 
 documentation, synthetic examples, and privacy-safe public-data receipts.
-
-
 
 On 2026-09-11, the four planned NHANES 2011-2012 intake files were retrieved
 
@@ -794,17 +748,11 @@ Runtime category metadata now points each category to its representative
 
 distribution receipt, source file, and field.
 
-
-
 ## Work-tracking synchronization
-
-
 
 Project #4 is authoritative workflow metadata:
 
 https://github.com/users/stancsz/projects/4/views/1
-
-
 
 The 2026-09-10 review supersedes the historical P0/P1 completion labels.
 
@@ -850,11 +798,7 @@ The retained desktop publication capture shows the deployed surface still says
 
 candidate-identity and publication-reconciliation requirement.
 
-
-
 ## Current ordered plan, reviewed 2026-09-10
-
-
 
 Worker completion review: accept the local software repair milestone only.
 
@@ -904,19 +848,13 @@ human contrast/non-color, and IR1 comprehension evidence remain open. See
 
 GOAL.md's worker completion review for the regression and closeout evidence.
 
-
-
 This table is the canonical execution order. It supersedes the historical
 
 showcase tranche and P0-P8 sequencing below, which remain background context.
 
 No IR implementation gate was completed by the planning review.
 
-
-
 ### Next milestone and dependency clarification
-
-
 
 Prepare one frozen measurement-only reviewer package under GOAL.md section 7.
 
@@ -932,8 +870,6 @@ review and manual accessibility checks on the frozen local synthetic package.
 
 Public deployment is not a prerequisite for beginning those reviews.
 
-
-
 The current local implementation slice is recorded in
 
 `docs/CLAIM_INVENTORY_2026-09-10.md` and
@@ -941,8 +877,6 @@ The current local implementation slice is recorded in
 `docs/reviews/trust-maturity-2026-09-10/README.md`. It remains a dirty preview,
 
 not a candidate SHA or published-release result.
-
-
 
 For each external blocker, record the missing input, owner role, next action and
 
@@ -955,8 +889,6 @@ IR5 fitting and IR7 clinical pilot remain blocked. Defer broader age expansion
 and hosted-service work beyond bounded synthetic IR6 preparation until workflow
 
 utility is demonstrated. All original gate acceptance thresholds remain in force.
-
-
 
 | ID | Priority | Status | Owner role | Depends on | Exit evidence |
 
@@ -978,19 +910,13 @@ utility is demonstrated. All original gate acceptance thresholds remain in force
 
 | IR7 | 3 | Blocked | Product, clinical and operations | IR3, IR5/E-005, IR6 | Governed pilot meets frozen utility/safety thresholds and release approval, then monitored release. |
 
-
-
 ### Next agent objectives, 2026-09-10
-
-
 
 These are ordered implementation objectives under the single active
 
 LOCAL-REVIEW-1 contract and IR0-IR7 plan. They are not new clinical-validity claims or
 
 parallel active GDE goals.
-
-
 
 | Order | Objective | Agent-deliverable acceptance | Explicit boundary |
 
@@ -1001,8 +927,6 @@ parallel active GDE goals.
 | B | Make the reviewer package executable | A prepared synthetic package contains the study script, accessibility checklist, statistical comparison-review worksheet, candidate and fixture identity, evidence links, de-identified result forms, and reviewer-role destinations. The package is ready for named review; release freezing and all human results remain open. | An agent may prepare materials but cannot simulate five users, a screen-reader reviewer, a statistician or a clinician. Missing reviews remain not run. |
 
 | C | Reconcile a final public research release | One owner-authorized candidate SHA has clean-install, verifier, platform-smoke, remote CI, failing-test publication-block and post-deploy identity/hash/link/visual evidence. | This can close T1.6 and IR0 only when every receipt names the same candidate. It does not close E-005 or clinical production. |
-
-
 
 The public sources, controlled-access boundary and immediate source-backed inputs
 
@@ -1028,23 +952,15 @@ worksheet and de-identified result template. The package is review-ready but
 
 not frozen as a release and has no human results.
 
-
-
 The full executable acceptance contract is in [GOAL.md section 7](GOAL.md#7-next-steps-and-how-to-verify-them)
 
 and the [industry readiness review](docs/INDUSTRY_READINESS_REVIEW.md).
 
 Named owners remain unassigned; no clinical/statistical sign-off is implied.
 
-
-
 ## Documentation rule
 
-
-
 ### North Star alignment, 2026-09-10
-
-
 
 - Deliverable: `NORTHSTAR.md`, the durable clinician-first direction and
 
@@ -1062,8 +978,6 @@ Named owners remain unassigned; no clinical/statistical sign-off is implied.
 
 - Research-release and clinical blockers remain those in the ordered plan above.
 
-
-
 `README.md` is the short orientation and usage guide. Verbose operational,
 
 scientific, evidence, and feature-contract material belongs in `docs/` and
@@ -1074,23 +988,15 @@ update the relevant wiki entry and keep the README focused on what the project
 
 is, what the model does, and how an agent uses the associated skill.
 
-
-
 The public Pages site and research report must remain consistent with the goal,
 
 roadmap, evaluation ledger, README, Wiki, and current product decision record.
 
-
-
 ## Goal-aligned showcase tranche
-
-
 
 The 2026-09-01 goal adds a bounded public-facing tranche ahead of clinical
 
 readiness work:
-
-
 
 1. Write `docs/RESEARCH_REPORT.md` for clinicians, researchers, and investors.
 
@@ -1114,11 +1020,7 @@ readiness work:
 
 4. Reconcile README, Wiki, EVAL, receipts, and Project #4 before publishing.
 
-
-
 R-087 (Trust-pass Pages refresh, EVAL E-087): collapses the front-page evidence index, demotes the bioage readout to a `development only · withheld` disclosure, injects CI build metadata from the checked-in test receipt, corrects the joint description to limited measurement context with a null age, and adds five new unverified assumptions covering cutoff review, reference-panel age/sex banding, Gompertz parameter fitness, subgroup coverage, and the absent joint-specific validation. The clinical evidence gate (E-005) is unchanged; this is documentation-only.
-
-
 
 Public-data evidence can advance research readiness and may contribute to a
 
@@ -1126,11 +1028,7 @@ clinical evidence package when it is independent and appropriate. It cannot by
 
 itself establish clinical validity, transportability, safety, or approval.
 
-
-
 ## Ordered work plan
-
-
 
 | ID | Workstream | Status | Depends on | Exit evidence |
 
@@ -1154,15 +1052,9 @@ itself establish clinical validity, transportability, safety, or approval.
 
 | P8 | Release and maintain | Not started | P7 | Versioned releases have signed/retained receipts, changelogs, model/data drift review, missingness and subgroup monitoring, periodic revalidation, security patching, and a documented change-control process. Any model, panel, cutoff, feature, or mapper change re-enters the relevant approval gates. |
 
-
-
 ## Detailed acceptance criteria
 
-
-
 ### P0 — Publish a clean repository baseline
-
-
 
 1. Record the private/proprietary distribution terms in `LICENSE.md` and the
 
@@ -1188,11 +1080,7 @@ itself establish clinical validity, transportability, safety, or approval.
 
    or the assessment API.
 
-
-
 ### P1 — Make the software gate fully green
-
-
 
 Historical local fixes do not establish current release readiness. The latest
 
@@ -1204,11 +1092,7 @@ then rerun the complete gate from the locked environment. Do not call an
 
 isolated test rerun a full release result.
 
-
-
 Required command:
-
-
 
 ```powershell
 
@@ -1216,11 +1100,7 @@ uv run python scripts/verify_project.py --json
 
 ```
 
-
-
 Required interpretation:
-
-
 
 - `status: passed` means the software contract is reproducible;
 
@@ -1230,17 +1110,11 @@ Required interpretation:
 
   serving smoke is not clinical validation.
 
-
-
 ### P2 — Freeze the agent-skill contract
-
-
 
 The client integration should have one supported path and one explicit
 
 fallback:
-
-
 
 - preferred local path: install the locked package and invoke
 
@@ -1264,8 +1138,6 @@ fallback:
 
   diagnostic, or treatment-effect predictions.
 
-
-
 The agent skill must fail closed on missing MVV inputs, development fixtures,
 
 unvalidated uncertainty, model/panel mismatch, and unsafe deployment
@@ -1274,15 +1146,11 @@ configuration. It must never silently substitute a legacy predictor call or
 
 fabricate missing measurements.
 
-
-
 The finished user-facing report is specified in
 
   [`docs/SYSTEM_AGE_REPORT_SPEC.md`](docs/SYSTEM_AGE_REPORT_SPEC.md). Its required
 
 semantics are:
-
-
 
 - chronological age is calculated from date of birth and the assessment
 
@@ -1308,23 +1176,15 @@ semantics are:
 
   age cannot be relabeled as a system age.
 
-
-
 This specification is an end-state product contract, not evidence that the
 
 current development fixtures satisfy E-005.
 
-
-
 ### P3 — Freeze scientific/data provenance
-
-
 
 The training and validation package must be reviewable without publishing raw
 
 health data. Freeze:
-
-
 
 - target population, inclusion/exclusion, age range, sex/ethnicity definitions,
 
@@ -1364,15 +1224,11 @@ health data. Freeze:
 
   versions, and artifact-generation command.
 
-
-
 `docs/TRAINING_MANIFEST_TEMPLATE.json` and
 
 `docs/EXTERNAL_VALIDATION_PROTOCOL.md` are templates and review aids. Filling
 
 them with a plausible-looking value does not constitute approval.
-
-
 
 `docs/SYSTEM_AGE_MODEL_MANIFEST_TEMPLATE.json` is the corresponding per-domain
 
@@ -1382,15 +1238,9 @@ docs/SYSTEM_AGE_MODEL_MANIFEST_TEMPLATE.json` to check its non-approving shape;
 
 the command does not create evidence, approve a model, or permit numeric ages.
 
-
-
 ### P4 — Train and package a candidate release
 
-
-
 The candidate release is one immutable unit:
-
-
 
 ```text
 
@@ -1412,8 +1262,6 @@ model artifact
 
 ```
 
-
-
 The release preflight must reject development fixture content, missing or
 
 contradictory booleans, unknown mapper provenance, incomplete runtime
@@ -1424,17 +1272,11 @@ artifact/panel/feature order. Numeric uncertainty intervals are allowed only
 
 after the uncertainty review has approved their construction and validity.
 
-
-
 ### P5 — Complete external validation and clinical review
-
-
 
 This is the principal production blocker. The reviewer-owned evidence package
 
 must include:
-
-
 
 1. cohort identity, governance/consent or permitted-use basis, endpoint and
 
@@ -1476,17 +1318,11 @@ must include:
 
    information beyond chronological age and simpler measures.
 
-
-
 Until this package is approved, the product remains research-use-only and the
 
 development predictor/panel cannot produce a production or clinical claim.
 
-
-
 ### P6–P8 — Deploy, pilot, and maintain
-
-
 
 The operations contract already defines readiness, body-free logs, privacy-safe
 
@@ -1495,8 +1331,6 @@ metrics, release receipts, rollback, and SECA boundaries. Production work adds
 the deployment owner's infrastructure controls and a real change-management
 
 process. At minimum, retain:
-
-
 
 - immutable release bundles and reproducible environment locks;
 
@@ -1518,11 +1352,7 @@ process. At minimum, retain:
 
   evidence, and production approval.
 
-
-
 ## Source-of-truth documents
-
-
 
 - [`GOAL.md`](GOAL.md) — product scope, feature contract, safety boundaries,
 
@@ -1580,11 +1410,7 @@ process. At minimum, retain:
 
   — final system-specific age-equivalent report shape and evidence gate.
 
-
-
 ## Definition of production usable
-
-
 
 The client can plug the skill into an agent, provide a validated assessment
 
@@ -1595,8 +1421,6 @@ healthspan readout with FI, quality, uncertainty, and wellness context. The
 service is reproducible from an immutable release, operationally protected,
 
 documented in the public wiki, and supported by approved external evidence.
-
-
 
 The definition is not met by passing software tests alone. It is not met until
 

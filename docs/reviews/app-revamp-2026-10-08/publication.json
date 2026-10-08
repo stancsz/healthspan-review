@@ -1,24 +1,24 @@
 {
   "date": "2026-10-08",
   "scope": "APP-REVAMP-1 research app publication; E-005 blocked",
-  "feature_source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+  "feature_source_sha": "55722fcfbb529c625226cc305875224f891f9191",
   "vercel": {
-    "id": "dpl_BpHtzfm8iKnAEr7YDX3JjDcahwyf",
+    "id": "dpl_77LCnpVdFSno4q9norVLXoe1q3CL",
     "ready_state": "READY",
     "url": "https://healthspan-review-gules.vercel.app/",
-    "git_commit_sha": "5f332e540908756e48786998af8077b2067f2b56",
+    "git_commit_sha": "55722fcfbb529c625226cc305875224f891f9191",
     "project_id": "prj_Gfa6nwa0uCw8kiRduQKCzGjPppb9"
   },
   "ci": {
-    "verify_run": 37810700392,
+    "verify_run": 37812128667,
     "linux": "success",
     "windows": "success",
-    "pages_run": 37810700635,
+    "pages_run": 37812128310,
     "pages": "success"
   },
   "live_readback": {
     "base": "https://healthspan-review-gules.vercel.app",
-    "source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+    "source_sha": "55722fcfbb529c625226cc305875224f891f9191",
     "routes": [
       {
         "route": "/",
@@ -42,7 +42,7 @@
         "route": "/docs/index",
         "status": 200,
         "content_type": "text/html; charset=utf-8",
-        "bytes": 113589
+        "bytes": 113987
       },
       {
         "route": "/clinic-companion",
@@ -163,7 +163,7 @@
     "api_get_status": 405
   },
   "pages_readback": {
-    "source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+    "source_sha": "55722fcfbb529c625226cc305875224f891f9191",
     "routes": [
       {
         "path": "clinic-companion.html",
@@ -222,5 +222,48 @@
     "native mobile keyboard/human screen-reader acceptance unverified",
     "50-page scanned-only/live429 not rerun"
   ],
-  "note": "Vercel assets match the clean Windows worktree; Pages assets match Git blobs directly because checkout line endings differ. Docs closure commits retain this feature publication checkpoint."
+  "note": "Verified runtime/pipeline checkpoint. Later documentation closure commits preserve this tested app code. Vercel bytes match the Windows checkout; Pages bytes match Git blobs. Publication does not establish clinical or patient-data readiness.",
+  "history": [
+    {
+      "source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+      "verify_run": 37810700392,
+      "pages_run": 37810700635,
+      "note": "Initial feature checkpoint; independent live review subsequently found and repaired the evidence clean-route base. See pipeline-recovery.md and live-independent-supplement.md."
+    }
+  ],
+  "evidence_browser": {
+    "url": "https://healthspan-review-gules.vercel.app/docs#evidence",
+    "base": "https://healthspan-review-gules.vercel.app/docs/",
+    "scripts": [
+      "https://healthspan-review-gules.vercel.app/docs/seca-parser.js?v=e104",
+      "https://healthspan-review-gules.vercel.app/docs/intake-form.js?v=e104",
+      "https://healthspan-review-gules.vercel.app/docs/site.js?v=e104",
+      "https://healthspan-review-gules.vercel.app/docs/app-nav.js"
+    ],
+    "demo_options": 3,
+    "page_errors": [],
+    "failed_responses": []
+  },
+  "software_checks": {
+    "canonical": 20,
+    "canonical_status": "passed",
+    "app_node_tests": 85,
+    "python_tests_collected": 179,
+    "python_tests_passed": 176,
+    "external_raw_data_skips": 3
+  },
+  "governance": {
+    "goal": "LOCAL-REVIEW-1 remains active",
+    "roadmap": "APP-REVAMP-1 Done, FRM-2 Done for synthetic prototype only",
+    "wiki_commit": "09bfe9182dda0d3610919272d009244e95575c91",
+    "wiki_remote_matches": true,
+    "wiki_page": "https://github.com/stancsz/healthspan-review/wiki/App-Revamp-2026-10-08",
+    "project": "https://github.com/users/stancsz/projects/4/views/1",
+    "project_status_readback": {
+      "APP-REVAMP-1": "Done",
+      "LOCAL-REVIEW-1": "In Progress",
+      "FRM-2": "Done"
+    },
+    "clinical_gate": "E-005 blocked"
+  }
 }

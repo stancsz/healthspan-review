@@ -954,7 +954,7 @@ CP-110 completed R-087/E-087. The Pages presentation and documentation contract 
 
 
 
-## APP-REVAMP-1 prepared release, 2026-10-08
+## APP-REVAMP-1 published release, 2026-10-08
 
 The whole research app has a cohesive synthetic companion, measurement workspace,
 manual entry and evidence archive. Unsupported age outputs are withheld in browser,
@@ -965,11 +965,15 @@ with edit/revocation/expiry blocking participant access and export.
 The canonical verifier now runs all app Node suites as part of its existing
 20-check gate; the separate collection receipt still describes its original
 179 Python / 29 Pages-parser counts and is not the full app-test total. All
-82 app Node tests pass. The Python suite retains three explicitly skipped
+85 app Node tests pass. The Python suite retains three explicitly skipped
 external-data comparisons. Independent real-browser review and synthetic JSON
 readback are retained under `docs/reviews/app-revamp-2026-10-08/`.
 
 This is software/research workflow evidence only. E-005 stays blocked; intended-user
 value, patient-data governance, native mobile-keyboard behavior and human accessibility
 acceptance are unverified. Exact requested hostname ownership remains unresolved.
-Publication/source identity is pending and will be recorded separately after readback.
+Published checkpoint `55722fcfbb529c625226cc305875224f891f9191`: Linux/Windows verification [37812128667](https://github.com/stancsz/healthspan-review/actions/runs/37812128667) and Pages [37812128310](https://github.com/stancsz/healthspan-review/actions/runs/37812128310) passed. Ready Vercel deployment `dpl_77LCnpVdFSno4q9norVLXoe1q3CL` reports that source SHA; live routes/assets and evidence navigation passed readback with no browser errors or failed responses.
+
+Source/asset hashes, live navigation and consent regression evidence are retained in
+`docs/reviews/app-revamp-2026-10-08/publication.json`. Independent acceptance is
+READY for the synthetic/local workflow; no clinical or broader contract gate advances.

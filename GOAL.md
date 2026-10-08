@@ -20,6 +20,13 @@ archive, with data-integrity repairs and independent acceptance. It does not
 complete the five-user study, patient-data governance, exact-hostname ownership,
 or E-005. Existing modified work is preserved and included in the reviewed release.
 
+APP-REVAMP-1 is published and independently accepted for the synthetic research
+workflow. The 20-check canonical verifier and 85 app Node tests pass; Linux/Windows
+CI, Pages and Vercel exact-source/asset readback passed. See
+[the publication receipt](docs/reviews/app-revamp-2026-10-08/publication.json)
+and [current usage](docs/wiki/028-app-revamp-publication.md). This bounded completion
+does not close LOCAL-REVIEW-1 or any clinical/user-study gate.
+
 
 ### Product direction study, 2026-10-07
 

@@ -17,6 +17,4 @@ review verified the actual gh/jq query and three navigation regressions.
 
 Upstream action inputs were verified from [upload-pages-artifact v4](https://raw.githubusercontent.com/actions/upload-pages-artifact/v4/action.yml)
 and [deploy-pages v4](https://raw.githubusercontent.com/actions/deploy-pages/v4/action.yml).
-A new remote run must pass before pipeline recovery is called complete.
-No clinical/user-study gate advances. The next owner action is final publication,
-source/asset readback and consistent roadmap/Wiki/Project status.
+Recovery complete: new Pages run [37812128310](https://github.com/stancsz/healthspan-review/actions/runs/37812128310) passed verification, artifact visibility and deployment for `55722fc`. Linux/Windows verification [37812128667](https://github.com/stancsz/healthspan-review/actions/runs/37812128667) passed. The Vercel evidence route loads three demo choices with no browser errors or failed responses; deployed assets/source and Pages build SHA match. See publication.json. No clinical/user-study gate advances.
