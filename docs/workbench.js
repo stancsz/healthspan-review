@@ -78,18 +78,22 @@ import { analyzePdfLocally } from './pdf-import.mjs';
       assessment_readiness: { assessment_ready: ready.assessmentReady, missing_requirements: ready.missingRequirements, blood_values_present: ready.bloodCount, history_values_present: ready.historyCount, note: "This is an input-completeness check, not a clinical assessment." },
       frailty_index: { status: "not_computed_in_browser_review", numerator: null, denominator: null, coverage_caveat: "The browser review does not compute an FI. Missing values must not be imputed." },
       comparison: base ? base.comparison : { status: "unavailable", basis: null, measurement_deltas: {}, segmental_deltas: {}, caveat: "A SECA comparison requires two dated scans." },
-      estimated_ages: state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : clinicalParser.estimateAgeSignals(merged.values),
-      boundaries: ["No diagnosis or treatment advice.", "Estimated age signals are informational heuristic estimates, not a diagnosis or treatment recommendation.", "E-005 remains blocked.", "Generated locally; no original source document or patient identifier is included.", "PDF values were suggested by AI and entered only after user confirmation."]
+      estimated_ages: [],
+      boundaries: ["No diagnosis or treatment advice.", "Numeric system-age outputs are withheld pending domain-specific evidence and approval.", "E-005 remains blocked.", "Generated locally; no original source document or patient identifier is included.", "PDF values were suggested by AI and entered only after user confirmation."]
     };
   }
 
   function showView(name) {
+    if (name !== "import" && !state.packet) return;
     ["import", "review", "export"].forEach(function (key) {
       var view = $("#" + key + "-view"), step = document.querySelector('[data-step="' + key + '"]'), active = key === name;
       view.hidden = !active; view.classList.toggle("is-visible", active); step.classList.toggle("is-active", active);
+      if (active) step.setAttribute("aria-current", "step"); else step.removeAttribute("aria-current");
     });
     state.active = name;
     if (name === "export") $("#export-summary").textContent = state.source + " is ready as a local review packet.";
+    var heading = $("#" + name + "-view h2");
+    if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: true }); }
   }
   function enableWorkflow() { document.querySelector('[data-step="review"]').disabled = false; document.querySelector('[data-step="export"]').disabled = false; }
 
@@ -143,19 +147,13 @@ import { analyzePdfLocally } from './pdf-import.mjs';
     $("#clinical-rows").innerHTML = csvRows + pdfRows;
   }
   function renderEstimatedAges() {
-    var estimates = state.clinical && state.clinical.estimatedAges ? state.clinical.estimatedAges : clinicalParser.estimateAgeSignals((state.parsed && state.parsed.latest && state.parsed.latest.values) || {});
-    $("#estimated-ages-panel").hidden = !estimates.length;
-    $("#estimated-ages-tag").textContent = estimates.length ? estimates.length + " estimates" : "";
-    $("#estimated-age-cards").innerHTML = estimates.map(function (item) {
-      var value = present(item.value) ? formatValue(item.value) + " " + (item.unit || "years") : "Not available";
-      var basis = item.basis && item.basis.length ? "Inputs used: " + item.basis.join(", ") + ". " : "Inputs used: none. ";
-      var coverage = item.inputCoverage ? " Coverage: " + item.inputCoverage + "." : "";
-      return '<article class="estimated-age-card"><span class="age-label">' + escapeHtml(item.label || item.key || "Estimated age") + '</span><strong>' + escapeHtml(value) + '</strong><span class="age-status">Estimated age</span><p class="age-basis">' + escapeHtml(basis + (item.method || "Category estimate.") + coverage + " " + (item.uncertainty || "Research estimate; review alongside the underlying measurements.")) + '</p></article>';
-    }).join("");
+    $("#estimated-ages-panel").hidden = false;
+    $("#estimated-ages-tag").textContent = "Withheld";
+    $("#estimated-age-cards").textContent = "No numeric system-age estimate is shown. Domain-specific evidence and approval are required first.";
   }
   function downloadPacket() { if (!state.packet) return; var blob = new Blob([JSON.stringify(state.packet, null, 2) + "\n"], { type: "application/json" }), url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = "local-measurement-review-pack-v0.2.json"; a.click(); URL.revokeObjectURL(url); $("#export-status").textContent = "Downloaded locally. The packet contains no original CSV or patient identifier."; showView("export"); }
   function printPacket() { if (!state.packet) return; showView("review"); window.print(); }
-  function reset() { choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; setStatus("No record open.", false); showView("import"); }
+  function reset() { choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; document.querySelector('[data-step="review"]').disabled = true; document.querySelector('[data-step="export"]').disabled = true; $("#export-status").textContent = ""; setStatus("No record open.", false); showView("import"); }
   function fetchText(url) { return fetch(url, { cache: "no-store" }).then(function (response) { if (!response.ok) throw new Error(url + " returned " + response.status); return response.text(); }); }
 
   var localPdf = null, pdfSelectionId = 0, activePdfController = null;

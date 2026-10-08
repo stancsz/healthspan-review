@@ -11,6 +11,37 @@ reconcile visibility, licensing and public wording; private source is not verifi
 
 ## Active execution goal
 
+### App revamp publication, 2026-10-08
+
+The user authorized an entire-app revamp, commit and deployment. APP-REVAMP-1
+in ROADMAP.md is a delivery slice of the single active LOCAL-REVIEW-1 contract:
+a cohesive synthetic companion, measurement workspace, manual entry and evidence
+archive, with data-integrity repairs and independent acceptance. It does not
+complete the five-user study, patient-data governance, exact-hostname ownership,
+or E-005. Existing modified work is preserved and included in the reviewed release.
+
+
+### Product direction study, 2026-10-07
+
+Refreshed on 2026-10-08: the same study now maps the clinic buying/approval loop,
+proposed practitioner and patient modules, deterministic authority checks and
+one-clinic commercial experiment. Public source claims remain vendor claims;
+the prior privacy-policy observation was not freshly verified.
+FRM-1 age-output removal is implemented and independently verified. The core synthetic FRM-2 workflow is implemented and browser-reviewed; broader practitioner inbox, value study, and hosting/governance work remain open.
+
+The [MyForme comparison](docs/wiki/026-forme-product-reshape-2026-10-07.md)
+recommends a clinic companion joining measurement review, clinician-owned
+wellness plans and follow-up. The local synthetic preview is implemented as a research prototype, not a production capability or approval to host/coach patients. LOCAL-REVIEW-1 remains active; the existing IR
+gates and E-005 blocker remain. ROADMAP FRM-0 through FRM-4 records the ordered
+study/repair/prototype/value/governance path.
+
+The former browser/export/MCP heuristic numeric ages, including a missing-age default, conflicted with the withholding policy. FRM-1 removes their runtime generation and pass-through locally; focused and full suites pass, the rendered product was independently reviewed, and the Wiki/Project #4 were synchronized. E-005 and broader governance remain unchanged. Wiki 025 now documents the withholding decision.
+The browser workbench also explicitly does not compute FI. Older dated release
+narratives below are retained history; use the latest dated publication receipt
+and active contract for that slice. This study does not establish a fully
+reconciled release, intended-user value, patient-data approval or clinical use.
+
+
 [LOCAL-REVIEW-1: Local Measurement Review Pack with AI-assisted PDF entry](goals/active/local-measurement-review-pack/GOAL.md)
 is the single active execution contract. VALUE-TOKEN-1 is complete as a bounded
 measurement apparatus under `goals/completed/frontier-value-measurement/`; its
@@ -570,8 +601,10 @@ remain blocked. This planning update does not implement or satisfy the gates.
   boundary.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md): the GDE architecture layer, dependency
   direction, and durable engineering invariants.
-- [`goals/active/frontier-value-measurement/GOAL.md`](goals/active/frontier-value-measurement/GOAL.md):
-  the current active frontier-value measurement contract.
+- [`goals/active/local-measurement-review-pack/GOAL.md`](goals/active/local-measurement-review-pack/GOAL.md):
+  the current active measurement-review contract. The frontier-value apparatus
+  is completed history under `goals/completed/frontier-value-measurement/`;
+  real token savings remain unverified.
 - [`goals/completed/documentation-governance/GOAL.md`](goals/completed/documentation-governance/GOAL.md):
   the completed documentation-governance execution record.
 - [`docs/DOCUMENTATION_CATALOG.md`](docs/DOCUMENTATION_CATALOG.md): the

@@ -1,23 +1,7 @@
-# Major estimated age signals in the clinician workspace
+# 025 — System-age outputs are withheld
 
-## Decision
+Updated: 2026-10-08. The former deterministic category heuristics were removed from the browser parser and local MCP review path. Browser, manual-entry, and MCP review packets no longer generate or pass through numeric system-age values.
 
-The complete synthetic profile produces estimates for all 17 major categories,
-including `Joint age: 35 years`. The Vercel workspace renders these beside the
-current measurement metrics in a separate `Estimated age signals` panel and
-labels each card `Estimated age`.
+The product contract requires domain-specific construct, repeatability, transportability, uncertainty, subgroup, outcome, and independent-review evidence before any system age can be displayed. That evidence gate remains open (E-005). Chronological age may remain an observed demographic input where the measurement contract requires it; it is not a system-age estimate.
 
-## Boundary
-
-This is not a biological age, diagnosis, prognosis, or treatment
-recommendation. Each category heuristic uses whatever of its declared fields
-are present and records the fields used and coverage. JSON export and the local
-MCP adapter preserve all category estimates.
-
-## Evidence
-
-The parser, workbench, manual-entry surface, and MCP regression tests cover the
-metadata path. Live browser verification must confirm the complete synthetic
-case displays all 17 category estimates, including `Joint age: 35 years`,
-while a partial input displays coverage-labelled estimates. These are software
-checks only; E-005 remains blocked.
+FRM-1 in the [clinic companion reshape study](026-forme-product-reshape-2026-10-07.md) is complete: runtime generation and caller-supplied age pass-through were removed from browser and MCP outputs, and the repository verification suite passed. The synthetic clinic companion prototype separately demonstrates plan approval and follow-up; it does not approve age outputs, patient-data hosting, or clinical use.

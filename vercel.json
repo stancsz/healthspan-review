@@ -2,17 +2,93 @@
   "framework": null,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/docs/workbench" },
-    { "source": "/workbench", "destination": "/docs/workbench" },
-    { "source": "/workbench.css", "destination": "/docs/workbench.css" },
-    { "source": "/workbench.js", "destination": "/docs/workbench.js" },
-    { "source": "/seca-parser.js", "destination": "/docs/seca-parser.js" },
-    { "source": "/clinical-parser.js", "destination": "/docs/clinical-parser.js" },
-    { "source": "/example-seca-tableview.csv", "destination": "/docs/example-seca-tableview.csv" },
-    { "source": "/example-clinical-inputs.csv", "destination": "/docs/example-clinical-inputs.csv" },
-    { "source": "/example-complete-synthetic.json", "destination": "/docs/example-complete-synthetic.json" },
-    { "source": "/manual", "destination": "/docs/manual" },
-    { "source": "/manual.css", "destination": "/docs/manual.css" },
-    { "source": "/manual.js", "destination": "/docs/manual.js" }
+    {
+      "source": "/",
+      "destination": "/docs/clinic-companion"
+    },
+    {
+      "source": "/workbench",
+      "destination": "/docs/workbench"
+    },
+    {
+      "source": "/clinic-companion",
+      "destination": "/docs/clinic-companion"
+    },
+    {
+      "source": "/clinic-companion.css",
+      "destination": "/docs/clinic-companion.css"
+    },
+    {
+      "source": "/clinic-companion.js",
+      "destination": "/docs/clinic-companion.js"
+    },
+    {
+      "source": "/workbench.css",
+      "destination": "/docs/workbench.css"
+    },
+    {
+      "source": "/workbench.js",
+      "destination": "/docs/workbench.js"
+    },
+    {
+      "source": "/seca-parser.js",
+      "destination": "/docs/seca-parser.js"
+    },
+    {
+      "source": "/clinical-parser.js",
+      "destination": "/docs/clinical-parser.js"
+    },
+    {
+      "source": "/example-seca-tableview.csv",
+      "destination": "/docs/example-seca-tableview.csv"
+    },
+    {
+      "source": "/example-clinical-inputs.csv",
+      "destination": "/docs/example-clinical-inputs.csv"
+    },
+    {
+      "source": "/example-complete-synthetic.json",
+      "destination": "/docs/example-complete-synthetic.json"
+    },
+    {
+      "source": "/manual",
+      "destination": "/docs/manual"
+    },
+    {
+      "source": "/manual.css",
+      "destination": "/docs/manual.css"
+    },
+    {
+      "source": "/manual.js",
+      "destination": "/docs/manual.js"
+    },
+    {
+      "source": "/app-design.css",
+      "destination": "/docs/app-design.css"
+    },
+    {
+      "source": "/app-nav.js",
+      "destination": "/docs/app-nav.js"
+    },
+    {
+      "source": "/pdf-batches.js",
+      "destination": "/docs/pdf-batches.js"
+    },
+    {
+      "source": "/pdf-candidate-review.js",
+      "destination": "/docs/pdf-candidate-review.js"
+    },
+    {
+      "source": "/pdf-import.mjs",
+      "destination": "/docs/pdf-import.mjs"
+    },
+    {
+      "source": "/vendor/:path*",
+      "destination": "/docs/vendor/:path*"
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "/docs/assets/:path*"
+    }
   ]
 }

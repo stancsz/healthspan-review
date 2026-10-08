@@ -9,9 +9,10 @@ const css = fs.readFileSync(path.join(root, "docs", "workbench.css"), "utf8");
 const js = fs.readFileSync(path.join(root, "docs", "workbench.js"), "utf8");
 const vercel = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
 
-test("Vercel root routes to the clinician workspace", () => {
-  assert.ok(vercel.rewrites.some((route) => route.source === "/" && route.destination === "/docs/workbench"));
+test("Vercel root routes to the clinic companion", () => {
+  assert.ok(vercel.rewrites.some((route) => route.source === "/" && route.destination === "/docs/clinic-companion"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/workbench" && route.destination === "/docs/workbench"));
+  assert.ok(vercel.rewrites.some((route) => route.source === "/clinic-companion" && route.destination === "/docs/clinic-companion"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/workbench.css" && route.destination === "/docs/workbench.css"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/workbench.js" && route.destination === "/docs/workbench.js"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/manual" && route.destination === "/docs/manual"));
@@ -25,7 +26,7 @@ test("Vercel root routes to the clinician workspace", () => {
   assert.match(html, /id="export-view"/);
   assert.match(html, /id="segment-rows"/);
   assert.match(html, /id="estimated-ages-panel"/);
-  assert.match(html, /Estimated age signals/);
+  assert.match(html, /System-age estimates are withheld/);
 });
 
 test("clinician workspace discloses optional external PDF processing", () => {
@@ -37,17 +38,15 @@ test("clinician workspace discloses optional external PDF processing", () => {
   assert.match(html, /I consent to sending its selected page content to an external AI service/);
   assert.doesNotMatch(html, /MiniMax|Vercel function/);
   assert.doesNotMatch(js, /MiniMax/);
-  assert.match(html, /No diagnosis or treatment advice\. Age estimates are for research and wellness review/);
+  assert.match(html, /No diagnosis or treatment advice\. Numeric system-age outputs are withheld/);
   assert.match(html, /Clinical use: forbidden/);
   assert.match(js, /buildMeasurementReviewPack/);
   assert.match(js, /35/);
   assert.match(js, /Clinical inputs CSV/);
   assert.match(js, /contains no original CSV or patient identifier/);
-  assert.match(js, /estimatedAges/);
-  assert.match(js, /estimateAgeSignals/);
-  assert.match(js, /heuristic/);
-  assert.match(js, /Estimated age/);
-  assert.match(js, /estimateAgeSignals/);
+  assert.match(js, /estimated_ages: \[\]/);
+  assert.match(js, /withheld pending domain-specific evidence/);
+  assert.doesNotMatch(js, /estimateAgeSignals|heuristic/);
   assert.doesNotMatch(js, /fetch\s*\([^)]*https?:\/\//);
 });
 
@@ -69,6 +68,22 @@ test("manual entry surface is present and local-only", () => {
   assert.match(manualHtml, /Fill complete synthetic profile/);
   assert.match(manualJs, /parser\.specs/);
   assert.match(manualJs, /No patient identifier/);
-  assert.match(manualHtml, /id="manual-estimated-ages"/);
-  assert.match(manualJs, /estimated_ages/);
+  assert.match(manualHtml, /Numeric outputs are withheld/);
+  assert.match(manualJs, /estimated_ages: \[\]/);
+  assert.doesNotMatch(manualJs, /estimatedAges/);
+});
+
+
+test("synthetic clinic companion binds approval, check-in and follow-up locally", () => {
+  const companion = fs.readFileSync(path.join(root, "docs", "clinic-companion.html"), "utf8");
+  const script = fs.readFileSync(path.join(root, "docs", "clinic-companion.js"), "utf8");
+  assert.match(companion, /Synthetic case HSR-042/);
+  assert.match(companion, /Clinician-authored weekly action/);
+  assert.match(companion, /Approve for patient view/);
+  assert.match(companion, /Patient view closed/);
+  assert.match(script, /Object\.freeze\(draft\)/);
+  assert.match(script, /approval\.snapshot === "HSR-042-rev-1"/);
+  assert.match(script, /approval = null; checkin = null/);
+  assert.match(script, /synthetic-clinic-followup-v1/);
+  assert.doesNotMatch(script, /localStorage|sessionStorage|fetch\s*\(/);
 });

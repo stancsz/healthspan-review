@@ -52,6 +52,8 @@ the product boundary, architecture invariants, and root evidence contract.
 | Path | Role |
 |---|---|
 | `docs/RESEARCH_REPORT.md` | Clinician-first methods and limitations |
+| `docs/wiki/026-forme-product-reshape-2026-10-07.md` | Dated competitor study and ordered clinic-companion sequence; synthetic implementation and withholding repair bounded by value/governance gates |
+| `docs/wiki/028-app-revamp-publication.md` | App revamp usage and bounded publication receipt |
 | `docs/SOURCES.md` | Citation scope and applicability limits |
 | `docs/MODEL_CARD.md` | Intended use, model limitations, and promotion boundary |
 | `docs/CLINICAL_ML_EVIDENCE_CROSSWALK.md` | Standards-to-artifacts map, not approval |
@@ -113,7 +115,7 @@ clinical validity, production readiness, or publication identity.
 
 ## Wiki mirror
 
-`docs/wiki/index.md` is the Wiki index. Entries `001` through `025` are
+`docs/wiki/index.md` is the Wiki index. Entries `001` through `026` are
 research, product, release, and evidence guidance. Entry `018` documents this
 GDE authority model, and `hits.md` is retained search/evidence material. Wiki
 entries are reader guidance and historical decision records; they cannot
@@ -148,5 +150,13 @@ uv run python scripts/verify_project.py --json
 ```
 
 The completed documentation-governance goal records the prior audit contract.
-The active VALUE-TOKEN-1 goal records the remaining frontier-token evidence
-gap and its acceptance criteria.
+The completed VALUE-TOKEN-1 measurement-apparatus goal retains the unverified
+frontier-token savings gap. LOCAL-REVIEW-1 is the single active execution goal.
+
+
+## Current clinic companion work
+
+- docs/wiki/026-forme-product-reshape-2026-10-07.md records the vendor comparison and ordered FRM work.
+- docs/wiki/027-clinic-companion-preview.md describes the synthetic local prototype and its boundaries.
+- docs/wiki/025-estimated-age-signals.md records that heuristic category ages are retired and withheld.
+- /clinic-companion serves docs/clinic-companion.html; no real patient data is loaded or stored.

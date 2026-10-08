@@ -952,3 +952,24 @@ CP-110 completed R-087/E-087. The Pages presentation and documentation contract 
 
 
 
+
+
+## APP-REVAMP-1 prepared release, 2026-10-08
+
+The whole research app has a cohesive synthetic companion, measurement workspace,
+manual entry and evidence archive. Unsupported age outputs are withheld in browser,
+manual/export and MCP. Manual edits invalidate previous export; reset closes stale
+workspace review. Approval is bound to the synthetic snapshot and saved plan,
+with edit/revocation/expiry blocking participant access and export.
+
+The canonical verifier now runs all app Node suites as part of its existing
+20-check gate; the separate collection receipt still describes its original
+179 Python / 29 Pages-parser counts and is not the full app-test total. All
+82 app Node tests pass. The Python suite retains three explicitly skipped
+external-data comparisons. Independent real-browser review and synthetic JSON
+readback are retained under `docs/reviews/app-revamp-2026-10-08/`.
+
+This is software/research workflow evidence only. E-005 stays blocked; intended-user
+value, patient-data governance, native mobile-keyboard behavior and human accessibility
+acceptance are unverified. Exact requested hostname ownership remains unresolved.
+Publication/source identity is pending and will be recorded separately after readback.

@@ -1,6 +1,6 @@
 import * as pdfjs from './vendor/pdfjs/pdf.min.mjs';
 
-pdfjs.GlobalWorkerOptions.workerSrc = '/docs/vendor/pdfjs/pdf.worker.min.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href;
 
 const MAX_BYTES = 12 * 1024 * 1024;
 const MAX_PAGES = 50;

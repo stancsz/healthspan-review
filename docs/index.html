@@ -74,8 +74,9 @@
     }
   ]
 }
-</script></head>
-<body>
+</script>  <link rel="stylesheet" href="app-design.css" />
+</head>
+<body data-app-page="evidence">
   <a class="skip-link" href="#main" tabindex="0">Skip to main content</a>
 
   <!-- ============ MASTHEAD ============ -->
@@ -140,6 +141,7 @@
       </details>
     </div>
   </header>
+  <nav class="product-nav" aria-label="App navigation"><a href="clinic-companion.html" data-app-route="companion">Clinic companion</a><a href="workbench.html" data-app-route="workbench">Measurements</a><a href="manual.html" data-app-route="manual">Manual entry</a><a href="index.html#evidence" data-app-route="evidence">Evidence &amp; limits <span aria-hidden="true">↗</span></a></nav>
 
   <!-- ============ REVIEW STATUS ============ -->
   <div class="status-ribbon" role="status" aria-label="Development status">
@@ -154,10 +156,11 @@
   <!-- ============ REVIEWER-FIRST ENTRY ============ -->
   <section class="review-hero" aria-labelledby="review-hero-title">
     <div class="review-hero-copy">
-      <p class="h-eyebrow">Frailty measurement · research review</p>
+      <p class="h-eyebrow">Evidence &amp; limits · research review</p>
       <h2 id="review-hero-title">See what was measured, what is missing, and what remains unproven.</h2>
       <div class="review-hero-actions" aria-label="Start here">
-        <a class="hero-action hero-action-primary" href="workbench.html">Open clinician workspace</a>
+        <a class="hero-action hero-action-primary" href="clinic-companion.html">Preview the clinic companion</a>
+        <a class="hero-action" href="workbench.html">Open measurement workspace</a>
         <a class="hero-action hero-action-primary" href="#demo">View synthetic review</a>
         <a class="hero-action" href="#evidence">Review evidence limits</a>
         <a class="hero-action hero-action-quiet" href="#sources">Open methods and sources</a>
@@ -256,6 +259,8 @@
           <code>sex_male</code>) plus the calculated FI.
         </p>
 
+        <p class="table-scroll-hint">On a narrow screen, scroll the table horizontally to see all columns.</p>
+        <div class="table-scroll-region" role="region" aria-labelledby="contract-h" tabindex="0">
         <table class="feature-table">
           <caption>Five categories, 35 variables — the complete canonical matrix.</caption>
           <thead>
@@ -299,6 +304,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <p>
           The MVV is enforced by <code>src/frailty_engine/mvv.py</code>
@@ -780,7 +786,8 @@ uv run uvicorn frailty_engine.api:app</code></pre>
               <p class="field-note" data-demo-progress-eligibility></p>
               <p class="field-note" data-demo-progress-coverage></p>
               <p class="field-note" data-demo-progress-summary></p>
-              <div class="table-scroll">
+              <p class="table-scroll-hint">Scroll horizontally to see previous and current values.</p>
+              <div class="table-scroll" role="region" aria-label="Descriptive progress measurements" tabindex="0">
                 <table class="wellness-table progress-table">
                   <thead><tr><th>Measure</th><th>Previous</th><th>Current</th><th>Change</th><th>Reference-band movement</th></tr></thead>
                   <tbody data-demo-progress-changes></tbody>
@@ -1324,5 +1331,6 @@ uv run uvicorn frailty_engine.api:app</code></pre>
   <script src="seca-parser.js?v=e104"></script>
   <script src="intake-form.js?v=e104"></script>
   <script src="site.js?v=e104"></script>
+  <script src="app-nav.js"></script>
 </body>
 </html>

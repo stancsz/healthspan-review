@@ -13,13 +13,9 @@ test("complete synthetic profile has all 35 canonical fields", () => {
   assert.equal(result.presentFields.length, 35);
   assert.deepEqual(result.missingFields, []);
   assert.equal(result.complete, true);
-  const joint = result.estimatedAges.find((item) => item.key === "joint_age");
-  assert.equal(result.estimatedAges.length, 17);
-  assert.equal(joint.label, "Joint age");
-  assert.equal(joint.value, 35);
-  assert.equal(joint.status, "estimated_heuristic");
-  assert.ok(joint.inputsUsed.includes("grip_strength"));
-  assert.equal(joint.inputCoverage, "6 / 6");
+  assert.equal("estimatedAges" in result, false);
+  const forged = parser.parseProfile({ ...profile, estimated_ages: [{ key: "joint_age", value: 35 }] });
+  assert.equal("estimatedAges" in forged, false);
 });
 
 test("clinical CSV preserves canonical values and rejects unknown fields", () => {
@@ -30,10 +26,7 @@ test("clinical CSV preserves canonical values and rejects unknown fields", () =>
   assert.equal(result.values.sex, "female");
   assert.equal(result.units.hba1c, "%");
   assert.throws(() => parser.parseClinicalCsv("Field,Value,Unit\nage,45,years\nnot_a_feature,1,"), /unknown/);
-  assert.equal(result.estimatedAges.length, 17);
+  assert.equal("estimatedAges" in result, false);
   const partial = parser.parseClinicalCsv("Field,Value,Unit\nage,60,years\ngrip_strength,20,kg");
-  const partialJoint = partial.estimatedAges.find((item) => item.key === "joint_age");
-  assert.equal(partialJoint.label, "Joint age");
-  assert.equal(partialJoint.inputCoverage, "2 / 6");
-  assert.deepEqual(partialJoint.inputsUsed, ["age", "grip_strength"]);
+  assert.equal("estimatedAges" in partial, false);
 });

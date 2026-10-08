@@ -17,6 +17,14 @@ candidates for human review.
 
 ## Primary users
 
+The [2026-10-07 MyForme study](../wiki/026-forme-product-reshape-2026-10-07.md)
+proposes a later clinic companion for clinician-owned plans and follow-up.
+It does not change this current boundary or authorize patient coaching/hosting.
+The inspected heuristic system-age output contradicts the withholding policy;
+ROADMAP FRM-1 tracks verification of the age-output removal; a local synthetic plan-loop prototype is now under review.
+The October 8 synthetic clinic companion now demonstrates a practitioner-authored plan, explicit approval, patient Today card, check-in, and follow-up export. It runs only in the current tab with fixed synthetic data and does not change intended use or authorize patient hosting/coaching.
+
+
 Clinicians are the first users. Research collaborators and prospective partners
 need an investor-readable evidence trail, but marketing language must not outrun
 the evidence.

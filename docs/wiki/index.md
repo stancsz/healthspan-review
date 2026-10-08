@@ -22,6 +22,7 @@
 023 | current | 2026-09-21 | How does the Vercel-ready clinician workspace support a local measurement review?
 024 | current | 2026-09-21 | How do separate clinical inputs, manual entry, and the local MCP adapter complete the review workflow?
 025 | current | 2026-09-21 | How are major category age estimates shown alongside the measurement metrics?
+026 | current proposal | 2026-10-08 | How should the product evolve toward a MyForme-style clinic companion, and which capabilities and gates remain open?
 # Wiki index
 
 This Wiki is reader guidance and retained decision history. Its canonical
@@ -35,3 +36,9 @@ Wiki entries must not override those documents.
 - [Production and value evidence, 2026-09-11](../PRODUCTION_VALUE_EVIDENCE_2026-09-11.md)
 - [Real public-data intake, 2026-09-11](../REAL_DATA_INTAKE_2026-09-11.md)
 019 | current | 2026-09-11 | Real public-data category coverage intake |
+
+- [026 — MyForme product reshape](026-forme-product-reshape-2026-10-07.md) — ordered clinic companion strategy and implementation status.
+- [027 — Synthetic clinic companion preview](027-clinic-companion-preview.md) — local workflow and safety boundaries.
+- [025 — System-age outputs are withheld](025-estimated-age-signals.md) — retired heuristic path and evidence gate.
+
+- [028 — Complete research app revamp](028-app-revamp-publication.md) — navigation, export integrity, synthetic plan workflow and bounded publication.

@@ -10,6 +10,18 @@ private/proprietary wording. External use must follow the reviewed license and
 authorization decision. See [`LICENSE.md`](LICENSE.md) and the
 [product decision record](docs/wiki/008-product-decisions.md).
 
+## Research app
+
+The app connects a synthetic [clinic companion](https://healthspan-review-gules.vercel.app/)
+to [local measurement review](https://healthspan-review-gules.vercel.app/workbench),
+[manual entry](https://healthspan-review-gules.vercel.app/manual), and the
+[evidence archive](https://stancsz.github.io/healthspan-review/).
+The companion demonstrates save, approve, participant check-in and follow-up
+export. Its changes exist only in the current tab; it has no patient accounts,
+clinic authentication or hosted patient records. Manual edits require another
+review before export. CSV/manual workflows stay local; PDF extraction requires
+explicit consent to external AI processing of de-identified page content.
+
 ## What this project is
 
 This is a Python engine and agent skill for a structured healthspan/wellness
@@ -56,7 +68,7 @@ model. Read the authority layers in this order:
    for product purpose and boundaries.
 2. [`ARCHITECTURE.md`](ARCHITECTURE.md) for system shape and invariants.
 3. [`GOAL.md`](GOAL.md) for project-wide evidence and readiness gates.
-4. [`goals/active/documentation-governance/GOAL.md`](goals/active/documentation-governance/GOAL.md)
+4. [`goals/active/local-measurement-review-pack/GOAL.md`](goals/active/local-measurement-review-pack/GOAL.md)
    for the current execution cycle.
 
 The complete documentation inventory and reconciliation rules are in the

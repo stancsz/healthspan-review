@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#184c46">
+  <title>Clinic companion · Healthspan Review</title>
+  <meta name="description" content="Explore a synthetic, browser-local measurement, plan approval and follow-up workflow.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="clinic-companion.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to workspace</a>
+  <header class="topbar">
+    <a class="brand" href="clinic-companion.html" data-app-route="companion"><span class="mark" aria-hidden="true">hr</span><span><b>Healthspan Review</b><small>Clinic companion</small></span></a>
+    <nav class="top-actions" aria-label="App navigation"><a class="current-link" href="clinic-companion.html" data-app-route="companion" aria-current="page">Companion</a><a href="workbench.html" data-app-route="workbench">Measurements</a><a href="manual.html" data-app-route="manual">Manual entry</a><a href="index.html" data-app-route="evidence">Evidence <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <div class="demo-ribbon"><span class="ribbon-dot" aria-hidden="true"></span><b>Synthetic case HSR-042</b><span class="ribbon-detail">Research preview · changes exist only in this tab</span></div>
+  <div class="layout">
+    <aside class="rail" aria-label="Case workflow">
+      <div class="case-card"><div class="avatar" aria-hidden="true">S</div><div><small>EXAMPLE PARTICIPANT</small><b>Sam Taylor</b><span>HSR-042 · fictional case</span></div></div>
+      <nav class="steps" aria-label="Workflow steps">
+        <button class="step active" data-view="measure" aria-current="step"><span>01</span><span><b>Measurements</b><small id="step-measure-state">Example record</small></span><i aria-hidden="true">→</i></button>
+        <button class="step" data-view="plan"><span>02</span><span><b>Plan &amp; approval</b><small id="step-plan-state">Draft to prepare</small></span><i aria-hidden="true">→</i></button>
+        <button class="step" data-view="today"><span>03</span><span><b>Patient today</b><small id="step-today-state">Approval needed</small></span><i aria-hidden="true">→</i></button>
+        <button class="step" data-view="followup"><span>04</span><span><b>Follow-up</b><small id="step-followup-state">Check-in needed</small></span><i aria-hidden="true">→</i></button>
+      </nav>
+      <div class="rail-note"><span>TRY THE COMPLETE LOOP</span><p>Review the example. Save a draft. Approve it. Record a check-in and download the follow-up.</p><div class="rail-boundary">No real patient data.<br>No clinical authorization.</div></div>
+    </aside>
+    <main id="main" class="content" tabindex="-1">
+      <div class="workspace-context"><span id="workflow-position">STEP 1 OF 4</span><span>HSR-042 <b aria-hidden="true">/</b> snapshot rev 1 <b aria-hidden="true">/</b> 08 Oct 2026</span></div>
+      <section class="view shown" id="measure-view" aria-labelledby="measure-title">
+        <div class="heading"><div><p class="eyebrow">THE MEASUREMENT RECORD</p><h1 id="measure-title" tabindex="-1">Start with what<br class="desktop-break"> was measured.</h1><p class="lede">Visible sources. Clear limits. A grounded place to begin the conversation.</p></div><span class="badge">Synthetic example</span></div>
+        <div class="measurement-grid">
+          <article class="hero-metric"><span class="card-label">BODY COMPOSITION</span><div class="metric">28.4 <small>kg/m²</small></div><h2>Body mass index</h2><span class="metric-type">Derived example</span><div class="measure-footer"><span>Synthetic clinic record · 08 Oct 2026</span><p>Height and weight inputs are not included in this preview.</p></div></article>
+          <article class="side-metric"><span class="card-label">FUNCTION</span><div class="value">31 <small>kg</small></div><h2>Grip strength</h2><span class="metric-type">Observed example</span><div class="measure-footer"><span>Synthetic clinic measurement · 08 Oct 2026</span><p>Measurement protocol is not included.</p></div></article>
+          <article class="priority-card"><span class="card-label">PARTICIPANT'S PRIORITY</span><span class="quote-mark" aria-hidden="true">“</span><h2>More energy through the week.</h2><p>Synthetic intake statement<br>08 Oct 2026</p><span class="metric-type">Self-reported example</span></article>
+        </div>
+        <div class="notice"><span class="notice-icon" aria-hidden="true">i</span><div><b>Numeric system-age outputs are withheld.</b><p>This preview provides no clinical age output or automated care advice. These example values do not establish health status.</p></div></div>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">BEFORE THE NEXT STEP</p><h2>Keep the context in view.</h2></div><span class="tag">2 example values</span></div><div class="quality-row"><span class="quality-index" aria-hidden="true">01</span><div><b>Source, date and provenance are visible</b><p>A derived BMI example and an observed grip-strength example belong to the same fixed synthetic snapshot.</p></div></div><div class="quality-row"><span class="quality-index" aria-hidden="true">02</span><div><b>Full clinical context is not included</b><p>Medical history, measurement protocols and required review inputs are missing. FI is not computed in this preview.</p></div><span class="tag muted-tag">Incomplete</span></div><div class="panel-foot"><span>Demonstration snapshot</span><code id="snapshot-id">HSR-042 · rev 1</code></div></section>
+        <div class="next-row"><div><b>Next: a clinician-owned draft</b><span>Turn the example priority into one reviewable action.</span></div><button class="primary" data-go="plan">Continue to plan <span aria-hidden="true">→</span></button></div>
+      </section>
+      <section class="view" id="plan-view" aria-labelledby="plan-title">
+        <div class="heading"><div><p class="eyebrow">THE CLINICIAN'S WORKSPACE</p><h1 id="plan-title" tabindex="-1">Make the next<br class="desktop-break"> step specific.</h1><p class="lede">Prepare one action, then deliberately approve what the participant can see.</p></div><span id="approval-badge" class="badge">Draft · clinic only</span></div>
+        <div class="notice soft"><span class="notice-icon" aria-hidden="true">↳</span><div><b>Drafts stay out of the patient view.</b><p>Approval binds this plan version to snapshot HSR-042 rev 1. Any edit, expiry, or revocation closes patient access.</p></div></div>
+        <form id="plan-form" class="panel plan-form" novalidate>
+          <div class="panel-head"><h2>The example plan</h2><span class="tag" id="plan-version">Version 1</span></div>
+          <label for="goal">Participant's stated priority<input id="goal" value="More energy through the week" maxlength="100" required aria-describedby="synthetic-entry-note"></label>
+          <label for="action">Clinician-authored weekly action<textarea id="action" rows="3" maxlength="240" required>Add a 10-minute walk after lunch on three weekdays, if this feels manageable.</textarea></label>
+          <label for="rationale">Clinician's note for the participant<textarea id="rationale" rows="2" maxlength="240" required>A small, repeatable starting point. Adjust together if it does not fit your routine.</textarea></label>
+          <div class="form-row"><label for="review-date">Review date<input id="review-date" type="date" required aria-describedby="review-date-note"><small id="review-date-note">Active through this date; then a new review is needed.</small></label><div class="scope-box"><b>One manageable action</b><span>Example wellness workflow. No medication or supplement changes.</span></div></div>
+          <div class="form-actions"><p id="plan-status" role="status" aria-live="polite">Draft · not visible to participant</p><div class="action-buttons"><button type="button" class="quiet" id="save-draft">Save draft</button><button type="button" class="quiet danger" id="revoke" hidden>Revoke approval</button><button type="button" class="primary" id="approve" disabled>Approve for patient view <span aria-hidden="true">→</span></button></div></div>
+        </form>
+        <p id="synthetic-entry-note" class="small-boundary">Use fictional text only. Save keeps this draft in tab memory; reload clears it. Approval here demonstrates a workflow, not clinical authorization or a care relationship.</p>
+      </section>
+      <section class="view" id="today-view" aria-labelledby="today-title">
+        <div class="heading"><div><p class="eyebrow">THE PARTICIPANT'S VIEW</p><h1 id="today-title" tabindex="-1">A clear next step<br class="desktop-break"> for today.</h1><p class="lede">A preview of what the synthetic participant sees after approval.</p></div><span id="today-state" class="badge">Approval needed</span></div>
+        <div id="locked-state" class="empty-card"><span class="lock" aria-hidden="true">↳</span><p class="eyebrow">PATIENT VIEW CLOSED</p><h2>Nothing approved for the patient view</h2><p id="locked-reason">Save a draft and approve the current version to preview the participant's Today card.</p><button class="primary" data-go="plan">Go to plan &amp; approval <span aria-hidden="true">→</span></button></div>
+        <article id="today-card" class="today-card" hidden><div class="today-top"><span class="card-label">TODAY · SYNTHETIC PLAN</span><span class="approved-dot">● APPROVED</span></div><p class="today-goal" id="today-goal"></p><h2 id="today-action"></h2><p id="today-rationale"></p><div class="patient-foot">Plan <b id="patient-plan-version"></b> · review by <b id="patient-review-date"></b></div><div class="today-check"><div><b>How did this feel?</b><p>Try a synthetic check-in.</p></div><div class="checkin-buttons"><button class="checkin" data-check="done" aria-pressed="false">I did it <span aria-hidden="true">✓</span></button><button class="checkin" data-check="difficult" aria-pressed="false">It was difficult</button></div></div><p id="checkin-status" class="checkin-status" role="status" aria-live="polite">No check-in yet.</p></article>
+        <div id="revoked-note" class="notice" hidden><span class="notice-icon" aria-hidden="true">↺</span><div><b>Patient view closed</b><p id="revoked-reason">The plan is no longer active.</p></div></div>
+        <div class="next-row" id="today-next" hidden><div><b>Back to the conversation</b><span>The check-in is ready for the clinic to review.</span></div><button class="primary" data-go="followup">Review follow-up <span aria-hidden="true">→</span></button></div>
+        <p class="small-boundary">This is a fictional participant preview. No patient message is sent, and no response is saved outside this tab.</p>
+      </section>
+      <section class="view" id="followup-view" aria-labelledby="followup-title">
+        <div class="heading"><div><p class="eyebrow">BACK WITH THE CLINIC</p><h1 id="followup-title" tabindex="-1">Keep the conversation<br class="desktop-break"> moving.</h1><p class="lede">Bring the approved action and participant's check-in into one review.</p></div><span class="badge">Synthetic follow-up</span></div>
+        <div class="follow-grid"><article class="panel"><div class="panel-head"><div><p class="eyebrow">THE APPROVED ACTION</p><h2 id="followup-action-title">No approved plan yet</h2></div></div><span id="followup-check-tag" class="tag">No check-in</span><div id="followup-check" class="follow-status">Approve the draft and record a synthetic check-in to see it here.</div><div class="panel-foot"><span>Plan and snapshot</span><code id="followup-version">—</code></div><p id="followup-time" class="source"></p></article><article class="panel follow-note"><p class="eyebrow">THE NEXT CONVERSATION</p><h2>What worked?<br>What got in the way?</h2><p>Review the check-in together. A clinician can return to the draft and decide whether the action still fits.</p><button class="text-button" data-go="plan">Review or adjust the plan <span aria-hidden="true">↗</span></button></article></div>
+        <section class="export-row"><div><span class="card-label">TAKE THE REVIEW WITH YOU</span><h2>Export this synthetic follow-up</h2><p id="export-note">Record a check-in on a current approved plan to enable download.</p></div><button id="export-followup" class="primary" disabled>Download summary <span aria-hidden="true">↓</span></button></section>
+        <p id="export-status" class="source" role="status" aria-live="polite"></p>
+        <div class="reset-row"><button id="reset-demo" class="text-button">Reset synthetic demo</button><span>Start again with the original example. Reload also clears changes.</span></div>
+      </section>
+      <footer class="page-foot"><span>Research &amp; wellness development only</span><span>No diagnosis, treatment advice, or age prediction</span></footer>
+    </main>
+  </div>
+  <script src="app-nav.js"></script>
+  <script src="clinic-companion.js"></script>
+</body>
+</html>

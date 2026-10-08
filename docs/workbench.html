@@ -7,29 +7,32 @@
   <title>Healthspan Review · Clinician workspace</title>
   <meta name="description" content="A research-use-only measurement review workspace with local CSV input and optional, consent-gated AI extraction from PDF reports." />
   <link rel="stylesheet" href="workbench.css" />
+  <link rel="stylesheet" href="app-design.css" />
 </head>
-<body>
+<body data-app-page="workbench">
   <a class="skip-link" href="#main">Skip to workspace</a>
   <header class="app-header">
     <div class="brand-lockup">
-      <a class="brand-mark" href="/" aria-label="Healthspan Review home"><span>hr</span></a>
+      <a class="brand-mark" href="clinic-companion.html" aria-label="Healthspan Review home"><span>hr</span></a>
       <div>
         <p class="brand-kicker">Healthspan Review</p>
         <p class="brand-title">Clinician workspace</p>
       </div>
     </div>
     <div class="header-meta">
+      <a href="clinic-companion.html">Preview clinic companion</a>
       <span class="local-badge"><span class="local-dot"></span>Local review · optional AI</span>
-      <a href="/docs/index.html#evidence">Evidence &amp; limits</a>
+      <a href="index.html#evidence" data-app-route="evidence">Evidence &amp; limits</a>
     </div>
   </header>
+  <nav class="product-nav" aria-label="App navigation"><a href="clinic-companion.html" data-app-route="companion">Clinic companion</a><a href="workbench.html" data-app-route="workbench">Measurements</a><a href="manual.html" data-app-route="manual">Manual entry</a><a href="index.html#evidence" data-app-route="evidence">Evidence &amp; limits <span aria-hidden="true">↗</span></a></nav>
 
   <div class="trust-bar">
     <div class="trust-bar-inner">
       <strong>Research-use-only</strong>
       <span>CSV files stay local. PDF extraction sends selected page content to an external AI service only after confirmation.</span>
       <span class="trust-separator">•</span>
-      <span>No diagnosis or treatment advice. Age estimates are for research and wellness review.</span>
+      <span>No diagnosis or treatment advice. Numeric system-age outputs are withheld pending domain-specific evidence and approval.</span>
     </div>
   </div>
 
@@ -37,8 +40,8 @@
     <aside class="sidebar" aria-label="Review workflow">
       <div class="sidebar-intro">
         <p class="eyebrow">A focused review</p>
-        <h1>Make the record legible before making a claim.</h1>
-        <p>Move from an equipment export to an auditable measurement conversation in a few minutes.</p>
+        <h1>A clearer record. A better conversation.</h1>
+        <p>Review the source, check what is missing, and take a traceable packet into the next conversation.</p>
       </div>
       <nav class="workflow-nav" aria-label="Steps">
         <button class="workflow-step is-active" data-step="import" type="button">
@@ -84,6 +87,7 @@
             </div>
             <input id="clinical-file" type="file" accept=".csv,text/csv" />
           </div>
+          <div class="manual-source"><div><strong>No importable file?</strong><p>Enter blood, history and functional measurements by hand. Blank fields stay missing.</p></div><a class="button button-quiet" href="manual.html" data-app-route="manual">Enter manually →</a></div>
         </div>
 
         <section class="pdf-import-card" aria-labelledby="pdf-import-title">
@@ -119,7 +123,7 @@
             <span id="pdf-candidate-tag" class="panel-tag"></span>
           </div>
           <p class="panel-copy">Nothing is entered automatically. Check each value against its cited PDF page. Edit the value or confirm a flagged date before entry. Supported glucose, creatinine, and albumin units may be converted into the entry unit shown; the printed value and source unit remain in the packet. Conflicting values and equivalent duplicates for one field/date are flagged; select only one source.</p>
-          <div class="table-wrap"><table><thead><tr><th scope="col">Use</th><th scope="col">Field</th><th scope="col">Printed value</th><th scope="col">Value to enter</th><th scope="col">Source → entry unit</th><th scope="col">Date to enter</th><th scope="col">Evidence</th><th scope="col">Review</th></tr></thead><tbody id="pdf-candidate-rows"></tbody></table></div>
+          <p class="table-scroll-hint">Scroll horizontally to see all values, units and sources.</p><div class="table-wrap" role="region" aria-label="PDF candidate review" tabindex="0"><table><thead><tr><th scope="col">Use</th><th scope="col">Field</th><th scope="col">Printed value</th><th scope="col">Value to enter</th><th scope="col">Source → entry unit</th><th scope="col">Date to enter</th><th scope="col">Evidence</th><th scope="col">Review</th></tr></thead><tbody id="pdf-candidate-rows"></tbody></table></div>
           <div class="review-footer-actions">
             <button id="apply-pdf-candidates" class="button button-primary" type="button" disabled>Enter selected values in review</button>
             <button id="discard-pdf-candidates" class="button button-quiet" type="button">Discard suggestions</button>
@@ -134,8 +138,8 @@
         <div class="import-options">
           <button id="load-sample" class="button button-primary" type="button">Open complete synthetic case <span>↗</span></button>
           <button id="load-seca-preview" class="button button-quiet" type="button">Open SECA-only preview</button>
-          <a class="button button-quiet" href="/docs/example-clinical-inputs.csv" download>Download clinical CSV</a>
-          <a class="button button-quiet" href="/manual.html">Enter manually <span>↗</span></a>
+          <a class="button button-quiet" href="example-clinical-inputs.csv" download>Download clinical CSV</a>
+          <a class="button button-quiet" href="manual.html" data-app-route="manual">Enter manually <span>↗</span></a>
         </div>
         <p class="import-contract"><strong>Input contract:</strong> SECA contains equipment readings. The second CSV contains canonical blood, history, demographic, and functional values. The app keeps their provenance separate and never fills an absent value.</p>
         <div id="import-status" class="status-line" role="status" aria-live="polite">No record open.</div>
@@ -163,8 +167,8 @@
         <div id="summary-cards" class="summary-cards"></div>
 
         <section id="estimated-ages-panel" class="panel age-estimates-panel" aria-labelledby="estimated-ages-title" hidden>
-          <div class="panel-heading"><div><p class="eyebrow">Estimated age signals</p><h3 id="estimated-ages-title">Major category estimates alongside the measurements</h3></div><span id="estimated-ages-tag" class="panel-tag"></span></div>
-          <p class="panel-copy">These values are generated by deterministic category heuristics from the measurements actually available in this review. They are informational estimates for research and wellness review, not diagnoses or treatment guidance.</p>
+          <div class="panel-heading"><div><p class="eyebrow">WITHHELD OUTPUT</p><h3 id="estimated-ages-title">System-age estimates are withheld</h3></div><span id="estimated-ages-tag" class="panel-tag"></span></div>
+          <p class="panel-copy">Numeric system-age outputs are withheld until domain-specific evidence and approval are in place. This review shows observed values, source provenance, missingness, and input completeness.</p>
           <div id="estimated-age-cards" class="estimated-age-cards"></div>
         </section>
 
@@ -174,7 +178,7 @@
               <div><p class="eyebrow">Source ledger</p><h3 id="ledger-title">What is in the latest scan</h3></div>
               <span class="panel-tag">Provenance attached</span>
             </div>
-            <div class="table-wrap"><table><thead><tr><th scope="col">Measurement</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Origin</th></tr></thead><tbody id="ledger-rows"></tbody></table></div>
+            <p class="table-scroll-hint">Scroll horizontally to see all values, units and sources.</p><div class="table-wrap" role="region" aria-label="Source measurement ledger" tabindex="0"><table><thead><tr><th scope="col">Measurement</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Origin</th></tr></thead><tbody id="ledger-rows"></tbody></table></div>
             <p id="ledger-empty" class="empty-state" hidden>No mapped measurements were found in the latest dated scan.</p>
           </section>
 
@@ -189,19 +193,19 @@
         <section id="clinical-panel" class="panel clinical-panel" aria-labelledby="clinical-title" hidden>
           <div class="panel-heading"><div><p class="eyebrow">Clinical input ledger</p><h3 id="clinical-title">Context from the second source</h3></div><span id="clinical-tag" class="panel-tag"></span></div>
           <p id="clinical-copy" class="panel-copy">Values from the clinical CSV are shown separately from the equipment export.</p>
-          <div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th><th scope="col">Source detail</th></tr></thead><tbody id="clinical-rows"></tbody></table></div>
+          <p class="table-scroll-hint">Scroll horizontally to see all values, units and sources.</p><div class="table-wrap" role="region" aria-label="Clinical inputs" tabindex="0"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th><th scope="col">Source detail</th></tr></thead><tbody id="clinical-rows"></tbody></table></div>
         </section>
 
         <section id="complete-panel" class="panel complete-panel" aria-labelledby="complete-title" hidden>
           <div class="panel-heading"><div><p class="eyebrow">Canonical completeness</p><h3 id="complete-title">Full review profile</h3></div><span id="complete-tag" class="panel-tag"></span></div>
           <p class="panel-copy">Every canonical field is shown with its value, unit, category, and source. “Complete” describes this synthetic or locally supplied data packet only. It is not clinical validation.</p>
-          <div class="table-wrap"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th></tr></thead><tbody id="complete-rows"></tbody></table></div>
+          <p class="table-scroll-hint">Scroll horizontally to see all values, units and sources.</p><div class="table-wrap" role="region" aria-label="Full review profile" tabindex="0"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Category</th><th scope="col">Origin</th></tr></thead><tbody id="complete-rows"></tbody></table></div>
         </section>
 
         <section class="panel segment-panel" aria-labelledby="segment-title">
           <div class="panel-heading"><div><p class="eyebrow">Segment readings</p><h3 id="segment-title">What the scan measured by region</h3></div><span id="segment-tag" class="panel-tag"></span></div>
           <p class="panel-copy">These regional values are retained as observed equipment readings. They are not converted into a health or action-effect claim.</p>
-          <div class="table-wrap"><table><thead><tr><th scope="col">Region</th><th scope="col">Latest</th><th scope="col">Unit</th><th scope="col">Change</th><th scope="col">Origin</th></tr></thead><tbody id="segment-rows"></tbody></table></div>
+          <p class="table-scroll-hint">Scroll horizontally to see all regional values, units and sources.</p><div class="table-wrap" role="region" aria-label="Regional readings" tabindex="0"><table><thead><tr><th scope="col">Region</th><th scope="col">Latest</th><th scope="col">Unit</th><th scope="col">Change</th><th scope="col">Origin</th></tr></thead><tbody id="segment-rows"></tbody></table></div>
           <p id="segment-empty" class="empty-state" hidden>No regional readings were found in the latest dated scan.</p>
         </section>
 
@@ -251,12 +255,13 @@
     </section>
   </main>
 
-  <footer class="app-footer"><span>Healthspan Review · local measurement review v0.1</span><a href="/docs/index.html">Read the full evidence record</a><span>Clinical use: forbidden</span></footer>
+  <footer class="app-footer"><span>Healthspan Review · local measurement review v0.1</span><a href="index.html#evidence" data-app-route="evidence">Read the full evidence record</a><span>Clinical use: forbidden</span></footer>
 
-  <script src="/docs/seca-parser.js?v=review-v4"></script>
-  <script src="/docs/clinical-parser.js?v=review-v2"></script>
-  <script src="/docs/pdf-batches.js?v=pdf-batch-v2"></script>
-  <script src="/docs/pdf-candidate-review.js?v=review-v1"></script>
-  <script type="module" src="/docs/workbench.js?v=pdf-ai-v3"></script>
+  <script src="seca-parser.js?v=review-v4"></script>
+  <script src="clinical-parser.js?v=review-v2"></script>
+  <script src="pdf-batches.js?v=pdf-batch-v2"></script>
+  <script src="pdf-candidate-review.js?v=review-v1"></script>
+  <script type="module" src="workbench.js?v=pdf-ai-v3"></script>
+  <script src="app-nav.js"></script>
 </body>
 </html>

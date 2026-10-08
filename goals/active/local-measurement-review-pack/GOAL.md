@@ -41,7 +41,8 @@ unit, date, page, and human confirmation for every value.
 | L4 | Comparison is descriptive only when two dated scans exist and unavailable otherwise. | Two-scan and single-scan tests; no health-improvement claim. |
 | L5 | The packet can be downloaded as deterministic JSON and printed locally without raw CSV or patient identifiers. | UI contract tests and scoped print mode. |
 | L6 | Governance surfaces agree and the pack is ready for the five-user IR1 comparison. | GOAL, ROADMAP, Wiki, EVAL/evidence, protocol, and Project #4 reconciliation. |
-| L7 | Deterministic age estimates for all major categories appear alongside current metrics for complete and partial inputs, record the fields used, and survive JSON/MCP export. | Synthetic browser/MCP evidence shows all 17 category estimates, including `Joint age: 35 years`; partial-input evidence shows coverage for each estimate. |
+| L7 | Unsupported numeric system-age outputs are withheld across browser, manual entry, JSON export, and MCP, including caller-supplied age metadata. | Parser/workbench/manual/MCP tests prove age values cannot be generated or passed through; exports remain empty and visible copy states the evidence gate. |
+| L13 | A complete synthetic clinic-to-patient prototype binds clinician approval to an exact plan version and measurement snapshot. | Browser QA confirms drafts stay private; edit/revoke/expiry closes patient view; only current approved plan is visible; check-in returns to follow-up export. No persistence or real patient data. |
 | L8 | A PDF can be opened in the browser and mapped by an AI service to candidates in the existing 35-field schema, including selectable-text and scanned-page input, for source files up to 50 pages. | Synthetic text and scanned PDFs exercise extraction, page rendering, bounded same-origin API requests, and safe handling of malformed/encrypted/oversized inputs. The 50-page acceptance run requires nine paced batches, original page-49/50 citations, human confirmation/export, page-51 rejection, and cancellation during a pacing wait; execution evidence is recorded below. |
 | L9 | Each candidate retains its source page, short supporting excerpt, printed value/unit/date, and normalized candidate; ambiguous, unsupported, conflicting, or out-of-range values remain visibly flagged. | Review UI and exported packet preserve field-level evidence and warnings; live PDF/API checks verify supported conversions, source conflict flags, and ambiguous-date warnings. The live browser corrected an ambiguous date, cleared the warning, recalculated edited-value conflicts, and reached packet-ready state. A read-only parse of the downloaded 15,281-byte JSON confirmed the corrected ISO date, retained printed date, confirmed provenance, and absence of PDF/image payloads. |
 | L10 | AI suggestions never silently become record values: the user can edit, confirm, or dismiss candidates individually before they enter the review ledger. | Browser workflow proves unconfirmed candidates do not alter the record; accepted values retain AI-extracted plus human-confirmed provenance. |
@@ -78,6 +79,27 @@ Escalate when real intended-user participation, clinical/statistical approval,
 patient-data governance, or release authorization is required.
 
 ## Builder-owned execution record
+
+### Direction checkpoint, 2026-10-07
+
+The [MyForme strategy study](../../../docs/wiki/026-forme-product-reshape-2026-10-07.md)
+proposes a synthetic measurement-to-plan-to-follow-up increment after the
+existing boundary is repaired. LOCAL-REVIEW-1 remains active; no plan/coaching
+implementation, patient hosting, new clinical approval or intended-user result
+is claimed. The existing L7 heuristic-age implementation conflicts with the
+root withholding policy. ROADMAP FRM-1 is an open repair with steward-owned
+contract reconciliation; this strategy task does not silently remove L7 or
+repair the code. Browser FI remains `not_computed_in_browser_review`.
+
+October 8 strategy refresh adds explicit buying-loop/module boundaries and
+approval/rule precedence to the same study. FRM-1 runtime changes are complete:
+L7's criterion is implemented across browser, manual/export and MCP paths, and
+the withholding behavior passed focused and full-suite verification plus
+independent UI QA. The FRM-2 synthetic plan loop is implemented as a local
+prototype under the existing research-only boundary. LOCAL-REVIEW-1 remains
+active. Privacy contents were not freshly verified. No clinical or release
+readiness is claimed.
+
 
 ### Current approach
 
@@ -375,3 +397,29 @@ Learning: document caps and request budgets must be checked together. A
 pacing and cancellable throttling recovery preserve the published firewall
 control. A real picker-to-export run and downloaded-byte readback verify the
 integration beyond API-only receipts.
+
+
+### APP-REVAMP-1 checkpoint, 2026-10-08
+
+User-authorized complete app revamp/commit/deployment is a delivery slice of this
+active contract. The coordinated app includes synthetic companion, measurements,
+manual entry and evidence archive. Edits require fresh manual review; workspace
+reset closes old review/export; unsupported ages remain withheld everywhere.
+Independent local review is READY; publication is pending. The canonical gate passes 20/20;
+the broader contract stays active for intended-user, governance and hostname gaps.
+
+**Skill learning:** reuse the established exact-source/asset publication check from
+the 50-page release. The new independent review exposed stale local exports that
+surface-regex tests missed; behavioral edit-after-review and reset-after-export
+checks now govern acceptance. Advisor screenshot guidance changed the layout,
+disclosure typography and form width (`decision_changed: true`, initial 6,326 tokens).
+Next: independent targeted rechecks, commit and exact-source live verification.
+
+
+Acceptance learning: final independent browser review verified actual file pickers,
+changed-value downloads, current version approval, revoke/expiry and responsive
+containment. Full app Node suites are now in the canonical gate and portable CI
+commands. Table clipping is contained in labelled keyboard-scroll regions with
+visible hints. Reduced-motion/instant scroll avoids invalid moving-viewport
+captures; screenshot paths alone did not establish what was actually visible.
+The next owner action is commit/deploy and live source/asset verification.

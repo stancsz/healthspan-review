@@ -28,11 +28,9 @@ server implements the MCP JSON-RPC methods `initialize`, `tools/list`, and
 - `build_measurement_review`: merges SECA and clinical inputs with explicit
   provenance and reports `present_count`, `missing_fields`, and the MVV input
   gate. A conflicting SECA value is retained and disclosed as a warning. It
-  also returns deterministic `estimated_ages` results for all major categories
-  based on whatever canonical measurements are present. Each estimate includes
-  the input fields used and coverage. A caller may provide `estimated_ages`
-  metadata when it already has estimates, but the local adapter otherwise
-  computes the category estimates rather than omitting the output.
+  withholds numeric system-age outputs until domain-specific evidence and
+  approval gates are met. Caller-supplied age metadata is not accepted or
+  copied into the result.
 
 The MCP surface is an integration adapter for local measurement review. It is
 not a diagnosis tool, treatment recommender, patient-data service, or validated

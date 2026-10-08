@@ -1,0 +1,67 @@
+{
+  "scope": "Local synthetic app acceptance before candidate commit",
+  "head": "5c505e9e319f1f1dd50230fb5d6b84264e649526",
+  "date": "2026-10-08",
+  "files": [
+    {
+      "path": "docs/clinic-companion.html",
+      "sha256": "a94f79a48cf575747c69d43f07ec9643513352df02130853a24f12f40a8e0fbf"
+    },
+    {
+      "path": "docs/clinic-companion.js",
+      "sha256": "d6b95586e7a3caa47032ebda2f984175bafc4c2ed35045456b2615296f4b0a56"
+    },
+    {
+      "path": "docs/clinic-companion.css",
+      "sha256": "b76c6e75ad623793fcc2c15b387bd2b16046df268c920a3300c4ae837f030847"
+    },
+    {
+      "path": "docs/workbench.html",
+      "sha256": "4abc2e3c40f7a522972531fdf3dca2e6236094efbab4dbced128d470f6dc1c53"
+    },
+    {
+      "path": "docs/workbench.js",
+      "sha256": "fb20e42e045b5e89220f7e6ec1508a48c5b880ed1e92054662272f167417cfb4"
+    },
+    {
+      "path": "docs/manual.html",
+      "sha256": "7754a9f479103d1a09f34fe0594929d03deb39729cfeeb42e60c3c4a56e18468"
+    },
+    {
+      "path": "docs/manual.js",
+      "sha256": "8120f227c9f59f6ee1042b73946595124f43fd5429a76727c5a4b69934e500ac"
+    },
+    {
+      "path": "docs/manual.css",
+      "sha256": "bed3cfc6e73d9e29499ff2a0b5da1e30fc8e37173f3c0e96156a3588d51abf34"
+    },
+    {
+      "path": "docs/app-design.css",
+      "sha256": "2b5ced1508dbf3c0de0e89a1c2949fe54ee54588f88349d318447e46177860f3"
+    },
+    {
+      "path": "docs/app-nav.js",
+      "sha256": "682134f347e4fb3cb792ce2fc1d3ce194ec245ce73d8f34fd06712fffeee3c09"
+    },
+    {
+      "path": "docs/index.html",
+      "sha256": "cb580b466dcf73c4c5f22225fe33085422efeda72ee7e4989a2eef2e4125b548"
+    },
+    {
+      "path": "docs/clinical-parser.js",
+      "sha256": "9dd20199104cf08c4106014e747738df30c38a03c6bee5d89b151114550980db"
+    },
+    {
+      "path": "docs/seca-parser.js",
+      "sha256": "d8dd872417255efc907983d546a37162f08771408156e5c0f089e31ef7896491"
+    },
+    {
+      "path": "docs/pdf-import.mjs",
+      "sha256": "af4250e193675bda425ba9d631dbf0534fff631d46112c5bb7567ba0302e36ac"
+    },
+    {
+      "path": "vercel.json",
+      "sha256": "57fc5f9b72c8b5d1a220f79e82a2123d241dabc64e8124a995933f782663dd22"
+    }
+  ]
+}

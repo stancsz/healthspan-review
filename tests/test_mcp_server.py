@@ -41,16 +41,16 @@ def test_complete_synthetic_review_returns_35_of_35_without_raw_csv() -> None:
     }
     assert result["missing_fields"] == []
     assert result["assessment_readiness"]["assessment_ready"] is True
-    assert len(result["estimated_ages"]) == 17
-    joint = next(
-        item for item in result["estimated_ages"] if item["key"] == "joint_age"
-    )
-    assert joint["label"] == "Joint age"
-    assert joint["value"] == 35
-    assert joint["status"] == "estimated_heuristic"
-    assert joint["input_coverage"] == "6 / 6"
+    assert "estimated_ages" not in result
     assert "csv_text" not in json.dumps(result)
     assert "patient_id" not in json.dumps(result)
+    forged = _text(
+        call_tool(
+            "build_measurement_review",
+            {"measurements": {}, "estimated_ages": [{"key": "joint_age", "value": 35}]},
+        )
+    )
+    assert "estimated_ages" not in forged
 
 
 def test_mcp_dispatches_notifications_without_response() -> None:

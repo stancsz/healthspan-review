@@ -1,0 +1,13 @@
+{
+  "client": 320,
+  "clinicalTop": 3101,
+  "regionalTop": 9321,
+  "regions": [
+    "PDF candidate review",
+    "Source measurement ledger",
+    "Clinical inputs",
+    "Full review profile",
+    "Regional readings"
+  ],
+  "scroll": 320
+}

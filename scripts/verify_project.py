@@ -54,7 +54,19 @@ def build_checks(*, include_serving: bool) -> tuple[Check, ...]:
         Check("pages-seca-syntax", ("node", "--check", "docs/seca-parser.js")),
         Check("pages-intake-syntax", ("node", "--check", "docs/intake-form.js")),
         Check("pages-site-syntax", ("node", "--check", "docs/site.js")),
-        Check("pages-tests", ("node", "--test", "tests/site_parser.test.cjs")),
+        Check(
+            "pages-tests",
+            (
+                "node",
+                "--test",
+                "api/extract-pdf.test.js",
+                *(
+                    path.relative_to(ROOT).as_posix()
+                    for path in sorted((ROOT / "tests").glob("*.test.cjs"))
+                ),
+                "tests/test_pdf_intake_contract.js",
+            ),
+        ),
         Check(
             "test-receipt",
             _python("scripts/build_test_receipt.py", "--check"),

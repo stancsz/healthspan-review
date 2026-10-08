@@ -1,5 +1,13 @@
 # 008 — Product and release decisions
 
+> 2026-10-07 scope notice: the dated distribution and P0/P1 completion wording
+> below is retained historical baseline, not current release status or verified
+> private-source visibility. Root GOAL, the active LOCAL-REVIEW-1 contract and
+> ROADMAP govern current state. [The MyForme study](026-forme-product-reshape-2026-10-07.md)
+> records the proposed clinic-companion direction and the later closure of the
+> FRM-1 runtime-output conflict. E-005 remains
+> blocked; no patient service or fully reconciled release is established here.
+
 - **scope:** product posture, distribution, first system-age domain, and data
   strategy for this repository.
 - **status:** current decision baseline

@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-08",
+  "scope": "synthetic/local research app revamp; clinical approval excluded",
+  "status": "prepared_software_passed",
+  "clinical_gate": "E-005 blocked",
+  "canonical": {
+    "checks": [
+      {
+        "duration_ms": 39.749,
+        "name": "locked-resolution",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 125.084,
+        "name": "ruff",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 123.222,
+        "name": "ruff-format",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 301.203,
+        "name": "compile",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 12435.617,
+        "name": "python-tests",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 436.326,
+        "name": "pages-metadata-unit",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 60.739,
+        "name": "pages-seca-syntax",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 66.084,
+        "name": "pages-intake-syntax",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 63.539,
+        "name": "pages-site-syntax",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 331.295,
+        "name": "pages-tests",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 2018.727,
+        "name": "test-receipt",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 293.33,
+        "name": "demo-artifact",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 292.69,
+        "name": "external-fixture",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 2350.329,
+        "name": "external-report",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 115.518,
+        "name": "training-manifest",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 115.751,
+        "name": "system-age-manifest",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 272.394,
+        "name": "training-split-smoke",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 4333.36,
+        "name": "external-validation-smoke",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 2053.657,
+        "name": "documentation",
+        "returncode": 0,
+        "status": "passed"
+      },
+      {
+        "duration_ms": 3696.745,
+        "name": "serving-contract-smoke",
+        "returncode": 0,
+        "status": "passed"
+      }
+    ],
+    "clinical_gate": "E-005 blocked",
+    "include_serving": true,
+    "schema_version": 1,
+    "status": "passed"
+  },
+  "node_tests": {
+    "passed": 82,
+    "failed": 0
+  },
+  "source_hashes": {
+    "docs/clinic-companion.html": "c2ceb3803a9d3d323cb1e424c6fe55d800995a69cc4f3b88bbebd8e2003aceeb",
+    "docs/clinic-companion.css": "b76c6e75ad623793fcc2c15b387bd2b16046df268c920a3300c4ae837f030847",
+    "docs/clinic-companion.js": "4ec1b4f87b814b64fdead21f85cecb44538cec83fdbfaa2d023ce196624e2107",
+    "docs/workbench.html": "4abc2e3c40f7a522972531fdf3dca2e6236094efbab4dbced128d470f6dc1c53",
+    "docs/workbench.js": "fb20e42e045b5e89220f7e6ec1508a48c5b880ed1e92054662272f167417cfb4",
+    "docs/manual.html": "7754a9f479103d1a09f34fe0594929d03deb39729cfeeb42e60c3c4a56e18468",
+    "docs/manual.js": "8120f227c9f59f6ee1042b73946595124f43fd5429a76727c5a4b69934e500ac",
+    "docs/app-design.css": "2b5ced1508dbf3c0de0e89a1c2949fe54ee54588f88349d318447e46177860f3",
+    "docs/app-nav.js": "682134f347e4fb3cb792ce2fc1d3ce194ec245ce73d8f34fd06712fffeee3c09",
+    "docs/pdf-import.mjs": "af4250e193675bda425ba9d631dbf0534fff631d46112c5bb7567ba0302e36ac",
+    "docs/index.html": "cb580b466dcf73c4c5f22225fe33085422efeda72ee7e4989a2eef2e4125b548",
+    "docs/clinical-parser.js": "9dd20199104cf08c4106014e747738df30c38a03c6bee5d89b151114550980db",
+    "vercel.json": "57fc5f9b72c8b5d1a220f79e82a2123d241dabc64e8124a995933f782663dd22",
+    "scripts/verify_project.py": "dc5fde878ebac54c22b5931fa6c26051d2df7936fc19530c1ccf8f22f496349b"
+  },
+  "visual_guidance": {
+    "status": "all requested material repairs resolved",
+    "native_mobile_keyboard": "unverified",
+    "older_playwright_chromium_pdf": "Map.getOrInsertComputed unsupported; installed Chrome and IAB passed"
+  },
+  "publication": "pending"
+}

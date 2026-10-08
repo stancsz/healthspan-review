@@ -1,0 +1,44 @@
+{
+  "format": "synthetic-clinic-followup-v1",
+  "case_id": "HSR-042",
+  "synthetic": true,
+  "snapshot": "HSR-042-rev-1",
+  "plan_version": 1,
+  "current": true,
+  "plan": {
+    "goal": "More energy through the week",
+    "action": "Add a 10-minute walk after lunch on three weekdays, if this feels manageable.",
+    "participant_note": "A small, repeatable starting point. Adjust together if it does not fit your routine."
+  },
+  "approval": {
+    "status": "synthetic_workflow_approval",
+    "approved_at": "2026-10-08T16:29:58.241Z",
+    "snapshot": "HSR-042-rev-1",
+    "plan_version": 1
+  },
+  "participant_check_in": "difficult",
+  "check_in_recorded_at": "2026-10-08T16:30:03.993Z",
+  "review_date": "2026-11-05",
+  "measurement_provenance": [
+    {
+      "field": "body_mass_index",
+      "value": 28.4,
+      "unit": "kg/m2",
+      "kind": "derived_synthetic_example",
+      "source": "Synthetic clinic record",
+      "date": "2026-10-08",
+      "limitation": "Height and weight inputs are not included."
+    },
+    {
+      "field": "grip_strength",
+      "value": 31,
+      "unit": "kg",
+      "kind": "observed_synthetic_example",
+      "source": "Synthetic clinic measurement",
+      "date": "2026-10-08",
+      "limitation": "Measurement protocol is not included."
+    }
+  ],
+  "data_handling": "Generated locally for demonstration; no real patient data, participant name or raw source file.",
+  "intended_use": "Research and wellness workflow demonstration only; no clinical authorization, diagnosis, treatment advice or age prediction."
+}
