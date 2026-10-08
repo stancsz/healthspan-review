@@ -1,0 +1,226 @@
+{
+  "date": "2026-10-08",
+  "scope": "APP-REVAMP-1 research app publication; E-005 blocked",
+  "feature_source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+  "vercel": {
+    "id": "dpl_BpHtzfm8iKnAEr7YDX3JjDcahwyf",
+    "ready_state": "READY",
+    "url": "https://healthspan-review-gules.vercel.app/",
+    "git_commit_sha": "5f332e540908756e48786998af8077b2067f2b56",
+    "project_id": "prj_Gfa6nwa0uCw8kiRduQKCzGjPppb9"
+  },
+  "ci": {
+    "verify_run": 37810700392,
+    "linux": "success",
+    "windows": "success",
+    "pages_run": 37810700635,
+    "pages": "success"
+  },
+  "live_readback": {
+    "base": "https://healthspan-review-gules.vercel.app",
+    "source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+    "routes": [
+      {
+        "route": "/",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 13118
+      },
+      {
+        "route": "/workbench",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 20848
+      },
+      {
+        "route": "/manual",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 3978
+      },
+      {
+        "route": "/docs/index",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 113589
+      },
+      {
+        "route": "/clinic-companion",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 13118
+      },
+      {
+        "route": "/app-nav.js",
+        "status": 200,
+        "content_type": "application/javascript; charset=utf-8",
+        "bytes": 753
+      },
+      {
+        "route": "/app-design.css",
+        "status": 200,
+        "content_type": "text/css; charset=utf-8",
+        "bytes": 10159
+      },
+      {
+        "route": "/pdf-import.mjs",
+        "status": 200,
+        "content_type": "application/javascript; charset=utf-8",
+        "bytes": 2861
+      },
+      {
+        "route": "/vendor/pdfjs/pdf.worker.min.mjs",
+        "status": 200,
+        "content_type": "application/javascript; charset=utf-8",
+        "bytes": 1265413
+      },
+      {
+        "route": "/assets/favicon.svg",
+        "status": 200,
+        "content_type": "image/svg+xml",
+        "bytes": 631
+      }
+    ],
+    "assets": [
+      {
+        "path": "docs/clinic-companion.html",
+        "route": "/",
+        "source_sha256": "c2ceb3803a9d3d323cb1e424c6fe55d800995a69cc4f3b88bbebd8e2003aceeb",
+        "deployed_sha256": "c2ceb3803a9d3d323cb1e424c6fe55d800995a69cc4f3b88bbebd8e2003aceeb",
+        "matches": true
+      },
+      {
+        "path": "docs/clinic-companion.css",
+        "route": "/clinic-companion.css",
+        "source_sha256": "b76c6e75ad623793fcc2c15b387bd2b16046df268c920a3300c4ae837f030847",
+        "deployed_sha256": "b76c6e75ad623793fcc2c15b387bd2b16046df268c920a3300c4ae837f030847",
+        "matches": true
+      },
+      {
+        "path": "docs/clinic-companion.js",
+        "route": "/clinic-companion.js",
+        "source_sha256": "4ec1b4f87b814b64fdead21f85cecb44538cec83fdbfaa2d023ce196624e2107",
+        "deployed_sha256": "4ec1b4f87b814b64fdead21f85cecb44538cec83fdbfaa2d023ce196624e2107",
+        "matches": true
+      },
+      {
+        "path": "docs/app-nav.js",
+        "route": "/app-nav.js",
+        "source_sha256": "682134f347e4fb3cb792ce2fc1d3ce194ec245ce73d8f34fd06712fffeee3c09",
+        "deployed_sha256": "682134f347e4fb3cb792ce2fc1d3ce194ec245ce73d8f34fd06712fffeee3c09",
+        "matches": true
+      },
+      {
+        "path": "docs/app-design.css",
+        "route": "/app-design.css",
+        "source_sha256": "2b5ced1508dbf3c0de0e89a1c2949fe54ee54588f88349d318447e46177860f3",
+        "deployed_sha256": "2b5ced1508dbf3c0de0e89a1c2949fe54ee54588f88349d318447e46177860f3",
+        "matches": true
+      },
+      {
+        "path": "docs/workbench.html",
+        "route": "/workbench",
+        "source_sha256": "4abc2e3c40f7a522972531fdf3dca2e6236094efbab4dbced128d470f6dc1c53",
+        "deployed_sha256": "4abc2e3c40f7a522972531fdf3dca2e6236094efbab4dbced128d470f6dc1c53",
+        "matches": true
+      },
+      {
+        "path": "docs/workbench.js",
+        "route": "/workbench.js",
+        "source_sha256": "fb20e42e045b5e89220f7e6ec1508a48c5b880ed1e92054662272f167417cfb4",
+        "deployed_sha256": "fb20e42e045b5e89220f7e6ec1508a48c5b880ed1e92054662272f167417cfb4",
+        "matches": true
+      },
+      {
+        "path": "docs/manual.html",
+        "route": "/manual",
+        "source_sha256": "7754a9f479103d1a09f34fe0594929d03deb39729cfeeb42e60c3c4a56e18468",
+        "deployed_sha256": "7754a9f479103d1a09f34fe0594929d03deb39729cfeeb42e60c3c4a56e18468",
+        "matches": true
+      },
+      {
+        "path": "docs/manual.js",
+        "route": "/manual.js",
+        "source_sha256": "8120f227c9f59f6ee1042b73946595124f43fd5429a76727c5a4b69934e500ac",
+        "deployed_sha256": "8120f227c9f59f6ee1042b73946595124f43fd5429a76727c5a4b69934e500ac",
+        "matches": true
+      },
+      {
+        "path": "docs/pdf-import.mjs",
+        "route": "/pdf-import.mjs",
+        "source_sha256": "af4250e193675bda425ba9d631dbf0534fff631d46112c5bb7567ba0302e36ac",
+        "deployed_sha256": "af4250e193675bda425ba9d631dbf0534fff631d46112c5bb7567ba0302e36ac",
+        "matches": true
+      },
+      {
+        "path": "docs/clinical-parser.js",
+        "route": "/clinical-parser.js",
+        "source_sha256": "9dd20199104cf08c4106014e747738df30c38a03c6bee5d89b151114550980db",
+        "deployed_sha256": "9dd20199104cf08c4106014e747738df30c38a03c6bee5d89b151114550980db",
+        "matches": true
+      }
+    ],
+    "api_get_status": 405
+  },
+  "pages_readback": {
+    "source_sha": "5f332e540908756e48786998af8077b2067f2b56",
+    "routes": [
+      {
+        "path": "clinic-companion.html",
+        "status": 200,
+        "git_object_matches": true,
+        "sha256": "a38ff27bded41124b2919efcd8db9ce80752f6aca283689fbea62757929c3808"
+      },
+      {
+        "path": "workbench.html",
+        "status": 200,
+        "git_object_matches": true,
+        "sha256": "0c96f85693ed3b7cfe3dff38e79ff4401beb9cec3c98a75081950c2b44c42157"
+      },
+      {
+        "path": "manual.html",
+        "status": 200,
+        "git_object_matches": true,
+        "sha256": "3c11462d1312a94310807c7d0d7eb8c8a33fa7ef2b3d8755a9d5ee9b9abc17c1"
+      },
+      {
+        "path": "app-nav.js",
+        "status": 200,
+        "git_object_matches": true,
+        "sha256": "682134f347e4fb3cb792ce2fc1d3ce194ec245ce73d8f34fd06712fffeee3c09"
+      },
+      {
+        "path": "app-design.css",
+        "status": 200,
+        "git_object_matches": true,
+        "sha256": "2b5ced1508dbf3c0de0e89a1c2949fe54ee54588f88349d318447e46177860f3"
+      }
+    ],
+    "html_has_source_sha": true
+  },
+  "live_pdf": {
+    "base": "https://healthspan-review-gules.vercel.app",
+    "input": "synthetic-selectable.pdf",
+    "scope": "one-page synthetic live extraction regression, not a50-page rerun",
+    "requests": [
+      {
+        "status": 200,
+        "method": "POST"
+      }
+    ],
+    "preconsent_status": "1 page(s) inspected locally. No content has been sent.",
+    "posts_before_consent": 0,
+    "status": "Extraction complete. Verify every value against its source page before entry.",
+    "candidate_rows": 3,
+    "candidate_panel_visible": true
+  },
+  "limitations": [
+    "E-005 blocked",
+    "LOCAL-REVIEW-1 remains active",
+    "IR1 user study and patient-data governance unapproved",
+    "exact requested hostname ownership unresolved",
+    "native mobile keyboard/human screen-reader acceptance unverified",
+    "50-page scanned-only/live429 not rerun"
+  ],
+  "note": "Vercel assets match the clean Windows worktree; Pages assets match Git blobs directly because checkout line endings differ. Docs closure commits retain this feature publication checkpoint."
+}

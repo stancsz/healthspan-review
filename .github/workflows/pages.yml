@@ -37,7 +37,7 @@ jobs:
           node --check docs/intake-form.js
           node --check docs/site.js
           node --test tests/site_parser.test.cjs
-          node --test api/extract-pdf.test.js tests/clinic_companion.test.cjs tests/clinical_parser.test.cjs tests/manual.test.cjs tests/pdf_batches.test.cjs tests/pdf_candidate_review.test.cjs tests/pdf_request_scheduler.test.cjs tests/site_parser.test.cjs tests/workbench.test.cjs tests/test_pdf_intake_contract.js
+          node --test api/extract-pdf.test.js tests/app_nav.test.cjs tests/clinic_companion.test.cjs tests/clinical_parser.test.cjs tests/manual.test.cjs tests/pdf_batches.test.cjs tests/pdf_candidate_review.test.cjs tests/pdf_request_scheduler.test.cjs tests/site_parser.test.cjs tests/workbench.test.cjs tests/test_pdf_intake_contract.js
 
       - name: Regenerate and verify the synthetic demo artifact
         run: uv run python scripts/build_demo_data.py --check
@@ -58,6 +58,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     permissions:
+      actions: read
       contents: read
       pages: write
       id-token: write
@@ -77,7 +78,26 @@ jobs:
             --run-id "$BUILD_RUN_ID"
       - uses: actions/upload-pages-artifact@v4
         with:
+          name: github-pages-${{ github.run_attempt }}
           path: docs
+      - name: Wait for the uploaded Pages artifact to be visible
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGES_ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
+        run: |
+          for attempt in 1 2 3 4 5; do
+            count=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --jq '[.artifacts[] | select(.name == env.PAGES_ARTIFACT_NAME and .expired == false)] | length')
+            if [ "$count" = "1" ]; then exit 0; fi
+            if [ "$count" != "0" ]; then
+              echo "Ambiguous Pages artifact; refusing deployment."
+              exit 1
+            fi
+            sleep 3
+          done
+          echo "Uploaded Pages artifact is not visible yet."
+          exit 1
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}

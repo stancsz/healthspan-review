@@ -26,7 +26,7 @@ Priority: P0 for the authorized publication slice. Owner: Codex integrator;
 
 companion implementation: companion builder; independent acceptance: release reviewer.
 
-Status: independently accepted locally; publication in progress. Depends on LOCAL-REVIEW-1 and FRM-1 withholding.
+Status: live synthetic app independently accepted; final publication-pipeline repair and reconciliation in progress. Depends on LOCAL-REVIEW-1 and FRM-1 withholding.
 
 
 
@@ -49,6 +49,8 @@ Status: independently accepted locally; publication in progress. Depends on LOCA
    Project #4 with the bounded publication evidence.
 
 
+
+Current publication: feature `5f332e5` passed Linux/Windows and Pages; Vercel `cfc87c7` fixes the evidence clean-route base and passed live recheck. Its Pages verification passed, but artifact lookup failed at deployment (zero visible, then duplicate names on rerun). A reviewed unique-attempt artifact/visibility repair is being published; final pipeline success remains pending.
 
 Exit evidence: independent READY for the synthetic/local app workflow, software
 

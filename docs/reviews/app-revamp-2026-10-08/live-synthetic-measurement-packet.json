@@ -1,0 +1,672 @@
+{
+  "format": "local-measurement-review-pack-v0.2",
+  "intended_use": "research_and_wellness_measurement_review_only",
+  "clinical_use": "forbidden",
+  "source": {
+    "seca": {
+      "format": "SECA TableView CSV",
+      "label": "Local SECA TableView CSV",
+      "measured_at": "Jan 2, 2025, 8:00 AM"
+    },
+    "clinical": {
+      "format": "canonical clinical inputs CSV",
+      "label": "Local clinical inputs CSV"
+    }
+  },
+  "measurement_ledger": [
+    {
+      "field": "bmi",
+      "value": 25.8,
+      "unit": "kg/m²",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "ecw_tbw",
+      "value": 0.39,
+      "unit": "ratio",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "fat_free_mass_kg",
+      "value": 56.8,
+      "unit": null,
+      "provenance": "derived_from_exported_measurements",
+      "derivation": "fat_free_mass_kg = weight_kg - fat_mass_kg"
+    },
+    {
+      "field": "fat_mass_kg",
+      "value": 19.4,
+      "unit": "kg",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "ffmi",
+      "value": 19.230861,
+      "unit": "kg/m²",
+      "provenance": "derived_from_exported_measurements",
+      "derivation": "ffmi = fat_free_mass_kg / height_m²"
+    },
+    {
+      "field": "height_cm",
+      "value": 171.86,
+      "unit": "cm",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "phase_angle",
+      "value": 6.1,
+      "unit": "degrees",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "skeletal_muscle_mass",
+      "value": 28.8,
+      "unit": "kg",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "visceral_fat",
+      "value": 3.1,
+      "unit": "Liters",
+      "provenance": "observed_in_export",
+      "derivation": null
+    },
+    {
+      "field": "weight_kg",
+      "value": 76.2,
+      "unit": "kg",
+      "provenance": "observed_in_export",
+      "derivation": null
+    }
+  ],
+  "segment_ledger": [
+    {
+      "segment": "Left Arm",
+      "value": 1.74,
+      "unit": "kg",
+      "provenance": "observed_in_export"
+    },
+    {
+      "segment": "Left Leg",
+      "value": 5.46,
+      "unit": "kg",
+      "provenance": "observed_in_export"
+    },
+    {
+      "segment": "Right Arm",
+      "value": 1.72,
+      "unit": "kg",
+      "provenance": "observed_in_export"
+    },
+    {
+      "segment": "Right Leg",
+      "value": 5.48,
+      "unit": "kg",
+      "provenance": "observed_in_export"
+    },
+    {
+      "segment": "Torso",
+      "value": 13.4,
+      "unit": "kg",
+      "provenance": "observed_in_export"
+    }
+  ],
+  "clinical_ledger": [
+    {
+      "field": "age",
+      "value": 45,
+      "unit": "years",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "sex",
+      "value": "female",
+      "unit": "",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "bmi",
+      "value": 25.8,
+      "unit": "kg/m²",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "systolic_bp",
+      "value": 118,
+      "unit": "mmHg",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "diastolic_bp",
+      "value": 74,
+      "unit": "mmHg",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "resting_hr",
+      "value": 64,
+      "unit": "bpm",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "waist_circumference",
+      "value": 82,
+      "unit": "cm",
+      "category": "demographics",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "phase_angle",
+      "value": 6.1,
+      "unit": "degrees",
+      "category": "bia",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "ecw_tbw",
+      "value": 0.39,
+      "unit": "ratio",
+      "category": "bia",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "ffmi",
+      "value": 19.230861,
+      "unit": "kg/m²",
+      "category": "bia",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "skeletal_muscle_mass",
+      "value": 28.8,
+      "unit": "kg",
+      "category": "bia",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "visceral_fat",
+      "value": 3.1,
+      "unit": "Liters",
+      "category": "bia",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "fasting_glucose",
+      "value": 92,
+      "unit": "mg/dL",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "hba1c",
+      "value": 5.3,
+      "unit": "%",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "hs_crp",
+      "value": 0.7,
+      "unit": "mg/L",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "albumin",
+      "value": 4.2,
+      "unit": "g/dL",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "creatinine",
+      "value": 0.8,
+      "unit": "mg/dL",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "egfr",
+      "value": 98,
+      "unit": "mL/min/1.73m²",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "alp",
+      "value": 72,
+      "unit": "U/L",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "wbc",
+      "value": 6,
+      "unit": "10^9/L",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "rdw",
+      "value": 12.5,
+      "unit": "%",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "fib_4",
+      "value": 0.8,
+      "unit": "index",
+      "category": "blood",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "hypertension",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "t2d",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "osteoarthritis",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "sleep_apnea",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "cvd",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "copd",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "cancer",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "depression",
+      "value": 0,
+      "unit": "",
+      "category": "history",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "grip_strength",
+      "value": 29,
+      "unit": "kg",
+      "category": "functional",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "chair_rise_time",
+      "value": 9.2,
+      "unit": "seconds",
+      "category": "functional",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "smoking_status",
+      "value": "never",
+      "unit": "",
+      "category": "functional",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "alcohol_heavy_use",
+      "value": 0,
+      "unit": "",
+      "category": "functional",
+      "provenance": "observed_in_clinical_inputs_csv"
+    },
+    {
+      "field": "sleep_hours",
+      "value": 7.5,
+      "unit": "hours",
+      "category": "functional",
+      "provenance": "observed_in_clinical_inputs_csv"
+    }
+  ],
+  "complete_profile": {
+    "present_count": 35,
+    "total_count": 35,
+    "fields": [
+      {
+        "field": "age",
+        "value": 45,
+        "unit": "years",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "sex",
+        "value": "female",
+        "unit": "",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "bmi",
+        "value": 25.8,
+        "unit": "kg/m²",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "systolic_bp",
+        "value": 118,
+        "unit": "mmHg",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "diastolic_bp",
+        "value": 74,
+        "unit": "mmHg",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "resting_hr",
+        "value": 64,
+        "unit": "bpm",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "waist_circumference",
+        "value": 82,
+        "unit": "cm",
+        "category": "demographics",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "phase_angle",
+        "value": 6.1,
+        "unit": "degrees",
+        "category": "bia",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "ecw_tbw",
+        "value": 0.39,
+        "unit": "ratio",
+        "category": "bia",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "ffmi",
+        "value": 19.230861,
+        "unit": "kg/m²",
+        "category": "bia",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "skeletal_muscle_mass",
+        "value": 28.8,
+        "unit": "kg",
+        "category": "bia",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "visceral_fat",
+        "value": 3.1,
+        "unit": "Liters",
+        "category": "bia",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "fasting_glucose",
+        "value": 92,
+        "unit": "mg/dL",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "hba1c",
+        "value": 5.3,
+        "unit": "%",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "hs_crp",
+        "value": 0.7,
+        "unit": "mg/L",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "albumin",
+        "value": 4.2,
+        "unit": "g/dL",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "creatinine",
+        "value": 0.8,
+        "unit": "mg/dL",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "egfr",
+        "value": 98,
+        "unit": "mL/min/1.73m²",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "alp",
+        "value": 72,
+        "unit": "U/L",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "wbc",
+        "value": 6,
+        "unit": "10^9/L",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "rdw",
+        "value": 12.5,
+        "unit": "%",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "fib_4",
+        "value": 0.8,
+        "unit": "index",
+        "category": "blood",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "hypertension",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "t2d",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "osteoarthritis",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "sleep_apnea",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "cvd",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "copd",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "cancer",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "depression",
+        "value": 0,
+        "unit": "",
+        "category": "history",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "grip_strength",
+        "value": 29,
+        "unit": "kg",
+        "category": "functional",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "chair_rise_time",
+        "value": 9.2,
+        "unit": "seconds",
+        "category": "functional",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "smoking_status",
+        "value": "never",
+        "unit": "",
+        "category": "functional",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "alcohol_heavy_use",
+        "value": 0,
+        "unit": "",
+        "category": "functional",
+        "provenance": "Clinical inputs CSV"
+      },
+      {
+        "field": "sleep_hours",
+        "value": 7.5,
+        "unit": "hours",
+        "category": "functional",
+        "provenance": "Clinical inputs CSV"
+      }
+    ]
+  },
+  "parsing_review": {
+    "unmapped_labels": [],
+    "unit_warnings": [],
+    "derivations": [
+      "fat_free_mass_kg = weight_kg - fat_mass_kg",
+      "ffmi = fat_free_mass_kg / height_m²"
+    ],
+    "merge_warnings": []
+  },
+  "assessment_readiness": {
+    "assessment_ready": true,
+    "missing_requirements": [],
+    "blood_values_present": 10,
+    "history_values_present": 8,
+    "note": "This is an input-completeness check, not a clinical assessment."
+  },
+  "frailty_index": {
+    "status": "not_computed_in_browser_review",
+    "numerator": null,
+    "denominator": null,
+    "coverage_caveat": "The browser review does not compute an FI. Missing values must not be imputed."
+  },
+  "comparison": {
+    "status": "descriptive_measurement_deltas_only",
+    "basis": "latest_minus_previous_dated_scan",
+    "measurement_deltas": {
+      "bmi": -0.5999999999999979,
+      "height_cm": -0.18999999999999773,
+      "weight_kg": -1.8999999999999915,
+      "skeletal_muscle_mass": 0.1999999999999993,
+      "fat_mass_kg": -1.6000000000000014,
+      "visceral_fat": -0.6999999999999997,
+      "phase_angle": 0.39999999999999947,
+      "ecw_tbw": -0.02999999999999997,
+      "fat_free_mass_kg": -0.30000000000000426,
+      "ffmi": -0.058896000000000726
+    },
+    "segmental_deltas": {
+      "Torso": 0.20000000000000107,
+      "Left Arm": 0.040000000000000036,
+      "Left Leg": 0.04999999999999982,
+      "Right Arm": 0.040000000000000036,
+      "Right Leg": 0.05000000000000071
+    },
+    "caveat": "A change in an equipment value is not evidence of improved health or an action effect."
+  },
+  "estimated_ages": [],
+  "boundaries": [
+    "No diagnosis or treatment advice.",
+    "Numeric system-age outputs are withheld pending domain-specific evidence and approval.",
+    "E-005 remains blocked.",
+    "Generated locally; no original source document or patient identifier is included.",
+    "PDF values were suggested by AI and entered only after user confirmation."
+  ]
+}
