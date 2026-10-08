@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script>
+    // Vercel's clean index route is /docs; keep relative assets and citations
+    // anchored to the archive directory, including when the slash is removed.
+    if (location.pathname === "/docs" || location.pathname === "/docs/") {
+      var archiveBase = document.createElement("base");
+      archiveBase.href = "/docs/";
+      document.head.appendChild(archiveBase);
+    }
+  </script>
   <title>Frailty Measurement Review — Research documentation</title>
   <meta name="description" content="A transparent research review surface for a 35-feature frailty measurement contract. It shows what is measured, what is withheld, and what evidence remains absent before clinical use." />
   <meta name="robots" content="index,follow" />
