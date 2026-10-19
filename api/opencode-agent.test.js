@@ -134,6 +134,14 @@ test('PDF text extraction failures fall back to the original file', async () => 
   assert.deepEqual(await handler.preparePdfText(sandbox, [{ name: 'scan.pdf' }], ['/vercel/workspace/01-scan.pdf']), []);
 });
 
+test('PDF text companion replaces the original in OpenCode workspace instructions', () => {
+  assert.deepEqual(handler.buildAgentWorkspacePaths(
+    [{ name: 'scan.pdf' }, { name: 'labs.csv' }],
+    ['/vercel/workspace/01-scan.pdf', '/vercel/workspace/02-labs.csv'],
+    [{ originalName: 'scan.pdf', path: '/vercel/workspace/pdf-text/01-extracted.txt' }],
+  ), ['/vercel/workspace/02-labs.csv', '/vercel/workspace/pdf-text/01-extracted.txt']);
+});
+
 test('ZIP office files are bounded by entry count, expansion size, ratio, and safe paths', () => {
   assert.deepEqual(handler.inspectZipEnvelope(zipEnvelope()), { issue: null, expanded: 22 });
   assert.match(handler.inspectZipEnvelope(zipEnvelope({ payload: Buffer.alloc(2 * 1024 * 1024) })).issue, /compression ratio/);

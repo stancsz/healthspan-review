@@ -164,10 +164,16 @@ The local repair streams `pdftotext` output into a 120,000-character cap,
 labels each extracted page with its original page number (including blank
 leading pages), and falls back to the original when extraction is unavailable.
 The sandbox cap is 150 seconds and the configured function cap is 180 seconds.
-All 118 Node tests pass locally. The repair still needs deployment and a
-provider-backed repeat of the 51-page case; OCA-2 remains In Progress until
-that succeeds or returns a bounded, useful explanation and is independently
-reviewed. No age/sex-specific reference ranges or validated category-age
+All 118 Node tests passed before deployment. Commit `b711b4c` is deployed as
+`dpl_7mxwzXFcbycZ9gtD4haCv6B3NpWF`; Vercel metadata confirms the 180-second
+function timeout. The targeted production 51-page retry returned a bounded
+502 after 106.6 seconds. Sanitized logs show a tool call but no valid
+measurement JSON after the one schema retry (104.9 seconds). The timeout
+increase did not fix the case. A local follow-up now omits successfully
+extracted source PDFs from OpenCode's workspace list and tells it to use the
+numbered text companion only. OCA-2 remains In Progress pending a fresh
+deployment, targeted provider-backed pass, independent review, and documentation
+sync. No age/sex-specific reference ranges or validated category-age
 models are available in this workflow; it does not fabricate them. Dates from arbitrary-file extraction
 remain printed source metadata, not normalized into a canonical time-series
 date. E-005, IR1, patient-data governance, clinical approval, and the exact-

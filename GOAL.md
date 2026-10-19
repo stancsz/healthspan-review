@@ -76,10 +76,15 @@ cap, labels every extracted page with its original page number (including
 blank leading pages), and instructs OpenCode to prefer that bounded text. If
 extraction is unavailable, it falls back to the original PDF. Sandbox lifetime
 is raised to 150 seconds and the Vercel function cap to 180 seconds. Local Node
-tests pass 118/118. This repair is not yet published or provider-verified; do not close
-OCA-2 until a production 51-page synthetic PDF succeeds or receives a bounded,
-useful explanation, then complete the independent review and documentation
-sync.
+tests passed 118/118 before deployment. Commit `b711b4c` is deployed as
+`dpl_7mxwzXFcbycZ9gtD4haCv6B3NpWF`; deployment metadata confirms the 180-second
+function timeout. A targeted production rerun returned a bounded 502 after
+106.6 seconds. Sanitized logs show OpenCode used a tool but returned no valid
+measurement JSON after its single retry (104.9 seconds), so the longer timeout
+did not fix this case. The next local repair hides successfully extracted
+original PDFs from OpenCode's workspace list and tells it to use the numbered
+text companion only. OCA-2 remains open pending a fresh deployment, targeted
+provider-backed pass, independent review, and documentation sync.
 
 ### PWA-1: Installable browser app, 2026-10-19
 

@@ -42,10 +42,17 @@ tested DOCX, PDF, PNG, CSV, and TXT fixtures: 9 of 10 returned HTTP 200. A
 sanitized Vercel logs confirmed exit 143 near that cap. The local repair streams
 `pdftotext` output into a 120,000-character limit, labels every extracted page
 with its original number (including blank leading pages), and uses a 150-second
-sandbox cap with a 180-second function cap. Local verification passes 118 Node
-tests plus the canonical and docs verifiers. The repair is awaiting deployment
-and production verification. Deployment and commit state are tracked in
-`GOAL.md` and `ROADMAP.md`.
+sandbox cap with a 180-second function cap. Local verification passed 118 Node
+tests plus the canonical and docs verifiers. Commit `b711b4c` is deployed as
+`dpl_7mxwzXFcbycZ9gtD4haCv6B3NpWF`, and Vercel metadata confirms the
+180-second function timeout. A targeted production 51-page retry returned a
+bounded 502 after 106.6 seconds. Sanitized logs show a tool call but no valid
+measurement JSON after the single schema retry. The timeout increase did not
+fix this case. A local follow-up now omits successfully extracted source PDFs
+from OpenCode's workspace list and directs it to the numbered text companion
+only. That follow-up awaits a fresh deployment and provider-backed
+verification. Deployment and commit state are tracked in `GOAL.md` and
+`ROADMAP.md`.
 
 The OpenRouter key is configured as a sensitive Production environment variable
 and is brokered to egress by Vercel; it does not enter the sandbox. E-005, IR1,
