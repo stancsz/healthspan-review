@@ -35,14 +35,17 @@ mean of 20. Synthetic PDF and screenshot requests each returned grounded
 summaries; a combined PDF/screenshot request also completed after increasing the
 sandbox cap to 90 seconds and function max duration to 120 seconds. Missing or
 false consent returns 400. Production deployment
-`dpl_HDmK8u53YNuYv5VQQ9o453q9rgRg` serves
+`dpl_FWWst1FSjvuiEaCFvcf2RnQuS2fs` serves
 `https://healthspan-review-gules.vercel.app/agent`. Live `/agent`, CSS, and JS
 match source SHA-256; none contains the OpenRouter key. API GET returns 405
 without key exposure. The key is configured as a sensitive Production secret.
 The active 5-requests/minute/IP firewall rule covers both AI POST routes. The
-deployed UI was visually reviewed; independent feature acceptance is READY for
-the documented bounded scope. Source commit `efd678d` is pushed to `main`, Wiki
-page 029 is synchronized, and Project #4 item OCA-1 is Done. The feature remains
+deployed UI was tested through the browser file picker, consent, and submit
+flow; workspace tools extracted PDF text and summarized the screenshot. The
+embedded instruction-like PDF text was treated as untrusted. Independent feature
+acceptance is READY for the documented bounded scope. Source commits `efd678d`
+and `6ba8164` are pushed to `main`, Wiki page 029 is synchronized, and Project
+#4 item OCA-1 is Done. The feature remains
 research-only;
 E-005, IR1, and patient-data governance do not advance.
 

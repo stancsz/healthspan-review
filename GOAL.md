@@ -22,16 +22,19 @@ brokered server-side key. The key remains a sensitive Production environment
 variable and is not placed in browser assets, responses, or the sandbox. The
 existing measurement CSV flow remains browser-local. Only synthetic or
 de-identified material is allowed; no identifiable health data or clinical
-decisions. Production deployment `dpl_HDmK8u53YNuYv5VQQ9o453q9rgRg` serves
+decisions. Production deployment `dpl_FWWst1FSjvuiEaCFvcf2RnQuS2fs` serves
 `https://healthspan-review-gules.vercel.app/agent`. Fourteen API tests pass. A
 synthetic CSV returned three rows and a mean of 20 in both local and production
 OpenCode tool/model runs. Production synthetic PDF and screenshot uploads both
 returned grounded summaries; the combined PDF/screenshot request also succeeded
-after setting a 90-second sandbox cap. Missing/false consent returns 400. Live
+after setting a 90-second sandbox cap. The actual browser picker → consent →
+submit flow was verified; workspace tools extracted PDF values, treated its
+embedded instruction as untrusted data, and summarized the screenshot.
+Missing/false consent returns 400. Live
 page/CSS/JS match the source and contain no key; API GET returns 405 with no key
 exposure. The active 5 requests/minute/IP Vercel Firewall rule covers both AI
 POST routes. Independent feature acceptance is READY for the bounded types and
-limits described. Source commit `efd678d` is pushed to `main`; Wiki page 029 and
+limits described. Source commits `efd678d` and `6ba8164` are pushed to `main`; Wiki page 029 and
 Project #4 item OCA-1 are synchronized and Done. OCA-1 does not
 advance E-005, IR1, or patient-data governance.
 

@@ -24,11 +24,12 @@ policies. Users should verify summaries against their sources.
 
 ## Verification
 
-Production deployment `dpl_HDmK8u53YNuYv5VQQ9o453q9rgRg` serves
+Production deployment `dpl_FWWst1FSjvuiEaCFvcf2RnQuS2fs` serves
 https://healthspan-review-gules.vercel.app/agent. Fourteen API tests pass.
 Synthetic CSV, PDF-only, screenshot-only, and combined PDF/screenshot uploads
 returned useful results; the test PDF's instruction-like string was handled as
-untrusted data. Missing or false consent returned HTTP 400. The source-matched
+untrusted data. The browser file-picker → consent → submit flow was verified,
+and workspace tools extracted PDF text. Missing or false consent returned HTTP 400. The source-matched
 public page, CSS, and JS contain no OpenRouter key; API GET returns 405 without
 key exposure. The 5 requests/minute/IP Vercel Firewall rule covers both AI POST
 routes. Production deployment and commit state are tracked in `GOAL.md` and
