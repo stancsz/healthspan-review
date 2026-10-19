@@ -31,8 +31,8 @@ after setting a 90-second sandbox cap. Missing/false consent returns 400. Live
 page/CSS/JS match the source and contain no key; API GET returns 405 with no key
 exposure. The active 5 requests/minute/IP Vercel Firewall rule covers both AI
 POST routes. Independent feature acceptance is READY for the bounded types and
-limits described. Repository commit/push and final Wiki/Project #4 sync remain.
-OCA-1 does not
+limits described. Source commit `efd678d` is pushed to `main`; Wiki page 029 and
+Project #4 item OCA-1 are synchronized and Done. OCA-1 does not
 advance E-005, IR1, or patient-data governance.
 
 ### App revamp publication, 2026-10-08

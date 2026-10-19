@@ -13,7 +13,7 @@ software check is green.
 ### OCA-1 — OpenCode research file workspace, 2026-10-19
 
 Priority: P1 research-app capability. Owner: Codex integrator; acceptance:
-independent reviewer. Status: In progress. Depends on the existing Vercel
+independent reviewer. Status: Done for this bounded delivery slice. Depends on the existing Vercel
 project and server-side OpenRouter credential. User authorized free public use
 and deployment, conditioned on keeping the API key secret.
 
@@ -41,8 +41,9 @@ match source SHA-256; none contains the OpenRouter key. API GET returns 405
 without key exposure. The key is configured as a sensitive Production secret.
 The active 5-requests/minute/IP firewall rule covers both AI POST routes. The
 deployed UI was visually reviewed; independent feature acceptance is READY for
-the documented bounded scope. Git commit/push and synchronized Wiki/Project #4
-closeout remain. The feature remains research-only;
+the documented bounded scope. Source commit `efd678d` is pushed to `main`, Wiki
+page 029 is synchronized, and Project #4 item OCA-1 is Done. The feature remains
+research-only;
 E-005, IR1, and patient-data governance do not advance.
 
 ### APP-REVAMP-1 — Complete app revamp and publication, 2026-10-08
