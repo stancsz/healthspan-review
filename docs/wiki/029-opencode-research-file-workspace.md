@@ -13,9 +13,9 @@ explicit consent before accepting files.
 Each run uses a one-CPU Vercel Sandbox with network egress limited to OpenRouter.
 A Vercel firewall transform injects the server-side OpenRouter key into
 requests, so it is not sent to the browser or placed in the agent VM. Sandbox
-stop is requested after each run; its maximum lifetime is 90 seconds and the
-function limit is 120 seconds. Public use is free for now, with request-size/
-runtime limits and an active per-IP Vercel Firewall rule.
+stop is requested after each run. The pending repair configures a 150-second
+sandbox cap and a 180-second function limit. Public use is free for now, with
+request-size/runtime limits and an active per-IP Vercel Firewall rule.
 
 Use synthetic or de-identified material only. The app does not approve
 identifiable health data, clinical decisions, diagnosis, or treatment. Content
@@ -36,8 +36,16 @@ CommonJS loaded an ESM-only dependency. Commit `ca9e350` loads the Sandbox SDK's
 ESM entry; current CI passes on Linux and Windows. A post-deploy synthetic CSV
 request returned HTTP 200, three rows, and mean 20 without key exposure. The
 5 requests/minute/IP Vercel Firewall rule covers both AI POST
-routes. Production deployment and commit state are tracked in `GOAL.md` and
-`ROADMAP.md`.
+routes. A bounded production pressure run across two five-request windows
+tested DOCX, PDF, PNG, CSV, and TXT fixtures: 9 of 10 returned HTTP 200. A
+51-page synthetic PDF hit the old 90-second sandbox cap and returned 502;
+sanitized Vercel logs confirmed exit 143 near that cap. The local repair streams
+`pdftotext` output into a 120,000-character limit, labels every extracted page
+with its original number (including blank leading pages), and uses a 150-second
+sandbox cap with a 180-second function cap. Local verification passes 118 Node
+tests plus the canonical and docs verifiers. The repair is awaiting deployment
+and production verification. Deployment and commit state are tracked in
+`GOAL.md` and `ROADMAP.md`.
 
 The OpenRouter key is configured as a sensitive Production environment variable
 and is brokered to egress by Vercel; it does not enter the sandbox. E-005, IR1,

@@ -60,10 +60,26 @@ run are not implemented; this is tracked as
 the supported-domain decision is resolved with appropriate model, reference,
 and validation evidence.
 
-Live endpoint pressure acceptance: five simultaneous synthetic research
-requests all returned HTTP 200 from MiniMax M3 via OpenRouter within 14 seconds.
-This is a single five-way burst under the five-requests/minute firewall; it
-does not prove sustained provider reliability.
+Live endpoint pressure acceptance (2026-10-19): the active Vercel firewall
+rule is five POSTs per IP per 60 seconds across both AI routes. Two five-request
+windows, separated by more than 60 seconds, exercised synthetic DOCX, PDF, PNG,
+CSV, and TXT files. Window 1 returned 5/5 HTTP 200 in 11.6–48.5 seconds.
+Window 2 returned 4/5 HTTP 200 in 8.3–27.9 seconds; its 51-page synthetic PDF
+returned HTTP 502 after 90.6 seconds. The sanitized runtime log shows OpenCode
+exited 143 at 89.8 seconds, matching the configured 90-second sandbox cap.
+Successful candidates preserved the exact uploaded filename, canonical field,
+source location, and evidence. No response exposed an OpenRouter-key pattern.
+This is a bounded 9/10 sample, not an uptime or sustained-load guarantee.
+
+The current local repair streams `pdftotext` output into a 120,000-character
+cap, labels every extracted page with its original page number (including
+blank leading pages), and instructs OpenCode to prefer that bounded text. If
+extraction is unavailable, it falls back to the original PDF. Sandbox lifetime
+is raised to 150 seconds and the Vercel function cap to 180 seconds. Local Node
+tests pass 118/118. This repair is not yet published or provider-verified; do not close
+OCA-2 until a production 51-page synthetic PDF succeeds or receives a bounded,
+useful explanation, then complete the independent review and documentation
+sync.
 
 ### PWA-1: Installable browser app, 2026-10-19
 

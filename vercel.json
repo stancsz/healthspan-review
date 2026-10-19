@@ -2,7 +2,7 @@
   "framework": null,
   "cleanUrls": true,
   "functions": {
-    "api/opencode-agent.js": { "maxDuration": 120 }
+    "api/opencode-agent.js": { "maxDuration": 180 }
   },
   "rewrites": [
     {

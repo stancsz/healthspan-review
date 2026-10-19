@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { deflateRawSync } = require('node:zlib');
+const { finished } = require('node:stream/promises');
 const handler = require('./opencode-agent.js');
 
 const file = (name, text = 'synthetic sample') => ({ name, data: Buffer.from(text).toString('base64') });
@@ -85,6 +86,52 @@ test('arbitrary files stay in the sandbox and are not passed through OpenCode bi
   assert.equal(args.at(-1), 'Inspect files in /vercel/workspace.');
   const retryArgs = handler.buildCommandArgs('Return schema-valid JSON.', true);
   assert.deepEqual(retryArgs.slice(0, 3), ['run', '--continue', '--pure']);
+});
+
+test('PDF text companion extraction preserves numbered page boundaries, including blank leading pages', async () => {
+  const writes = [];
+  const sandbox = {
+    async runCommand(args) {
+      assert.equal(args.cmd, 'pdftotext');
+      assert.deepEqual(args.args.slice(0, 3), ['-layout', '-enc', 'UTF-8']);
+      assert.ok(args.stdout instanceof require('node:stream').Writable);
+      args.stdout.end('\fPage two\f');
+      await finished(args.stdout);
+      return { exitCode: 0 };
+    },
+    async mkDir(path) { assert.equal(path, 'workspace/pdf-text'); },
+    async writeFiles(files) { writes.push(...files); },
+  };
+  const derived = await handler.preparePdfText(sandbox, [{ name: 'scan.PDF' }], ['/vercel/workspace/01-scan.PDF']);
+  assert.deepEqual(derived, [{ originalName: 'scan.PDF', path: '/vercel/workspace/pdf-text/01-extracted.txt', truncated: false }]);
+  assert.equal(writes[0].content.toString('utf8'), '[Original PDF page 1]\n\n\n[Original PDF page 2]\nPage two');
+  assert.equal(handler.SANDBOX_TIMEOUT_MS, 150_000);
+  assert.ok(writes[0].content.length <= handler.MAX_EXTRACTED_PDF_CHARS);
+});
+
+test('PDF text companion caps streamed stdout while draining oversized extraction output', async () => {
+  const writes = [];
+  const sandbox = {
+    async runCommand({ stdout }) {
+      const chunk = Buffer.alloc(16 * 1024, 0x61);
+      for (let index = 0; index < 20; index++) stdout.write(chunk);
+      stdout.end();
+      await finished(stdout);
+      return { exitCode: 0 };
+    },
+    async mkDir() {},
+    async writeFiles(files) { writes.push(...files); },
+  };
+  const derived = await handler.preparePdfText(sandbox, [{ name: 'large.pdf' }], ['/vercel/workspace/01-large.pdf']);
+  assert.equal(derived.length, 1);
+  assert.equal(derived[0].truncated, true);
+  assert.ok(writes[0].content.length <= handler.MAX_EXTRACTED_PDF_CHARS);
+  assert.match(writes[0].content.toString('utf8'), /^\[Original PDF page 1\]/);
+});
+
+test('PDF text extraction failures fall back to the original file', async () => {
+  const sandbox = { async runCommand() { return { exitCode: 127, async stdout() { return ''; } }; }, async writeFiles() { throw new Error('must not write'); } };
+  assert.deepEqual(await handler.preparePdfText(sandbox, [{ name: 'scan.pdf' }], ['/vercel/workspace/01-scan.pdf']), []);
 });
 
 test('ZIP office files are bounded by entry count, expansion size, ratio, and safe paths', () => {

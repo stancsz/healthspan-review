@@ -142,7 +142,7 @@ test('64 concurrent valid synthetic reviews isolate and stop each mocked sandbox
     metrics.created++;
     metrics.active++;
     metrics.peak = Math.max(metrics.peak, metrics.active);
-    assert.equal(options.timeout, 90_000);
+    assert.equal(options.timeout, 150_000);
     assert.equal(options.resources.vcpus, 1);
     assert.deepEqual(Object.keys(options.networkPolicy.allow), ['openrouter.ai']);
     assert.equal(options.env.OPENROUTER_API_KEY, 'brokered-by-vercel');

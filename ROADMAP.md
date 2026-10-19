@@ -149,12 +149,26 @@ downloaded six-page letter-size PDF (42,932 bytes) reopened and rendered at
 110 dpi; its all-35-fields table included both measurements, and its two
 category pages clearly showed the supplied 45-year context, coverage counts,
 withheld category ages, and unavailable age/sex-specific reference ranges.
-Five simultaneous synthetic research requests to the live OpenCode endpoint
-then all returned HTTP 200 from MiniMax M3 via OpenRouter in 14 seconds. This
-verifies one five-request burst within the current five-requests/minute
-firewall, not sustained-load reliability. No age/sex-specific reference ranges
-or validated category-age models are available in this workflow; it does not
-fabricate them. Dates from arbitrary-file extraction
+Live endpoint pressure acceptance (2026-10-19): read-only Vercel CLI inspection
+confirmed the active shared firewall rule is five POSTs per IP per 60 seconds
+for `/api/extract-pdf` and `/api/opencode-agent`. Two five-request windows,
+separated by more than 60 seconds, exercised synthetic DOCX, PDF, PNG, CSV, and
+TXT files. Window 1 returned 5/5 HTTP 200 (11.6–48.5 s). Window 2 returned 4/5
+HTTP 200 (8.3–27.9 s); a 51-page synthetic PDF returned 502 at 90.6 s. Sanitized
+Vercel runtime diagnostics show exit 143 at 89.8 s, matching the old sandbox
+cap. The other nine responses preserved canonical fields, exact upload names,
+source locations, and evidence; no response exposed an OpenRouter-key pattern.
+This is a bounded 9/10 sample, not a reliability rate.
+
+The local repair streams `pdftotext` output into a 120,000-character cap,
+labels each extracted page with its original page number (including blank
+leading pages), and falls back to the original when extraction is unavailable.
+The sandbox cap is 150 seconds and the configured function cap is 180 seconds.
+All 118 Node tests pass locally. The repair still needs deployment and a
+provider-backed repeat of the 51-page case; OCA-2 remains In Progress until
+that succeeds or returns a bounded, useful explanation and is independently
+reviewed. No age/sex-specific reference ranges or validated category-age
+models are available in this workflow; it does not fabricate them. Dates from arbitrary-file extraction
 remain printed source metadata, not normalized into a canonical time-series
 date. E-005, IR1, patient-data governance, clinical approval, and the exact-
 hostname issue remain open.
