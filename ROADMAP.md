@@ -29,17 +29,21 @@ and deployment, conditioned on keeping the API key secret.
    browser UI, error paths, no-key-exposure, and Vercel Firewall limit; update
    Wiki and Project #4 and deploy/verify before marking done.
 
-Current evidence: all 14 API tests pass. Provider-backed synthetic CSV requests
-completed locally and in production through OpenCode, returning 3 rows and a
-mean of 20. Synthetic PDF and screenshot requests each returned grounded
-summaries; a combined PDF/screenshot request also completed after increasing the
+Current evidence: all 14 OCA-1 API tests pass. Provider-backed synthetic CSV
+requests completed locally and in production through OpenCode, returning 3
+rows and a mean of 20. The latest production deployment is
+`dpl_8KaLS7mtzUMXQyEXRqvWxUpk5vBP`, serving
+`https://healthspan-review-gules.vercel.app/agent`. Synthetic PDF and
+screenshot requests each returned grounded summaries; a combined PDF/screenshot request also completed after increasing the
 sandbox cap to 90 seconds and function max duration to 120 seconds. Missing or
-false consent returns 400. Production deployment
-`dpl_FWWst1FSjvuiEaCFvcf2RnQuS2fs` serves
-`https://healthspan-review-gules.vercel.app/agent`. Live `/agent`, CSS, and JS
-match source SHA-256; none contains the OpenRouter key. API GET returns 405
-without key exposure. The key is configured as a sensitive Production secret.
-The active 5-requests/minute/IP firewall rule covers both AI POST routes. The
+false consent returns 400. Live `/agent`, CSS, and JS match source SHA-256;
+none contains the OpenRouter key. API GET returns 405 without key exposure.
+The prior handler failed before request validation
+because CommonJS loaded an ESM-only dependency. Commit `ca9e350` loads the SDK's
+ESM entry; current CI passes on Linux and Windows, the live GET returns 405,
+and a post-deploy synthetic CSV request returns HTTP 200 without key exposure.
+The key is configured as a sensitive Production secret. The active
+5-requests/minute/IP firewall rule covers both AI POST routes. The
 deployed UI was tested through the browser file picker, consent, and submit
 flow; workspace tools extracted PDF text and summarized the screenshot. The
 embedded instruction-like PDF text was treated as untrusted. Independent feature
@@ -54,9 +58,11 @@ E-005, IR1, and patient-data governance do not advance.
 Priority: P1, depends on OCA-1 and LOCAL-REVIEW-1. Owner: Codex integrator;
 independent acceptance reviewer. Status: In Progress. Local arbitrary-file
 review, merge/history repair, pressure tests, and six-page PDF generation are
-implemented. Current production still serves the previous two-page report;
-the live artifact and batch merge have not yet been reverified after these
-local changes. Provider-backed sustained concurrency remains unverified.
+implemented. Production serves `report-pdf-v2`; the built-in complete synthetic
+case was opened in the browser and the live PDF download action was exercised.
+The downloaded production artifact has not yet been reopened for page-count and
+content readback; batch-merge UI acceptance remains open. Provider-backed
+sustained concurrency remains unverified.
 
 1. Connect OpenCode file uploads to the existing workbench and canonical
    35-field contract. Permit arbitrary file extensions within explicit request
@@ -102,17 +108,16 @@ PDF flow. Do not infer provider uptime or sustained concurrency from this
 small synthetic acceptance sample. The per-IP firewall remains five requests
 per minute; no paid concurrent-model load test was run.
 
-The prior production workbench HTML and JavaScript matched their then-current
-local SHA-256; neither contained an OpenRouter key prefix. The endpoint GET
-method returned 405 without key exposure. The secret remains a sensitive
-Production environment variable. The current local PDF report includes
+The latest production workbench HTML and JavaScript match the revised source;
+the live agent and PDF-related browser assets contain no OpenRouter key prefix.
+The endpoint GET method returns 405 without key exposure. The secret remains a
+sensitive Production environment variable. The current PDF report includes
 supplied age context, coverage cards for all 17 domains, a complete 35-field
 profile including missing rows, and explicit withheld/unavailable statuses.
 The updated local generator renders six pages for a 35-field/17-domain packet,
-including a candidate algorithm/input-gap page;
-the older production evidence is two pages and cannot be treated as acceptance
-of this source revision. OCA-2 remains open pending current live readback, PDF
-render/layout review, and batch-merge UI verification. No age/sex-specific
+including a candidate algorithm/input-gap page; its live UI download action has
+been exercised with the synthetic case, while independent readback of that
+downloaded artifact and batch-merge UI verification remain open. No age/sex-specific
 reference ranges or validated category-age models are available in this
 workflow; it does not fabricate them. Dates from arbitrary-file extraction
 remain printed source metadata, not normalized into a canonical time-series
@@ -157,8 +162,9 @@ is missing BUN, uric acid, lymphocyte percentage, and MCV; heart is missing
 total cholesterol, HDL, LDL, and triglycerides; liver is missing AST, ALT,
 GGT, and LDH; kidney is missing urine albumin, urine creatinine, BUN, uric
 acid, phosphorus, and bicarbonate. hs-CRP/CRP, pulse-pressure derivation, and
-assay/cycle harmonization also require explicit protocol matching. Joint age
-is not among that paper's models. The authors' analysis code and fitted
+assay/cycle harmonization also require explicit protocol matching. The
+whole-body KDM model is not a blood-specific age; joint age is not among that
+paper's models. The authors' analysis code and fitted
 coefficients are not public; the paper's KDM MAE values are cohort-level
 validation summaries, not patient-specific uncertainty intervals. Its BA-CA
 sign threshold is not an age/sex-matched clinical reference range. Therefore

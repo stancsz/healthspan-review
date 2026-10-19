@@ -24,14 +24,18 @@ policies. Users should verify summaries against their sources.
 
 ## Verification
 
-Production deployment `dpl_FWWst1FSjvuiEaCFvcf2RnQuS2fs` serves
+Production deployment `dpl_8KaLS7mtzUMXQyEXRqvWxUpk5vBP` serves
 https://healthspan-review-gules.vercel.app/agent. Fourteen API tests pass.
 Synthetic CSV, PDF-only, screenshot-only, and combined PDF/screenshot uploads
 returned useful results; the test PDF's instruction-like string was handled as
 untrusted data. The browser file-picker → consent → submit flow was verified,
 and workspace tools extracted PDF text. Missing or false consent returned HTTP 400. The source-matched
 public page, CSS, and JS contain no OpenRouter key; API GET returns 405 without
-key exposure. The 5 requests/minute/IP Vercel Firewall rule covers both AI POST
+key exposure. The prior handler failed before request validation because
+CommonJS loaded an ESM-only dependency. Commit `ca9e350` loads the Sandbox SDK's
+ESM entry; current CI passes on Linux and Windows. A post-deploy synthetic CSV
+request returned HTTP 200, three rows, and mean 20 without key exposure. The
+5 requests/minute/IP Vercel Firewall rule covers both AI POST
 routes. Production deployment and commit state are tracked in `GOAL.md` and
 `ROADMAP.md`.
 

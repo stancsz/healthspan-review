@@ -26,8 +26,14 @@ remain withheld, and the report keeps the research-use boundary. Only synthetic
 or de-identified files may be used. A prior production run completed a
 synthetic DOCX-to-confirmed-review-to-PDF path. The current OCA-2 changes add
 batch-history retention, bounded structured-output retry, pressure coverage,
-and a revised six-page local PDF with a candidate-model input-gap page, but
-remain unverified on the live endpoint.
+and a revised six-page PDF with a candidate-model input-gap page. Production
+serves `report-pdf-v2`; the built-in complete synthetic case was opened in the
+browser and its PDF download action was exercised. The downloaded production
+artifact has not yet been independently reopened for page-count/content
+readback, and batch-merge UI acceptance remains open. A production OpenCode
+runtime failure was fixed by loading Vercel Sandbox through its ESM entry; the
+live synthetic CSV request now returns three rows and mean 20, GET returns
+405, and neither response contains the provider key.
 The production model can return an invalid structured response, which fails
 closed; a single bounded continuation retry is in place. Local mocked
 concurrency does not establish provider-backed load reliability. The
@@ -85,7 +91,7 @@ brokered server-side key. The key remains a sensitive Production environment
 variable and is not placed in browser assets, responses, or the sandbox. The
 existing measurement CSV flow remains browser-local. Only synthetic or
 de-identified material is allowed; no identifiable health data or clinical
-decisions. Production deployment `dpl_FWWst1FSjvuiEaCFvcf2RnQuS2fs` serves
+decisions. Production deployment `dpl_8KaLS7mtzUMXQyEXRqvWxUpk5vBP` serves
 `https://healthspan-review-gules.vercel.app/agent`. Fourteen API tests pass. A
 synthetic CSV returned three rows and a mean of 20 in both local and production
 OpenCode tool/model runs. Production synthetic PDF and screenshot uploads both
@@ -95,7 +101,11 @@ submit flow was verified; workspace tools extracted PDF values, treated its
 embedded instruction as untrusted data, and summarized the screenshot.
 Missing/false consent returns 400. Live
 page/CSS/JS match the source and contain no key; API GET returns 405 with no key
-exposure. The active 5 requests/minute/IP Vercel Firewall rule covers both AI
+exposure. The previous handler failed before request validation because
+CommonJS loaded an ESM-only dependency; commit `ca9e350` now loads the SDK's ESM
+entry. Current CI passes on Linux and Windows, and a live synthetic CSV request
+returns HTTP 200 with three rows and mean 20 without exposing the key. The
+active 5 requests/minute/IP Vercel Firewall rule covers both AI
 POST routes. Independent feature acceptance is READY for the bounded types and
 limits described. Source commits `efd678d` and `6ba8164` are pushed to `main`; Wiki page 029 and
 Project #4 item OCA-1 are synchronized and Done. OCA-1 does not
