@@ -29,14 +29,24 @@ batch-history retention, bounded structured-output retry, pressure coverage,
 and a revised six-page PDF with a candidate-model input-gap page. Production
 serves `report-pdf-v2`; the built-in complete synthetic case was opened in the
 browser and its PDF download action was exercised. The downloaded production
-artifact has not yet been independently reopened for page-count/content
-readback, and batch-merge UI acceptance remains open. A production OpenCode
+artifact was independently reopened: six letter-size pages, 41,762 bytes; the
+cover and age-model audit page rendered cleanly and label category ages and
+matched ranges as withheld. A subsequent production run uploaded two separate
+synthetic text files for fasting glucose (92 mg/dL) and grip strength (29 kg).
+OpenCode returned one grounded candidate per file; each was individually
+confirmed and retained in the ledger with its filename and source line. The
+downloaded PDF had six letter-size pages (42,932 bytes); its measurement table
+included both values, and its domain pages visibly reported the supplied
+45-year context, coverage counts, withheld estimates, and unavailable matched
+ranges. Batch-merge UI acceptance is complete. A production OpenCode
 runtime failure was fixed by loading Vercel Sandbox through its ESM entry; the
 live synthetic CSV request now returns three rows and mean 20, GET returns
 405, and neither response contains the provider key.
 The production model can return an invalid structured response, which fails
 closed; a single bounded continuation retry is in place. Local mocked
-concurrency does not establish provider-backed load reliability. The
+concurrency does not establish provider-backed load reliability; one live
+five-request concurrent burst passed, but sustained reliability remains
+unverified. The
 exact-hostname ownership, intended-user, patient-data governance, and E-005
 gates remain open. The PDF reports supplied age/sex context and measurement
 coverage for all supported domains. It labels each domain-age estimate as
@@ -49,6 +59,24 @@ run are not implemented; this is tracked as
 `BIOAGE-DOMAIN-1` in `ROADMAP.md`. Do not mark the active goal complete until
 the supported-domain decision is resolved with appropriate model, reference,
 and validation evidence.
+
+Live endpoint pressure acceptance: five simultaneous synthetic research
+requests all returned HTTP 200 from MiniMax M3 via OpenRouter within 14 seconds.
+This is a single five-way burst under the five-requests/minute firewall; it
+does not prove sustained provider reliability.
+
+### PWA-1: Installable browser app, 2026-10-19
+
+The app should offer a visible Install app button in its top header and install
+as a standalone browser app. Use the native install prompt when the browser
+exposes it; where it does not, keep the button useful with platform-specific
+browser-menu instructions. The manifest and shell must work on both the Vercel
+clean routes and the GitHub Pages repository path. A same-origin service worker
+may cache only the static app shell and documents; it must never cache API
+requests, uploads, or generated user reports. Verify manifest/icon serving,
+service-worker scope, install-button behavior, and that API requests bypass the
+cache before calling the feature ready. This is an app-delivery convenience; it
+does not change research-use, privacy, age-output, or clinical approval limits.
 
 ### BIOAGE-DOMAIN-1: Evidence-backed category ages and references, 2026-10-19
 
@@ -64,21 +92,23 @@ has a prespecified construct, compatible measurements and protocol, frozen
 model, matched reference cohort, calibrated uncertainty, external/subgroup
 validation, and required expert/product approval. E-005 remains blocked.
 
-The literature audit identified a 2026 NHANES KDM study with separate body,
-heart, liver, and kidney age models. Its exact panels do not match the current
+The literature audit identified 2025/2026 NHANES KDM research with separate
+body, heart, liver, and kidney age models. Their panels do not match the current
 35-feature contract: body additionally requires BUN, uric acid, lymphocyte
 percentage, and MCV (with assay/cycle harmonization); heart requires total
 cholesterol, HDL, LDL, and triglycerides; liver requires AST, ALT, GGT, and
 LDH; kidney requires urine albumin, urine creatinine, BUN, uric acid,
 phosphorus, and bicarbonate. No published joint-age panel was identified.
-The study does not publish fitted model coefficients or analysis code and does
-not provide individual confidence intervals or age/sex-specific clinical
-reference intervals. Consequently, none of those candidate models can produce
-a supported patient estimate from the current record. The next bounded step is
-to choose one domain, add its complete standardized inputs, reproduce and
-validate a sex-stratified model from public NHANES data (or obtain author
-artifacts), and separately establish an age/sex-matched empirical reference
-distribution and patient-level uncertainty before enabling its report output.
+The 2026 study reports cohort cross-validation MAE but does not publish fitted
+coefficients or its analysis code; rebuilding from NHANES would be new model
+work requiring validation. A published clinical PhenoAge is the nearest
+runnable whole-person score, not organ or blood age; the current schema lacks
+lymphocyte percentage and MCV. Blood-system age requires an assay/model beyond
+routine measurements, and no joint-age model fits the current data. None of
+these methods provides a patient-level age/sex-matched interval for biological
+age. The next bounded step is to choose one defined construct, add complete
+standardized inputs, reproduce and validate a frozen model, and separately
+establish a calibrated reference distribution and patient-level uncertainty.
 
 ### OpenCode research file workspace, 2026-10-19
 

@@ -55,3 +55,16 @@ paper. The compatibility audit lists the exact missing inputs and model
 limits: [domain-age compatibility matrix](https://github.com/stancsz/healthspan-review/blob/main/docs/DOMAIN_AGE_MODEL_COMPATIBILITY_2026-10-19.md).
 The app therefore leaves numeric category ages and age/sex-matched ranges
 unscored rather than calculating a partial or relabeled age.
+
+Production batch acceptance (2026-10-19): two separate synthetic text files
+for fasting glucose (92 mg/dL) and grip strength (29 kg) each produced one
+grounded OpenCode candidate with source-line evidence. Each candidate was
+individually confirmed into the ledger. The resulting PDF was downloaded and
+reopened as a six-page letter-size report (42,932 bytes); its full field table
+included both confirmed values, and the category pages clearly showed the
+supplied 45-year context, recorded-measurement coverage, withheld ages, and
+unavailable matched ranges. This closes batch-merge UI acceptance, not
+model validity. A later live burst sent five synthetic research requests
+simultaneously; all returned HTTP 200 from MiniMax M3 via OpenRouter within 14
+seconds. This is one five-way burst under the five-requests/minute firewall,
+not sustained-load evidence.

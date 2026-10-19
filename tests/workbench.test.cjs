@@ -65,6 +65,20 @@ test("clinician workspace discloses optional external PDF processing", () => {
   assert.doesNotMatch(js, /fetch\s*\([^)]*https?:\/\//);
 });
 
+test("arbitrary-file review ignores responses from an invalidated file selection", () => {
+  const requestStart = js.indexOf('$("#agent-measurement-files").addEventListener("change"');
+  const requestEnd = js.indexOf('$("#apply-agent-measurement-candidates").addEventListener', requestStart);
+  assert.ok(requestStart >= 0 && requestEnd > requestStart, "agent file request flow is present");
+  const requestFlow = js.slice(requestStart, requestEnd);
+  assert.match(requestFlow, /agentSelectionId\+\+; if \(agentController\) agentController\.abort\(\)/);
+  assert.match(requestFlow, /if \(!this\.checked\) \{ agentSelectionId\+\+; if \(agentController\) agentController\.abort\(\); \}/);
+  assert.match(requestFlow, /selectionId = agentSelectionId/);
+  assert.ok((requestFlow.match(/selectionId !== agentSelectionId \|\| controller\.signal\.aborted/g) || []).length >= 2,
+    "request checks its selection after file reading and after the response returns");
+  assert.match(requestFlow, /if \(selectionId === agentSelectionId\) \$\("#agent-measurement-status"\)/,
+    "late failures cannot overwrite the current selection status");
+});
+
 test("workspace exposes accessible actions and print styling", () => {
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /aria-label="Review workflow"/);

@@ -25,6 +25,19 @@ not model outputs.
 | Kidney age | Urine albumin, urine creatinine, serum creatinine, BUN, uric acid, phosphorus, bicarbonate | Serum creatinine and eGFR | Urine albumin, urine creatinine, BUN, uric acid, phosphorus, bicarbonate; assay and specimen protocol | Not runnable; eGFR is not a substitute for the model panel. No patient uncertainty or matched age/sex interval. |
 | Joint, muscle, bone, skin, brain, immune, fluid/cellular, or sleep age | No corresponding panel in the cited paper | Various descriptive measurements or history flags | A named construct, standardized protocol, frozen model, and matched reference cohort must be selected separately | No compatible model identified; leave unscored. |
 
+## Closest runnable whole-person candidate
+
+Clinical PhenoAge is a published whole-person, mortality-equivalent estimate,
+not a blood-system or organ age. Its fixed formula requires chronological age
+and albumin, creatinine, glucose, CRP, lymphocyte percentage, MCV, RDW, ALP,
+and WBC with the original units and transformations. The current contract lacks
+lymphocyte percentage and MCV; glucose fasting status and CRP assay/unit
+compatibility also need confirmation. A partial panel or substituted fields
+would not be the published algorithm. This candidate could be a first
+whole-person score after its complete inputs and validation are in place, but
+it does not provide a patient-level age/sex-matched range or satisfy the
+requested joint/blood/organ-specific estimates.
+
 ## Reference interpretation
 
 The paper's KDM age gap (estimated age minus chronological age) and positive/
@@ -63,4 +76,5 @@ reference evidence are independently accepted and E-005 is resolved.
 - Zheng et al. (2026), [NHANES body/heart/liver/kidney KDM study](https://www.nature.com/articles/s41538-026-00799-3), including Supplementary Table 13.
 - Kwon et al. (2021), [BioAge toolkit paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC8602613/).
 - [BioAge KDM implementation (GPL-3.0)](https://github.com/dayoonkwon/BioAge/blob/master/R/kdm_calc.R).
+- Levine et al. (2018), [clinical PhenoAge derivation](https://pmc.ncbi.nlm.nih.gov/articles/PMC5940111/).
 - CDC, [NHANES data and documentation](https://www.cdc.gov/nchs/nhanes/).

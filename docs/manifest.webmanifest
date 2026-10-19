@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Healthspan Review",
+  "short_name": "Healthspan",
+  "description": "A research-use-only healthspan measurement review workspace.",
+  "start_url": "./workbench.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f3ec",
+  "theme_color": "#184c46",
+  "icons": [
+    {
+      "src": "icons/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

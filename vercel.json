@@ -14,6 +14,10 @@
       "destination": "/docs/workbench"
     },
     {
+      "source": "/workbench.html",
+      "destination": "/docs/workbench.html"
+    },
+    {
       "source": "/agent",
       "destination": "/docs/agent"
     },
@@ -86,6 +90,18 @@
       "destination": "/docs/app-nav.js"
     },
     {
+      "source": "/manifest.webmanifest",
+      "destination": "/docs/manifest.webmanifest"
+    },
+    {
+      "source": "/service-worker.js",
+      "destination": "/docs/service-worker.js"
+    },
+    {
+      "source": "/icons/:path*",
+      "destination": "/docs/icons/:path*"
+    },
+    {
       "source": "/pdf-batches.js",
       "destination": "/docs/pdf-batches.js"
     },
@@ -124,6 +140,27 @@
     {
       "source": "/intake-form.js",
       "destination": "/docs/intake-form.js"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/icons/:path*",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" }
+      ]
+    },
+    {
+      "source": "/service-worker.js",
+      "headers": [
+        { "key": "Service-Worker-Allowed", "value": "/" },
+        { "key": "Cache-Control", "value": "no-cache" }
+      ]
     }
   ]
 }

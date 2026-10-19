@@ -9,6 +9,10 @@ a, button, input, select, textarea { touch-action:manipulation; }
 .product-nav a { min-height:42px; display:flex; align-items:center; gap:12px; padding:9px 17px; font-size:14px; font-weight:600; text-decoration:none; border:1px solid transparent; border-radius:6px; }
 .product-nav a:hover { background:#24564f; }
 .product-nav a[aria-current=page] { background:#f5f3ec; color:#184c46; }
+.app-install-button { min-height:40px; padding:8px 14px; border:1px solid #c7dcbf; border-radius:6px; background:#f5f3ec; color:#184c46; font:600 13px/1.2 "Avenir Next","Segoe UI",sans-serif; cursor:pointer; }
+.app-install-button:hover { background:#dfe9d9; }
+.app-install-status { flex-basis:100%; font-size:12px; line-height:1.4; color:inherit; }
+.app-install-status:empty { display:none; }
 .app-header { min-height:78px; }
 .brand-title { font-size:20px; }
 .brand-kicker { font-size:12px; }
@@ -124,6 +128,7 @@ body[data-app-page=evidence] code { overflow-wrap:anywhere; }
  .workflow-step small { display:none; }
  .app-header { padding:16px 20px; flex-wrap:wrap; gap:14px; }
  .header-meta { font-size:13px; flex-wrap:wrap; }
+ .app-install-button { min-height:42px; }
  .product-nav { padding:8px 12px; gap:2px; }
  .product-nav a { padding:9px 10px; font-size:13px; }
  .workspace, .manual-shell { padding:28px 20px 48px; }

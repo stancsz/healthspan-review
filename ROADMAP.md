@@ -10,6 +10,18 @@ software check is green.
 
 ## Current position
 
+### PWA-1 — Installable browser app, 2026-10-19
+
+Priority: P2 app delivery. Owner: Codex integrator. Status: In Progress;
+implementation is local and release acceptance is pending. Depends on the
+shared app shell and both Vercel and GitHub Pages routing. The top header has
+an Install app control, a standalone manifest, 192/512 PNG icons, and a
+service-worker app-shell cache with API/non-GET bypass. Vercel routes the
+manifest, icons, and root-scoped worker; GitHub Pages resolves them relative to
+the repository prefix. Complete browser install/fallback acceptance, confirm
+worker scope and app-shell fetches on both deployments, verify the API bypass,
+then deploy and synchronize this roadmap, Wiki, and Project #4.
+
 ### OCA-1 — OpenCode research file workspace, 2026-10-19
 
 Priority: P1 research-app capability. Owner: Codex integrator; acceptance:
@@ -60,9 +72,13 @@ independent acceptance reviewer. Status: In Progress. Local arbitrary-file
 review, merge/history repair, pressure tests, and six-page PDF generation are
 implemented. Production serves `report-pdf-v2`; the built-in complete synthetic
 case was opened in the browser and the live PDF download action was exercised.
-The downloaded production artifact has not yet been reopened for page-count and
-content readback; batch-merge UI acceptance remains open. Provider-backed
-sustained concurrency remains unverified.
+The downloaded production artifact was reopened: six letter-size pages,
+41,762 bytes; the cover and age-model audit page render cleanly. A single
+five-way provider-backed burst later passed; sustained concurrency remains
+unverified.
+The Wiki age-report/PDF pages and the OCA-2 and BIOAGE-DOMAIN-1 Project #4
+items reflect production batch and concurrency-burst acceptance; Wiki commit
+`5dbd2d1`.
 
 1. Connect OpenCode file uploads to the existing workbench and canonical
    35-field contract. Permit arbitrary file extensions within explicit request
@@ -104,9 +120,10 @@ project gate pass. One production model response returned no schema-valid
 measurement object and failed closed; a single OpenCode continuation retry is
 now bounded to schema-invalid measurement responses. A subsequent live run on
 the current deployment returned four candidates and completed the confirmed
-PDF flow. Do not infer provider uptime or sustained concurrency from this
-small synthetic acceptance sample. The per-IP firewall remains five requests
-per minute; no paid concurrent-model load test was run.
+PDF flow. Do not infer provider uptime or sustained concurrency from these
+small synthetic acceptance samples. One five-request concurrent provider
+burst passed; no extended load test was run. The per-IP firewall remains five
+requests per minute.
 
 The latest production workbench HTML and JavaScript match the revised source;
 the live agent and PDF-related browser assets contain no OpenRouter key prefix.
@@ -115,11 +132,22 @@ sensitive Production environment variable. The current PDF report includes
 supplied age context, coverage cards for all 17 domains, a complete 35-field
 profile including missing rows, and explicit withheld/unavailable statuses.
 The updated local generator renders six pages for a 35-field/17-domain packet,
-including a candidate algorithm/input-gap page; its live UI download action has
-been exercised with the synthetic case, while independent readback of that
-downloaded artifact and batch-merge UI verification remain open. No age/sex-specific
-reference ranges or validated category-age models are available in this
-workflow; it does not fabricate them. Dates from arbitrary-file extraction
+including a candidate algorithm/input-gap page. Its live UI download and
+independent readback are complete with synthetic data. A subsequent live
+workbench run uploaded two separate synthetic text files (fasting glucose 92
+mg/dL and grip strength 29 kg), extracted one grounded candidate from each,
+and required individual confirmation. Both confirmed values appeared in the
+measurement ledger with their own filename and source-line evidence. The
+downloaded six-page letter-size PDF (42,932 bytes) reopened and rendered at
+110 dpi; its all-35-fields table included both measurements, and its two
+category pages clearly showed the supplied 45-year context, coverage counts,
+withheld category ages, and unavailable age/sex-specific reference ranges.
+Five simultaneous synthetic research requests to the live OpenCode endpoint
+then all returned HTTP 200 from MiniMax M3 via OpenRouter in 14 seconds. This
+verifies one five-request burst within the current five-requests/minute
+firewall, not sustained-load reliability. No age/sex-specific reference ranges
+or validated category-age models are available in this workflow; it does not
+fabricate them. Dates from arbitrary-file extraction
 remain printed source metadata, not normalized into a canonical time-series
 date. E-005, IR1, patient-data governance, clinical approval, and the exact-
 hostname issue remain open.
@@ -129,8 +157,8 @@ hostname issue remain open.
 Priority: P1 research/model-definition work; depends on age-model evidence and
 domain-measurement contracts. Owner: research/model owner plus qualified
 clinical/statistical reviewers; Codex integrator for implementation. Status:
-Blocked before implementation by the absence of approved category-age models
-and patient reference panels. The user requested numeric estimates only for
+In Progress; numeric output remains blocked pending a selected reproducible
+model, compatible input panel, and calibrated reference. The user requested numeric estimates only for
 categories with defensible published methods, plus age/sex reference context;
 unsupported categories must stay unscored.
 
@@ -155,7 +183,7 @@ thereby become joint, kidney, liver, or other category ages. No numeric
 category estimates are enabled in this slice. See [[System-Specific Age
 Report]] and [[OpenCode-Measurement-Review-and-PDF]] in the Wiki.
 
-Additional evidence audit: Zheng et al. (2026) reports NHANES KDM estimates for
+Additional evidence audit: 2025/2026 research reports NHANES KDM estimates for
 body, heart, liver, and kidney, fit separately by sex on model-specific healthy
 reference cohorts. The current contract has only subsets of their inputs. Body
 is missing BUN, uric acid, lymphocyte percentage, and MCV; heart is missing
@@ -169,11 +197,15 @@ coefficients are not public; the paper's KDM MAE values are cohort-level
 validation summaries, not patient-specific uncertainty intervals. Its BA-CA
 sign threshold is not an age/sex-matched clinical reference range. Therefore
 no candidate model is runnable from the present schema and no age-matched
-domain reference interval can be reported. Heart is the smallest candidate
-schema expansion (four lipid measurements), but still needs a frozen,
-reproduced sex-stratified model, external/subgroup validation, uncertainty,
-and a separate empirical age/sex reference distribution. E-005 remains
-blocked. Evidence: [Zheng et al. 2026](https://www.nature.com/articles/s41538-026-00799-3),
+domain reference interval can be reported. A published clinical PhenoAge is
+the closest runnable whole-person score, but this schema lacks lymphocyte
+percentage and MCV; it cannot be called blood or organ age. Blood-system age
+needs a different assay/model, and no joint-age method fits current data. Heart
+is the smallest candidate schema expansion (four lipid measurements), but
+still needs a frozen, reproduced sex-stratified model, external/subgroup
+validation, uncertainty, and a separate empirical age/sex reference
+distribution. E-005 remains blocked. Evidence:
+[Zheng et al. 2026](https://www.nature.com/articles/s41538-026-00799-3),
 [BioAge toolkit paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC8602613/), and
 [BioAge KDM implementation](https://github.com/dayoonkwon/BioAge/blob/master/R/kdm_calc.R).
 

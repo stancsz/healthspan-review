@@ -8,6 +8,7 @@ import { analyzePdfLocally } from './pdf-import.mjs';
   var state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] };
   var agentFiles = [];
   var agentController = null;
+  var agentSelectionId = 0;
   var valueLabels = {
     bmi: "Body mass index", height_cm: "Height", weight_kg: "Weight", fat_mass_kg: "Fat mass",
     fat_free_mass_kg: "Fat-free mass", estimated_height_cm: "Estimated height", ffmi: "FFMI",
@@ -257,7 +258,7 @@ import { analyzePdfLocally } from './pdf-import.mjs';
     }); });
     document.querySelectorAll(".agent-candidate-value").forEach(function (input) { input.addEventListener("input", function () { var index = Number(this.dataset.index), candidate = state.agentCandidates[index], spec = clinicalParser.byName[candidate.field], checkbox = document.querySelector('.agent-candidate-use[data-index="' + index + '"]'), cell = $("#agent-candidate-review-" + index); try { clinicalParser.normalizeValue(this.value, spec); cell.textContent = candidate.reviewIssue || candidate.uncertainty || "Check source"; cell.className = candidate.reviewIssue || candidate.uncertainty ? "warning-label" : "derived-label"; if (checkbox) checkbox.disabled = false; } catch (error) { cell.textContent = error.message; cell.className = "warning-label"; if (checkbox) { checkbox.checked = false; checkbox.disabled = true; } } $("#apply-agent-measurement-candidates").disabled = !document.querySelector(".agent-candidate-use:checked"); }); });
   }
-  function reset() { if (agentController) agentController.abort(); choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; agentFiles = []; $("#agent-measurement-files").value = ""; $("#agent-measurement-consent").checked = false; $("#agent-measurement-candidate-panel").hidden = true; $("#agent-measurement-status").textContent = "Choose files and confirm before sending."; renderAgentFiles(); document.querySelector('[data-step="review"]').disabled = true; document.querySelector('[data-step="export"]').disabled = true; $("#export-status").textContent = ""; setStatus("No record open.", false); showView("import"); }
+  function reset() { agentSelectionId++; if (agentController) agentController.abort(); choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; agentFiles = []; $("#agent-measurement-files").value = ""; $("#agent-measurement-consent").checked = false; $("#agent-measurement-candidate-panel").hidden = true; $("#agent-measurement-status").textContent = "Choose files and confirm before sending."; renderAgentFiles(); document.querySelector('[data-step="review"]').disabled = true; document.querySelector('[data-step="export"]').disabled = true; $("#export-status").textContent = ""; setStatus("No record open.", false); showView("import"); }
   function fetchText(url) { return fetch(url, { cache: "no-store" }).then(function (response) { if (!response.ok) throw new Error(url + " returned " + response.status); return response.text(); }); }
 
   var localPdf = null, pdfSelectionId = 0, activePdfController = null;
@@ -384,17 +385,19 @@ import { analyzePdfLocally } from './pdf-import.mjs';
   $("#discard-pdf-candidates").addEventListener("click", function () { state.pdfCandidates = []; state.pdfPages = []; localPdf = null; $("#pdf-candidate-panel").hidden = true; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-page-image").removeAttribute("src"); updatePdfButton(); setPdfStatus("Local PDF content and suggestions cleared from this tab.", false); });
 
   $("#choose-agent-measurement-files").addEventListener("click", function () { $("#agent-measurement-files").click(); });
-  $("#agent-measurement-files").addEventListener("change", function () { if (agentController) agentController.abort(); $("#agent-measurement-consent").checked = false; agentFiles = Array.from(this.files || []); $("#agent-measurement-candidate-panel").hidden = true; renderAgentFiles(); });
-  $("#agent-measurement-consent").addEventListener("change", function () { if (!this.checked && agentController) agentController.abort(); renderAgentFiles(); });
+  $("#agent-measurement-files").addEventListener("change", function () { agentSelectionId++; if (agentController) agentController.abort(); $("#agent-measurement-consent").checked = false; agentFiles = Array.from(this.files || []); $("#agent-measurement-candidate-panel").hidden = true; renderAgentFiles(); });
+  $("#agent-measurement-consent").addEventListener("change", function () { if (!this.checked) { agentSelectionId++; if (agentController) agentController.abort(); } renderAgentFiles(); });
   $("#analyze-agent-measurement-files").addEventListener("click", async function () {
     if (this.disabled || agentController) return;
     var issue = agentFileIssue(agentFiles); if (issue) { $("#agent-measurement-status").textContent = issue; return; }
-    var button = this, filesToSend = agentFiles.slice(), controller = new AbortController(); agentController = controller; button.dataset.busy = "true"; renderAgentFiles(); $("#agent-measurement-candidate-panel").hidden = true; $("#agent-measurement-status").textContent = "Uploading selected files to a temporary workspace…";
+    var button = this, selectionId = agentSelectionId, filesToSend = agentFiles.slice(), controller = new AbortController(); agentController = controller; button.dataset.busy = "true"; renderAgentFiles(); $("#agent-measurement-candidate-panel").hidden = true; $("#agent-measurement-status").textContent = "Uploading selected files to a temporary workspace…";
     try {
       var files = await Promise.all(filesToSend.map(function (file, index) { return new Promise(function (resolve, reject) { var reader = new FileReader(); reader.onerror = function () { reject(new Error("A selected file could not be read.")); }; reader.onload = function () { var ext = /\.([A-Za-z0-9]{1,12})$/.exec(file.name), alias = "source-" + String(index + 1).padStart(2, "0") + (ext ? "." + ext[1].toLowerCase() : ""); resolve({ name: alias, data: String(reader.result).split(",")[1] }); }; reader.readAsDataURL(file); }); }));
+      if (selectionId !== agentSelectionId || controller.signal.aborted) return;
       if (!$("#agent-measurement-consent").checked) throw new DOMException("Upload cancelled because consent was withdrawn.", "AbortError");
       var response = await fetch("/api/opencode-agent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode: "measurement-review", prompt: "Extract only explicit observed measurement values that map to the canonical Healthspan Review fields. Do not infer missing values or calculate an assessment.", files: files, consent: true }), signal: controller.signal });
       var data; try { data = await response.json(); } catch (_) { throw new Error("The agent returned an unreadable response."); }
+      if (selectionId !== agentSelectionId || controller.signal.aborted) return;
       if (!response.ok) throw new Error(data.error || "The measurement agent could not complete this request.");
       if (!$("#agent-measurement-consent").checked) throw new DOMException("Review cancelled because consent was withdrawn.", "AbortError");
       $("#agent-measurement-consent").checked = false;
@@ -405,8 +408,8 @@ import { analyzePdfLocally } from './pdf-import.mjs';
       $("#agent-measurement-status").textContent = candidates.length + " candidate(s) returned. " + (unreadable ? unreadable + " file(s) could not be fully read." : "Check every result against the original files.") + " Nothing has entered the measurement record.";
       if (unreadable) { $("#agent-measurement-status").textContent += " " + data.unreadable.map(function (item) { return (aliases.get(item.file) || item.file) + ": " + item.reason; }).join(" "); }
     } catch (error) {
-      $("#agent-measurement-status").textContent = error.name === "AbortError" ? "Upload cancelled because consent was withdrawn." : (error.message || "The agent could not complete this request.");
-    } finally { if (agentController === controller) agentController = null; button.dataset.busy = "false"; renderAgentFiles({ preserveStatus: true }); }
+      if (selectionId === agentSelectionId) $("#agent-measurement-status").textContent = error.name === "AbortError" ? "Upload cancelled because consent was withdrawn." : (error.message || "The agent could not complete this request.");
+    } finally { if (agentController === controller) { agentController = null; button.dataset.busy = "false"; renderAgentFiles({ preserveStatus: true }); } }
   });
   $("#apply-agent-measurement-candidates").addEventListener("click", function () {
     var selected = Array.from(document.querySelectorAll(".agent-candidate-use:checked")), updates = [];
@@ -440,7 +443,7 @@ import { analyzePdfLocally } from './pdf-import.mjs';
     $("#agent-measurement-apply-status").textContent = selected.length + " user-confirmed value(s) entered. The local review and packet have been rebuilt.";
     $("#agent-measurement-consent").checked = false;
   });
-  $("#discard-agent-measurement-candidates").addEventListener("click", function () { agentFiles = []; $("#agent-measurement-files").value = ""; $("#agent-measurement-consent").checked = false; state.agentCandidates = []; $("#agent-measurement-candidate-panel").hidden = true; renderAgentFiles(); $("#agent-measurement-status").textContent = "Selected files and unconfirmed suggestions cleared from this tab."; });
+  $("#discard-agent-measurement-candidates").addEventListener("click", function () { agentSelectionId++; if (agentController) agentController.abort(); agentFiles = []; $("#agent-measurement-files").value = ""; $("#agent-measurement-consent").checked = false; state.agentCandidates = []; $("#agent-measurement-candidate-panel").hidden = true; renderAgentFiles(); $("#agent-measurement-status").textContent = "Selected files and unconfirmed suggestions cleared from this tab."; });
 
   $("#seca-file").addEventListener("change", function () { openFile(this.files && this.files[0], "seca"); }); $("#clinical-file").addEventListener("change", function () { openFile(this.files && this.files[0], "clinical"); });
   $("#load-sample").addEventListener("click", function () { var button = this; button.disabled = true; setStatus("Opening the complete synthetic case locally…", false); Promise.all([fetchText("example-seca-tableview.csv"), fetchText("example-complete-synthetic.json")]).then(function (parts) { loadRecord(secaParser.parseSecaCsv(parts[0]), clinicalParser.parseProfile(JSON.parse(parts[1]), "Complete synthetic clinical profile"), "Complete synthetic case · SECA + clinical profile"); }).catch(function (error) { setStatus("Complete synthetic case could not be loaded: " + error.message, true); }).finally(function () { button.disabled = false; }); });
