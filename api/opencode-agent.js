@@ -198,7 +198,7 @@ function buildCommandArgs(prompt, continueSession = false) {
 
 async function preparePdfText(sandbox, sourceFiles, workspacePaths) {
   const derived = [];
-  if (typeof sandbox?.runCommand !== 'function' || typeof sandbox?.writeFiles !== 'function' || typeof sandbox?.unlink !== 'function') return derived;
+  if (typeof sandbox?.runCommand !== 'function' || typeof sandbox?.writeFiles !== 'function' || typeof sandbox?.fs?.unlink !== 'function') return derived;
   for (let index = 0; index < sourceFiles.length; index++) {
     const source = sourceFiles[index];
     if (!/\.pdf$/i.test(source.name)) continue;
@@ -238,7 +238,7 @@ async function preparePdfText(sandbox, sourceFiles, workspacePaths) {
       const relativePath = `workspace/pdf-text/${String(index + 1).padStart(2, '0')}-extracted.txt`;
       await sandbox.mkDir('workspace/pdf-text');
       await sandbox.writeFiles([{ path: relativePath, content: Buffer.from(clipped, 'utf8') }]);
-      await sandbox.unlink(workspacePaths[index]);
+      await sandbox.fs.unlink(workspacePaths[index]);
       derived.push({ originalName: source.name, sourcePath: workspacePaths[index], path: `/vercel/${relativePath}`, truncated });
     } catch {
       // Leave the original available to OpenCode tools when local extraction is unavailable.

@@ -102,7 +102,7 @@ test('PDF text companion extraction preserves numbered page boundaries, includin
     },
     async mkDir(path) { assert.equal(path, 'workspace/pdf-text'); },
     async writeFiles(files) { writes.push(...files); },
-    async unlink(path) { removals.push(path); },
+    fs: { async unlink(path) { removals.push(path); } },
   };
   const derived = await handler.preparePdfText(sandbox, [{ name: 'scan.PDF' }], ['/vercel/workspace/01-scan.PDF']);
   assert.deepEqual(derived, [{ originalName: 'scan.PDF', sourcePath: '/vercel/workspace/01-scan.PDF', path: '/vercel/workspace/pdf-text/01-extracted.txt', truncated: false }]);
@@ -124,7 +124,7 @@ test('PDF text companion caps streamed stdout while draining oversized extractio
     },
     async mkDir() {},
     async writeFiles(files) { writes.push(...files); },
-    async unlink() {},
+    fs: { async unlink() {} },
   };
   const derived = await handler.preparePdfText(sandbox, [{ name: 'large.pdf' }], ['/vercel/workspace/01-large.pdf']);
   assert.equal(derived.length, 1);
@@ -143,7 +143,7 @@ test('PDF source stays available when sandbox deletion fails', async () => {
     async runCommand({ stdout }) { stdout.end('Readable text'); await finished(stdout); return { exitCode: 0 }; },
     async mkDir() {},
     async writeFiles() {},
-    async unlink() { throw new Error('simulated removal failure'); },
+    fs: { async unlink() { throw new Error('simulated removal failure'); } },
   };
   const sourcePaths = ['/vercel/workspace/01-scan.pdf'];
   const companions = await handler.preparePdfText(sandbox, [{ name: 'scan.pdf' }], sourcePaths);
@@ -157,7 +157,7 @@ test('PDF with no extractable text stays available for visual inspection', async
     async runCommand({ stdout }) { stdout.end('\f\f'); await finished(stdout); return { exitCode: 0 }; },
     async mkDir() {},
     async writeFiles() { throw new Error('blank extraction must not create a companion'); },
-    async unlink() { removed = true; },
+    fs: { async unlink() { removed = true; } },
   };
   assert.deepEqual(await handler.preparePdfText(sandbox, [{ name: 'scan.pdf' }], ['/vercel/workspace/01-scan.pdf']), []);
   assert.equal(removed, false);
