@@ -66,7 +66,10 @@ PDFs without meaningful extracted text remain available for visual inspection.
 The fix is deployed as `dpl_84BNxkZmNr9VZT7cZpbbQRbSnuSq`, with the 180-second
 function timeout confirmed. The targeted synthetic 51-page rerun returned HTTP
 200 in 109.4 seconds with six candidates, source locations/evidence, exact
-filename, zero unreadable files, and no key pattern. Full local verification
+filename, zero unreadable files, and no key pattern. A second detail rerun
+returned the same six values and page citations as the known synthetic fixture
+(pages 1, 7, 13, 19, 49, and 50) in 87.2 seconds, but marked one item
+unreadable. Full local verification
 passes 121 Node tests, the canonical verifier, and docs verification. The
 independent reviewer found no concrete defect in the final cleanup flow. The
 initial pressure sample remains 9/10; this targeted case is not a general

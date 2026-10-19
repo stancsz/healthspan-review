@@ -98,7 +98,11 @@ meaningful extracted text remain available for visual inspection. Commit
 `5d8fe7b` is deployed as `dpl_84BNxkZmNr9VZT7cZpbbQRbSnuSq`; metadata confirms
 the 180-second function timeout. The same targeted PDF returned HTTP 200 in
 109.4 seconds with six evidence-bearing candidates, zero unreadable files, and
-no key pattern. The initial two-window result remains 9/10. Full local
+no key pattern. A second detail rerun returned the same six candidates in 87.2
+seconds; each value and page citation matched the known synthetic fixture
+(pages 1, 7, 13, 19, 49, and 50). That response marked one item unreadable,
+while the earlier targeted response marked none. The initial two-window result
+remains 9/10. Full local
 verification passes 121 Node tests, the 20-check canonical verifier, and docs
 verification. The independent reviewer rechecked the final SDK cleanup
 implementation and found no remaining concrete defect. OCA-2 is complete for

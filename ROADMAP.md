@@ -186,8 +186,12 @@ extracted text remain available for visual inspection. It is deployed as
 `dpl_84BNxkZmNr9VZT7cZpbbQRbSnuSq`; Vercel metadata confirms the 180-second
 function timeout. The targeted production 51-page synthetic PDF returned HTTP
 200 in 109.4 seconds with six candidates, source locations/evidence, exact
-filename, zero unreadable files, and no key pattern. The initial two-window
-sample remains 9/10 and is not a general reliability estimate. Full local
+filename, zero unreadable files, and no key pattern. A second detail rerun
+returned the same six candidates in 87.2 seconds, and all six values/citations
+matched the known synthetic fixture on pages 1, 7, 13, 19, 49, and 50. That
+response marked one item unreadable, while the earlier targeted response
+marked none. The initial two-window sample remains 9/10 and is not a general
+reliability estimate. Full local
 verification passes 121 Node tests, the 20-check canonical verifier, and docs
 verification. The independent reviewer rechecked the final SDK cleanup and
 found no remaining concrete defect. OCA-2 is complete for the bounded
