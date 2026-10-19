@@ -13,7 +13,7 @@ explicit consent before accepting files.
 Each run uses a one-CPU Vercel Sandbox with network egress limited to OpenRouter.
 A Vercel firewall transform injects the server-side OpenRouter key into
 requests, so it is not sent to the browser or placed in the agent VM. Sandbox
-stop is requested after each run. The pending repair configures a 150-second
+stop is requested after each run. The final PDF repair uses a 150-second
 sandbox cap and a 180-second function limit. Public use is free for now, with
 request-size/runtime limits and an active per-IP Vercel Firewall rule.
 
@@ -70,7 +70,16 @@ filename, zero unreadable files, and no key pattern. A second detail rerun
 returned the same six values and page citations as the known synthetic fixture
 (pages 1, 7, 13, 19, 49, and 50) in 87.2 seconds, but marked one item
 unreadable. Full local verification
-passes 121 Node tests, the canonical verifier, and docs verification. The
+passes 121 Node tests, the canonical verifier, and docs verification. A fresh
+five-request production window on the final deployment then tested synthetic
+DOCX, the same 51-page PDF, screenshot, CSV, and TXT fixtures. All five
+returned HTTP 200 in 33.3, 66.4, 14.0, 11.8, and 14.9 seconds respectively,
+with source locations/evidence and no key pattern. The PDF returned six
+candidates and zero unreadable files. This adds a successful current-deployment
+mixed-format sample; the earlier 9/10 sample is retained and neither window
+establishes sustained reliability. The full candidate-confirmation and PDF
+download flow has been verified for synthetic DOCX and small-text inputs, but
+not yet for the 51-page PDF. The
 independent reviewer found no concrete defect in the final cleanup flow. The
 initial pressure sample remains 9/10; this targeted case is not a general
 reliability guarantee. OCA-2 is complete for the bounded

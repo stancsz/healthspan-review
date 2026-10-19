@@ -204,6 +204,16 @@ printed source metadata, not normalized into a canonical time-series date.
 E-005, IR1, patient-data governance, clinical approval, and the exact-hostname
 issue remain open.
 
+A fresh five-request production matrix against the final deployment then
+exercised synthetic DOCX, the same 51-page PDF, screenshot, CSV, and TXT
+fixtures. All five returned HTTP 200 in 33.3, 66.4, 14.0, 11.8, and 14.9
+seconds respectively; each response had grounded locations/evidence and no
+provider-key pattern. The 51-page PDF returned six candidates and zero
+unreadable files. This is a current-deployment mixed-format acceptance window,
+not a reliability rate or sustained-load test. Long-PDF endpoint acceptance
+is recorded; the full candidate-confirmation/download flow remains verified
+only for synthetic DOCX and small-text cases.
+
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 
 Priority: P1 research/model-definition work; depends on age-model evidence and

@@ -71,6 +71,17 @@ Successful candidates preserved the exact uploaded filename, canonical field,
 source location, and evidence. No response exposed an OpenRouter-key pattern.
 This is a bounded 9/10 sample, not an uptime or sustained-load guarantee.
 
+A fresh production five-request matrix on 2026-10-19 exercised synthetic DOCX,
+the same 51-page PDF, screenshot, CSV, and TXT fixtures against the final
+deployment. All five returned HTTP 200 in 33.3, 66.4, 14.0, 11.8, and 14.9
+seconds respectively, with source locations and evidence, zero unreadable
+files, and no OpenRouter-key pattern. The PDF returned six candidates. This
+adds a successful current-deployment mixed-format window but does not replace
+the earlier 9/10 sample or establish sustained reliability. The long-PDF
+request was checked at the endpoint; human candidate confirmation and PDF
+download were verified on synthetic DOCX/small-text workflows, not yet through
+the 51-page PDF path.
+
 The current local repair streams `pdftotext` output into a 120,000-character
 cap, labels every extracted page with its original page number (including
 blank leading pages), and instructs OpenCode to prefer that bounded text. If
