@@ -59,13 +59,20 @@ a general reliability estimate. Full local verification passes 119 Node
 tests, the canonical verifier, and docs verification. Independent review found
 that `850be97` hid the original PDF path in instructions but left the file
 accessible in the sandbox, and found a duplicate-filename fallback edge case.
-The current local follow-up deletes the original only after writing the text
-companion and identifies it by exact workspace path; if deletion fails, the
-original stays listed and the companion is not advertised. PDFs without
-meaningful extracted text remain available for visual inspection. This follow-
-up passes 121 Node tests, the canonical verifier, and docs verification;
-publication and independent re-review remain open. Deployment and commit state
-are tracked in `GOAL.md` and `ROADMAP.md`.
+Commit `5d8fe7b` uses the Vercel SDK's `sandbox.fs.unlink` only after the text
+companion is written and identifies the source by exact workspace path. If
+deletion fails, the original stays listed and the companion is not advertised;
+PDFs without meaningful extracted text remain available for visual inspection.
+The fix is deployed as `dpl_84BNxkZmNr9VZT7cZpbbQRbSnuSq`, with the 180-second
+function timeout confirmed. The targeted synthetic 51-page rerun returned HTTP
+200 in 109.4 seconds with six candidates, source locations/evidence, exact
+filename, zero unreadable files, and no key pattern. Full local verification
+passes 121 Node tests, the canonical verifier, and docs verification. The
+independent reviewer found no concrete defect in the final cleanup flow. The
+initial pressure sample remains 9/10; this targeted case is not a general
+reliability guarantee. OCA-2 is complete for the bounded
+synthetic/de-identified scope; age-model and clinical gates remain open.
+Deployment and commit state are tracked in `GOAL.md` and `ROADMAP.md`.
 
 The OpenRouter key is configured as a sensitive Production environment variable
 and is brokered to egress by Vercel; it does not enter the sandbox. E-005, IR1,

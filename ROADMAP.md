@@ -75,7 +75,8 @@ E-005, IR1, and patient-data governance do not advance.
 ### OCA-2 — File-to-measurement review and downloadable report, 2026-10-19
 
 Priority: P1, depends on OCA-1 and LOCAL-REVIEW-1. Owner: Codex integrator;
-independent acceptance reviewer. Status: In Progress. Local arbitrary-file
+independent acceptance reviewer. Status: Done for the bounded
+synthetic/de-identified file-to-report scope. Local arbitrary-file
 review, merge/history repair, pressure tests, and six-page PDF generation are
 implemented. Production serves `report-pdf-v2`; the built-in complete synthetic
 case was opened in the browser and the live PDF download action was exercised.
@@ -171,31 +172,33 @@ after 106.6 seconds. Sanitized logs show a tool call but no valid measurement
 JSON after the one schema retry (104.9 seconds). The timeout increase alone did
 not fix the case.
 
-Follow-up commit `850be97` omits successfully extracted source PDFs from
-OpenCode's workspace list and directs it to the numbered text companion only.
-It is deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`; metadata again confirms
-the 180-second function timeout. The targeted production 51-page synthetic PDF
-returned HTTP 200 in 100.9 seconds with six candidates, source locations and
-evidence, exact uploaded filename, and zero unreadable files; the response
-contained no OpenRouter-key pattern. The initial two-window sample remains
-9/10 and is not a general reliability estimate. Full local verification passes
-121/121 Node tests, the 20-check canonical verifier, and docs verification.
-OCA-2 remains In Progress pending independent review and final Wiki/Project
-sync. No age/sex-specific reference ranges or validated category-age
-models are available in this workflow; it does not fabricate them. Dates from arbitrary-file extraction
-remain printed source metadata, not normalized into a canonical time-series
-date. E-005, IR1, patient-data governance, clinical approval, and the exact-
-hostname issue remain open.
+Follow-up commit `850be97` omitted successfully extracted source PDFs from
+OpenCode's workspace list and directed it to the numbered text companion only.
+It is deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`; the targeted production
+51-page synthetic PDF returned HTTP 200 in 100.9 seconds with six grounded
+candidates. Independent review found that this version left the original PDF
+accessible in the sandbox and had a duplicate-filename edge case.
 
-Independent review of `850be97` found that its prompt omitted the original PDF
-path but left the PDF accessible in the sandbox; it also found a duplicate-
-filename fallback edge case. The current local follow-up deletes the original
-only after writing the extracted companion and identifies it by exact workspace
-path. If deletion fails, it leaves the original listed and does not advertise
-the companion. PDFs without meaningful extracted text remain available for
-visual inspection. This follow-up passes 121 Node tests, the canonical
-verifier, and docs verification; publication and independent re-review remain
-open.
+Commit `5d8fe7b` uses the Vercel SDK's `sandbox.fs.unlink` only after writing
+the companion and maps removal by exact workspace path. If deletion fails, the
+source remains listed and no companion is advertised; PDFs with no meaningful
+extracted text remain available for visual inspection. It is deployed as
+`dpl_84BNxkZmNr9VZT7cZpbbQRbSnuSq`; Vercel metadata confirms the 180-second
+function timeout. The targeted production 51-page synthetic PDF returned HTTP
+200 in 109.4 seconds with six candidates, source locations/evidence, exact
+filename, zero unreadable files, and no key pattern. The initial two-window
+sample remains 9/10 and is not a general reliability estimate. Full local
+verification passes 121 Node tests, the 20-check canonical verifier, and docs
+verification. The independent reviewer rechecked the final SDK cleanup and
+found no remaining concrete defect. OCA-2 is complete for the bounded
+synthetic/de-identified file-to-report scope. The targeted 51-page case passed
+once on the final deployment; the original two-window sample remains 9/10, so
+no uptime or general reliability guarantee is claimed. Numeric category ages
+and age/sex-matched reference ranges remain unavailable in this workflow and
+are tracked in BIOAGE-DOMAIN-1. Dates from arbitrary-file extraction remain
+printed source metadata, not normalized into a canonical time-series date.
+E-005, IR1, patient-data governance, clinical approval, and the exact-hostname
+issue remain open.
 
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 

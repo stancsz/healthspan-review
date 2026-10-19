@@ -85,22 +85,27 @@ did not fix this case.
 
 The follow-up omits successfully extracted source PDFs from OpenCode's workspace
 list and tells it to use the numbered text companion only. Commit `850be97` is
-deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`; metadata confirms the 180-second
-function timeout. The targeted synthetic 51-page rerun returned HTTP 200 in
-100.9 seconds with six source-located candidates, filename/evidence present,
-zero unreadable files, and no OpenRouter-key pattern. The earlier bounded
-two-window result remains 9/10. Full local verification now passes 121/121
-Node tests, the 20-check canonical verifier, and docs verification. OCA-2
-remains in progress pending independent review and final Wiki/Project sync; do
-not represent this targeted case as an uptime or general reliability guarantee.
-Independent review found the 850be97 prompt filter did not physically remove
-source PDFs from the sandbox and could hide a same-named fallback file. The
-current local follow-up deletes a source only after its companion is written
-and keys that removal by exact workspace path; if removal fails, the source
-remains in the visible workspace and no companion is advertised. PDFs with no
-meaningful extractable text stay available for visual inspection. This follow-
-up passes full local verification (121 Node tests, canonical verifier, docs
-verifier); it still needs publication and an independent re-review.
+deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`; the targeted synthetic 51-page
+rerun returned HTTP 200 in 100.9 seconds with six source-located candidates,
+filename/evidence present, zero unreadable files, and no key pattern. Independent
+review found that this version left the original accessible in the sandbox and
+could hide a same-named fallback file.
+
+The final follow-up uses the Vercel SDK's `sandbox.fs.unlink` only after the
+companion is written and maps removal by exact workspace path; if removal fails,
+the source remains visible and no companion is advertised. PDFs with no
+meaningful extracted text remain available for visual inspection. Commit
+`5d8fe7b` is deployed as `dpl_84BNxkZmNr9VZT7cZpbbQRbSnuSq`; metadata confirms
+the 180-second function timeout. The same targeted PDF returned HTTP 200 in
+109.4 seconds with six evidence-bearing candidates, zero unreadable files, and
+no key pattern. The initial two-window result remains 9/10. Full local
+verification passes 121 Node tests, the 20-check canonical verifier, and docs
+verification. The independent reviewer rechecked the final SDK cleanup
+implementation and found no remaining concrete defect. OCA-2 is complete for
+the bounded synthetic/de-identified file-to-report scope; the targeted case is
+not an uptime or general reliability guarantee. The broader goal remains
+active: numeric category-age models and age/sex-matched reference ranges
+remain unavailable and are tracked in `BIOAGE-DOMAIN-1`.
 
 ### PWA-1: Installable browser app, 2026-10-19
 
