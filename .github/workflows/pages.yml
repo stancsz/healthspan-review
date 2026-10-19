@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - name: Install locked Node dependencies
+        run: npm ci
       - name: Install locked documentation dependencies
         run: |
           python -m pip install uv==0.11.28
