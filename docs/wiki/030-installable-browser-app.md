@@ -30,8 +30,10 @@ hosts. Manifest, 192/512 PNG icons, and service-worker endpoints returned HTTP
 200 with expected MIME types. Vercel serves `Service-Worker-Allowed: /` for the
 root worker; Pages serves the worker within the repository prefix. Source
 commit `a005515ef6dcb84782d28d9511ad4aea83f82c5b` passed Pages run
-`39339457917` and is served by Vercel deployment
-`dpl_Bj9F2Mh36fGK3j8u784buMSDgBtW`. The service-worker source excludes API,
+`39339457917`. Documentation sync commit
+`c0b7df06fb10dfb2de1d6ad9147faa2213ebe8bb` passed Pages run `39339780834` and
+is served by the latest Ready Vercel deployment
+`dpl_54cikkAcqtLeVPoC7b1pxUDii4aP`. The service-worker source excludes API,
 non-GET, range, and cross-origin requests from its cache. The embedded browser
 did not expose `beforeinstallprompt`; the native browser prompt path therefore
 was not exercised, while the menu-instruction fallback was verified.

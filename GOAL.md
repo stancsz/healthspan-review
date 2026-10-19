@@ -74,11 +74,14 @@ verified on both live app routes. The standalone manifest and 192/512 PNG icons
 load on Vercel and GitHub Pages, and the production service worker is served
 with root scope permission. The worker caches only static shell resources and
 HTML documents; it bypasses `/api/`, non-GET, range, and cross-origin requests.
-Vercel deployment `dpl_Bj9F2Mh36fGK3j8u784buMSDgBtW` is Ready at the existing
-app alias. GitHub Pages run `39339457917` passed verification and deployment for
-the same source commit. Production headers report manifest `application/manifest+json`,
-icons `image/png`, and `Service-Worker-Allowed: /`. Browser-native prompt firing
-was not exposed by the embedded test browser; the fallback path was verified.
+PWA source commit `a005515ef6dcb84782d28d9511ad4aea83f82c5b` passed GitHub Pages
+run `39339457917`. A later documentation sync, source commit
+`c0b7df06fb10dfb2de1d6ad9147faa2213ebe8bb`, passed Pages run `39339780834` and
+is served by the latest Ready Vercel deployment
+`dpl_54cikkAcqtLeVPoC7b1pxUDii4aP` at the existing app alias. Production
+headers report manifest `application/manifest+json`, icons `image/png`, and
+`Service-Worker-Allowed: /`. Browser-native prompt firing was not exposed by
+the embedded test browser; the fallback path was verified.
 This is an app-delivery convenience; research-use, privacy, age-output, and
 clinical approval limits are unchanged.
 

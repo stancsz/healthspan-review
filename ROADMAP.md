@@ -16,12 +16,14 @@ Priority: P2 app delivery. Owner: Codex integrator. Status: Done for this
 installable-shell increment. Depends on the shared app shell and Vercel/GitHub
 Pages routing. Commit `a005515ef6dcb84782d28d9511ad4aea83f82c5b` adds the
 header Install app control, standalone manifest, 192/512 PNG icons, scoped
-service worker, and API/non-GET/range/cross-origin cache bypass. The production
-Vercel deployment `dpl_Bj9F2Mh36fGK3j8u784buMSDgBtW` is Ready; the live app alias
-serves the manifest and both icons with the expected MIME types and the worker
-with `Service-Worker-Allowed: /`. GitHub Pages run `39339457917` passed for the
-same commit; the repository-prefixed app route, manifest, both icons, and
-service worker all return HTTP 200 with expected MIME types. The install button
+service worker, and API/non-GET/range/cross-origin cache bypass. GitHub Pages
+run `39339457917` passed for that source commit. Documentation sync commit
+`c0b7df06fb10dfb2de1d6ad9147faa2213ebe8bb` passed Pages run `39339780834` and
+is served by the latest Ready Vercel deployment
+`dpl_54cikkAcqtLeVPoC7b1pxUDii4aP` at the live app alias. The alias serves the
+manifest and both icons with the expected MIME types and the worker with
+`Service-Worker-Allowed: /`. The repository-prefixed app route, manifest, both
+icons, and service worker all return HTTP 200 with expected MIME types. The install button
 and browser-menu fallback were verified in the browser on both hosts. The
 embedded browser did not expose the native `beforeinstallprompt` event, so that
 native prompt itself was not exercised. The local suite passes 115/115 Node
