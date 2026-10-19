@@ -164,20 +164,38 @@ The local repair streams `pdftotext` output into a 120,000-character cap,
 labels each extracted page with its original page number (including blank
 leading pages), and falls back to the original when extraction is unavailable.
 The sandbox cap is 150 seconds and the configured function cap is 180 seconds.
-All 118 Node tests passed before deployment. Commit `b711b4c` is deployed as
-`dpl_7mxwzXFcbycZ9gtD4haCv6B3NpWF`; Vercel metadata confirms the 180-second
-function timeout. The targeted production 51-page retry returned a bounded
-502 after 106.6 seconds. Sanitized logs show a tool call but no valid
-measurement JSON after the one schema retry (104.9 seconds). The timeout
-increase did not fix the case. A local follow-up now omits successfully
-extracted source PDFs from OpenCode's workspace list and tells it to use the
-numbered text companion only. OCA-2 remains In Progress pending a fresh
-deployment, targeted provider-backed pass, independent review, and documentation
+All 118 Node tests passed before the first repair deployment. Commit `b711b4c`
+deployed as `dpl_7mxwzXFcbycZ9gtD4haCv6B3NpWF`; Vercel metadata confirmed the
+180-second function timeout. Its targeted 51-page retry returned a bounded 502
+after 106.6 seconds. Sanitized logs show a tool call but no valid measurement
+JSON after the one schema retry (104.9 seconds). The timeout increase alone did
+not fix the case.
+
+Follow-up commit `850be97` omits successfully extracted source PDFs from
+OpenCode's workspace list and directs it to the numbered text companion only.
+It is deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`; metadata again confirms
+the 180-second function timeout. The targeted production 51-page synthetic PDF
+returned HTTP 200 in 100.9 seconds with six candidates, source locations and
+evidence, exact uploaded filename, and zero unreadable files; the response
+contained no OpenRouter-key pattern. The initial two-window sample remains
+9/10 and is not a general reliability estimate. Full local verification passes
+121/121 Node tests, the 20-check canonical verifier, and docs verification.
+OCA-2 remains In Progress pending independent review and final Wiki/Project
 sync. No age/sex-specific reference ranges or validated category-age
 models are available in this workflow; it does not fabricate them. Dates from arbitrary-file extraction
 remain printed source metadata, not normalized into a canonical time-series
 date. E-005, IR1, patient-data governance, clinical approval, and the exact-
 hostname issue remain open.
+
+Independent review of `850be97` found that its prompt omitted the original PDF
+path but left the PDF accessible in the sandbox; it also found a duplicate-
+filename fallback edge case. The current local follow-up deletes the original
+only after writing the extracted companion and identifies it by exact workspace
+path. If deletion fails, it leaves the original listed and does not advertise
+the companion. PDFs without meaningful extracted text remain available for
+visual inspection. This follow-up passes 121 Node tests, the canonical
+verifier, and docs verification; publication and independent re-review remain
+open.
 
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 

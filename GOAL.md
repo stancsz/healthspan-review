@@ -81,10 +81,26 @@ tests passed 118/118 before deployment. Commit `b711b4c` is deployed as
 function timeout. A targeted production rerun returned a bounded 502 after
 106.6 seconds. Sanitized logs show OpenCode used a tool but returned no valid
 measurement JSON after its single retry (104.9 seconds), so the longer timeout
-did not fix this case. The next local repair hides successfully extracted
-original PDFs from OpenCode's workspace list and tells it to use the numbered
-text companion only. OCA-2 remains open pending a fresh deployment, targeted
-provider-backed pass, independent review, and documentation sync.
+did not fix this case.
+
+The follow-up omits successfully extracted source PDFs from OpenCode's workspace
+list and tells it to use the numbered text companion only. Commit `850be97` is
+deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`; metadata confirms the 180-second
+function timeout. The targeted synthetic 51-page rerun returned HTTP 200 in
+100.9 seconds with six source-located candidates, filename/evidence present,
+zero unreadable files, and no OpenRouter-key pattern. The earlier bounded
+two-window result remains 9/10. Full local verification now passes 121/121
+Node tests, the 20-check canonical verifier, and docs verification. OCA-2
+remains in progress pending independent review and final Wiki/Project sync; do
+not represent this targeted case as an uptime or general reliability guarantee.
+Independent review found the 850be97 prompt filter did not physically remove
+source PDFs from the sandbox and could hide a same-named fallback file. The
+current local follow-up deletes a source only after its companion is written
+and keys that removal by exact workspace path; if removal fails, the source
+remains in the visible workspace and no companion is advertised. PDFs with no
+meaningful extractable text stay available for visual inspection. This follow-
+up passes full local verification (121 Node tests, canonical verifier, docs
+verifier); it still needs publication and an independent re-review.
 
 ### PWA-1: Installable browser app, 2026-10-19
 

@@ -48,11 +48,24 @@ tests plus the canonical and docs verifiers. Commit `b711b4c` is deployed as
 180-second function timeout. A targeted production 51-page retry returned a
 bounded 502 after 106.6 seconds. Sanitized logs show a tool call but no valid
 measurement JSON after the single schema retry. The timeout increase did not
-fix this case. A local follow-up now omits successfully extracted source PDFs
-from OpenCode's workspace list and directs it to the numbered text companion
-only. That follow-up awaits a fresh deployment and provider-backed
-verification. Deployment and commit state are tracked in `GOAL.md` and
-`ROADMAP.md`.
+fix this case. Follow-up commit `850be97` omits successfully extracted source
+PDFs from OpenCode's workspace list and directs it to the numbered text
+companion only. It is deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`, with the
+180-second function timeout confirmed. A targeted production rerun of the
+synthetic 51-page PDF returned HTTP 200 in 100.9 seconds with six candidates,
+source locations/evidence, exact filename, zero unreadable files, and no
+OpenRouter-key pattern. The original two-window sample remains 9/10 and is not
+a general reliability estimate. Full local verification passes 119 Node
+tests, the canonical verifier, and docs verification. Independent review found
+that `850be97` hid the original PDF path in instructions but left the file
+accessible in the sandbox, and found a duplicate-filename fallback edge case.
+The current local follow-up deletes the original only after writing the text
+companion and identifies it by exact workspace path; if deletion fails, the
+original stays listed and the companion is not advertised. PDFs without
+meaningful extracted text remain available for visual inspection. This follow-
+up passes 121 Node tests, the canonical verifier, and docs verification;
+publication and independent re-review remain open. Deployment and commit state
+are tracked in `GOAL.md` and `ROADMAP.md`.
 
 The OpenRouter key is configured as a sensitive Production environment variable
 and is brokered to egress by Vercel; it does not enter the sandbox. E-005, IR1,
