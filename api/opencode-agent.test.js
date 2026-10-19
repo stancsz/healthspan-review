@@ -26,6 +26,11 @@ function zipEnvelope({ name = 'word/document.xml', payload = Buffer.from('synthe
   return Buffer.concat([localData, directory, end]);
 }
 
+test('sandbox SDK loads through its ESM entry from the CommonJS API handler', async () => {
+  const sdk = await handler.loadSandboxSdk();
+  assert.equal(typeof sdk.Sandbox?.create, 'function');
+});
+
 test('agent request accepts arbitrary file extensions within bounded payload limits', () => {
   assert.equal(handler.validateBody({ prompt: 'Summarize this', files: [file('report.pdf'), file('image.png'), file('book.docx'), file('data.xlsx'), file('opaque.custom')] , consent: true }), null);
 });

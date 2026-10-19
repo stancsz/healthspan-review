@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const handler = require('../api/opencode-agent.js');
-const { Sandbox } = require('@vercel/sandbox');
+const sandboxSdkPromise = import('@vercel/sandbox');
 
 const consent = true;
 const basePrompt = 'Review synthetic measurements only.';
@@ -129,6 +129,7 @@ test('bounded concurrency rejects 64 unconsented endpoint requests without sandb
 });
 
 test('64 concurrent valid synthetic reviews isolate and stop each mocked sandbox without exposing the key', async () => {
+  const { Sandbox } = await sandboxSdkPromise;
   const originalCreate = Sandbox.create;
   const previousKey = process.env.OPENROUTER_API_KEY;
   const secret = 'test-only-openrouter-secret';
@@ -195,6 +196,7 @@ test('64 concurrent valid synthetic reviews isolate and stop each mocked sandbox
 });
 
 test('schema-invalid output receives one bounded continuation and still tears down the sandbox', async () => {
+  const { Sandbox } = await sandboxSdkPromise;
   const originalCreate = Sandbox.create;
   const previousKey = process.env.OPENROUTER_API_KEY;
   let commands = 0, stopped = 0;
@@ -234,6 +236,7 @@ test('schema-invalid output receives one bounded continuation and still tears do
 });
 
 test('sandbox preparation failures return a bounded error and stop an allocated sandbox', async () => {
+  const { Sandbox } = await sandboxSdkPromise;
   const originalCreate = Sandbox.create;
   const previousKey = process.env.OPENROUTER_API_KEY;
   let stopped = 0;

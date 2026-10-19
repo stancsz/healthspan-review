@@ -1,6 +1,5 @@
 const MODEL = 'openrouter/minimax/minimax-m3';
 const { inflateRawSync } = require('node:zlib');
-const { Sandbox } = require('@vercel/sandbox');
 const MAX_FILES = 6;
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 3 * 1024 * 1024;
@@ -194,6 +193,12 @@ function buildCommandArgs(prompt, continueSession = false) {
   return ['run', ...(continueSession ? ['--continue'] : []), '--pure', '--format', 'json', '--model', MODEL, '--agent', 'build', prompt];
 }
 
+async function loadSandboxSdk() {
+  // @vercel/sandbox's CommonJS entry currently requires an ESM-only
+  // transitive dependency. Load its documented ESM entry from this CJS API.
+  return import('@vercel/sandbox');
+}
+
 async function runOpenCodeCommand(sandbox, prompt, continueSession = false) {
   const result = await sandbox.runCommand({
     cmd: 'opencode',
@@ -221,6 +226,7 @@ async function handler(req, res) {
   let sandbox;
   let phase = 'starting sandbox';
   try {
+    const { Sandbox } = await loadSandboxSdk();
     sandbox = await Sandbox.create({
       timeout: 90_000,
       persistent: false,
@@ -316,4 +322,5 @@ handler.safeOutput = safeOutput;
 handler.outputDiagnostics = outputDiagnostics;
 handler.parseMeasurementOutput = parseMeasurementOutput;
 handler.buildCommandArgs = buildCommandArgs;
+handler.loadSandboxSdk = loadSandboxSdk;
 module.exports = handler;
