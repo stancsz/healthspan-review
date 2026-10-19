@@ -16,3 +16,4 @@ data/raw/
 .tmp/
 .vercel
 .env*
+node_modules/

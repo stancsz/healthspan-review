@@ -10,6 +10,41 @@ software check is green.
 
 ## Current position
 
+### OCA-1 — OpenCode research file workspace, 2026-10-19
+
+Priority: P1 research-app capability. Owner: Codex integrator; acceptance:
+independent reviewer. Status: In progress. Depends on the existing Vercel
+project and server-side OpenRouter credential. User authorized free public use
+and deployment, conditioned on keeping the API key secret.
+
+1. Add a separate opt-in workspace using the actual OpenCode runtime with
+   MiniMax M3 through OpenRouter. Keep existing review CSV flow local.
+2. Use an ephemeral one-CPU Vercel Sandbox per request, bounded files/runtime,
+   an OpenRouter-only egress allowlist, secret-header brokering, no request
+   logging, and bounded sandbox lifetime with best-effort teardown.
+3. Explain data transmission and provider processing; require consent each run;
+   restrict the feature to synthetic/de-identified research material and
+   prohibit clinical advice or decisions.
+4. Exercise the actual synthetic file → OpenCode tools → model → answer flow,
+   browser UI, error paths, no-key-exposure, and Vercel Firewall limit; update
+   Wiki and Project #4 and deploy/verify before marking done.
+
+Current evidence: all 14 API tests pass. Provider-backed synthetic CSV requests
+completed locally and in production through OpenCode, returning 3 rows and a
+mean of 20. Synthetic PDF and screenshot requests each returned grounded
+summaries; a combined PDF/screenshot request also completed after increasing the
+sandbox cap to 90 seconds and function max duration to 120 seconds. Missing or
+false consent returns 400. Production deployment
+`dpl_HDmK8u53YNuYv5VQQ9o453q9rgRg` serves
+`https://healthspan-review-gules.vercel.app/agent`. Live `/agent`, CSS, and JS
+match source SHA-256; none contains the OpenRouter key. API GET returns 405
+without key exposure. The key is configured as a sensitive Production secret.
+The active 5-requests/minute/IP firewall rule covers both AI POST routes. The
+deployed UI was visually reviewed; independent feature acceptance is READY for
+the documented bounded scope. Git commit/push and synchronized Wiki/Project #4
+closeout remain. The feature remains research-only;
+E-005, IR1, and patient-data governance do not advance.
+
 ### APP-REVAMP-1 — Complete app revamp and publication, 2026-10-08
 
 Priority: P0 for the authorized publication slice. Owner: Codex integrator;

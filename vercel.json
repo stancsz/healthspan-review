@@ -1,6 +1,9 @@
 {
   "framework": null,
   "cleanUrls": true,
+  "functions": {
+    "api/opencode-agent.js": { "maxDuration": 120 }
+  },
   "rewrites": [
     {
       "source": "/",
@@ -9,6 +12,18 @@
     {
       "source": "/workbench",
       "destination": "/docs/workbench"
+    },
+    {
+      "source": "/agent",
+      "destination": "/docs/agent"
+    },
+    {
+      "source": "/agent.css",
+      "destination": "/docs/agent.css"
+    },
+    {
+      "source": "/agent.js",
+      "destination": "/docs/agent.js"
     },
     {
       "source": "/clinic-companion",

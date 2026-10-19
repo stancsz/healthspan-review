@@ -48,13 +48,24 @@ unit, date, page, and human confirmation for every value.
 | L10 | AI suggestions never silently become record values: the user can edit, confirm, or dismiss candidates individually before they enter the review ledger. | Browser workflow proves unconfirmed candidates do not alter the record; accepted values retain AI-extracted plus human-confirmed provenance. |
 | L11 | The PDF itself stays in the browser; only bounded, minimized extracted text/page images are sent to the same-origin AI function after the user reviews a disclosure and confirms de-identification. No PDF, text, candidate response, API key, or identifier is persisted or body-logged by the app. | Function/API inspection and live runtime review verify consent gating, a 12 MiB / 50-page document limit, six-page / 3.7 MB client-preflight batches, server-only credentials, a 5-request/minute/IP Vercel Firewall rule, body-free application logs, no browser storage, and fail-closed behavior. |
 | L12 | The reviewed app is deployed at `https://healthspan-review.vercel.app/` and the PDF-to-confirmed-record path is deeply exercised on that live endpoint. | Deployment identity, live routes, synthetic text/scanned PDF walkthroughs, API behavior, failure cases, and regression of manual/CSV/sample/export routes are recorded. The current app-level flow is deeply exercised at the generated alias; exact-hostname ownership remains unresolved. |
+| L14 | A separate file-agent workspace lets users explicitly submit bounded common files to actual OpenCode tools with MiniMax M3 via OpenRouter. | Synthetic CSV/PDF/image tests exercise file intake, workspace tools, model response, browser UI, failure handling, no secret exposure, a 90-second maximum sandbox lifetime with best-effort stop, source readback, and a per-IP firewall limit; synthetic/de-identified-only consent is enforced by the API. This feature does not change the browser-local CSV measurement path or clinical boundary. |
 
 ### Constraints / invariants
 
 - Research and wellness measurement review only.
 - Keep E-005 blocked and clinical use forbidden.
 - No diagnosis, treatment advice, validated biological/system age, patient-data hosting, production-readiness, paid-pilot, real-user, or token-savings claim.
-- Keep original SECA/clinical CSVs in the browser; do not upload or retain them.
+- Keep original SECA/clinical CSVs in the measurement workflow browser-local;
+  do not upload or retain them through that workflow. The separate OpenCode
+  workspace accepts files only when the user selects them and confirms its
+  per-request disclosure.
+- The OpenCode workspace accepts bounded PDF, PNG/JPG/WebP/GIF, CSV/TSV,
+  and TXT/Markdown/JSON only. Require synthetic or de-identified
+  content; do not represent it as approved for identifiable health data.
+  Run actual OpenCode tools in a one-CPU, short-lived Vercel Sandbox with
+  OpenRouter-only egress; broker the key on the Vercel side, cap sandbox
+  lifetime at 90 seconds, and request stop after every run. Never log payload
+  or response bodies.
 - Keep the original PDF in the browser. AI submission is opt-in per PDF and
   transmits only bounded extracted text and rendered page images to Vercel and
   MiniMax. The UI describes an external AI service without naming the

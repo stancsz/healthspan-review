@@ -42,3 +42,4 @@ Wiki entries must not override those documents.
 - [025 — System-age outputs are withheld](025-estimated-age-signals.md) — retired heuristic path and evidence gate.
 
 - [028 — Complete research app revamp](028-app-revamp-publication.md) — navigation, export integrity, synthetic plan workflow and bounded publication.
+- [029 — OpenCode research file workspace](029-opencode-research-file-workspace.md) — opt-in file analysis through a short-lived OpenCode sandbox (deployed).

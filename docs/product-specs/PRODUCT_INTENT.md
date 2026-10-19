@@ -33,6 +33,13 @@ the evidence.
 
 The product currently supports deterministic measurement and report behavior,
 local SECA parsing, synthetic examples, and a documented development interface.
+It includes a separate, opt-in OpenCode research file workspace using OpenRouter
+MiniMax M3. Selected files are sent to a short-lived Vercel Sandbox only after
+per-request consent. This broad file workspace does not change the existing
+browser-local CSV measurement workflow. It accepts bounded common document,
+table, text, and image formats; uploaded content must be synthetic or
+de-identified. Provider processing and retention remain subject to provider
+policies, and this feature is not approved for identifiable health information.
 The optional PDF intake may send bounded extracted text and rendered page images
 to an external AI service only after a per-document disclosure and user
 confirmation that direct identifiers have been removed. The app does not claim

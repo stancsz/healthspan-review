@@ -54,6 +54,14 @@ receipts and `/readyz` remain fail-closed when production controls are absent.
   function and MiniMax after per-file disclosure and de-identification
   confirmation; it never stores source content in the app. MiniMax processing
   and retention remain governed by its current terms and privacy policy.
+- The separate `/agent` workspace accepts bounded PDF, image (PNG/JPEG/WebP/GIF),
+  CSV/TSV, and text/Markdown/JSON files after explicit UI and API consent. The
+  same-origin `/api/opencode-agent` route writes selected files into an isolated
+  Vercel Sandbox workspace, runs the OpenCode CLI with MiniMax M3 through
+  OpenRouter, and returns text findings to the browser. It does not persist
+  uploaded files or responses. Sandbox lifetime is capped at 90 seconds and
+  stop is requested in `finally`; cleanup failures are logged by error type.
+  Provider processing and retention remain governed by provider policies.
 - AI-extracted values are untrusted candidates with page/evidence provenance.
   Source files are limited to 50 pages / 12 MiB; requests carry at most six
   pages / 3.7 MB. A per-tab PDF scheduler serializes batch starts with a
@@ -70,10 +78,12 @@ receipts and `/readyz` remain fail-closed when production controls are absent.
   equivalent values are labeled duplicate sources, and ambiguous dates require
   explicit correction before entry. Generic glucose evidence cannot populate
   fasting glucose.
-- MiniMax credentials are server-only. The public PDF function enforces
+- MiniMax credentials are server-only. The PDF and OpenCode functions enforce
   same-origin request checks, bounded inputs, and a Vercel Firewall rate limit
-  of five POST requests per minute per IP. Application code excludes request
-  and response bodies from logs.
+  of five POST requests per minute per IP. The OpenCode sandbox has egress only
+  to OpenRouter, with Vercel brokering the key into the request header; the
+  actual key is not present in the sandbox environment. Application code
+  excludes request and response bodies from logs.
 - Documentation must distinguish product intent, architecture, active execution
   work, and retained evidence. Historical receipts do not certify later edits.
 

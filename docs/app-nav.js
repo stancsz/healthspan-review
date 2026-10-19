@@ -2,8 +2,8 @@
   "use strict";
   // Relative files work under the Pages repository prefix and /docs/.
   // The Vercel root uses clean routes; its evidence archive lives in /docs/.
-  var atRoot = /^\/(?:workbench|manual|clinic-companion)?(?:\.html)?\/?$/.test(location.pathname);
-  var files = { companion: "clinic-companion.html", workbench: "workbench.html", manual: "manual.html", evidence: atRoot ? "docs/index.html#evidence" : "index.html#evidence" };
+  var atRoot = /^\/(?:workbench|manual|clinic-companion|agent)?(?:\.html)?\/?$/.test(location.pathname);
+  var files = { companion: "clinic-companion.html", workbench: "workbench.html", manual: "manual.html", agent: "agent.html", evidence: atRoot ? "docs/index.html#evidence" : "index.html#evidence" };
   document.querySelectorAll("[data-app-route]").forEach(function (link) {
     var key = link.dataset.appRoute;
     if (!files[key]) return;

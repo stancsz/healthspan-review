@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/", "destination": "/workbench.html" },
     { "source": "/workbench", "destination": "/workbench.html" },
+    { "source": "/agent", "destination": "/agent.html" },
     { "source": "/manual", "destination": "/manual.html" }
   ]
 }

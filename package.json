@@ -1,0 +1,28 @@
+{
+  "name": "healthspan-review",
+  "version": "1.0.0",
+  "description": "Research-use-only healthspan review workspace; not for clinical use.",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": { "test": "node --test api/*.test.js" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stancsz/healthspan-review.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/stancsz/healthspan-review/issues"
+  },
+  "homepage": "https://github.com/stancsz/healthspan-review#readme",
+  "dependencies": {
+    "@vercel/sandbox": "3.8.0"
+  }
+}

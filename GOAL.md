@@ -11,6 +11,30 @@ reconcile visibility, licensing and public wording; private source is not verifi
 
 ## Active execution goal
 
+### OpenCode research file workspace, 2026-10-19
+
+The user authorized a free public workspace using the actual OpenCode runtime
+with OpenRouter MiniMax M3, provided its API key remains secret. OCA-1 in
+[`ROADMAP.md`](ROADMAP.md) tracks this delivery slice. The separate `/agent`
+feature is consent-gated, supports common bounded file types, and runs each
+request in a disposable Vercel Sandbox with OpenRouter-only egress and a
+brokered server-side key. The key remains a sensitive Production environment
+variable and is not placed in browser assets, responses, or the sandbox. The
+existing measurement CSV flow remains browser-local. Only synthetic or
+de-identified material is allowed; no identifiable health data or clinical
+decisions. Production deployment `dpl_HDmK8u53YNuYv5VQQ9o453q9rgRg` serves
+`https://healthspan-review-gules.vercel.app/agent`. Fourteen API tests pass. A
+synthetic CSV returned three rows and a mean of 20 in both local and production
+OpenCode tool/model runs. Production synthetic PDF and screenshot uploads both
+returned grounded summaries; the combined PDF/screenshot request also succeeded
+after setting a 90-second sandbox cap. Missing/false consent returns 400. Live
+page/CSS/JS match the source and contain no key; API GET returns 405 with no key
+exposure. The active 5 requests/minute/IP Vercel Firewall rule covers both AI
+POST routes. Independent feature acceptance is READY for the bounded types and
+limits described. Repository commit/push and final Wiki/Project #4 sync remain.
+OCA-1 does not
+advance E-005, IR1, or patient-data governance.
+
 ### App revamp publication, 2026-10-08
 
 The user authorized an entire-app revamp, commit and deployment. APP-REVAMP-1
