@@ -20,7 +20,7 @@
     <section class="agent-card" aria-labelledby="task-title">
       <label class="field-label" for="task">What would you like the agent to do?</label>
       <textarea id="task" rows="3" maxlength="4000" placeholder="For example: summarize the main findings in plain language and flag anything unclear."></textarea>
-      <div class="upload-head"><div><h2 id="files-title">Files</h2><p>PDF, PNG, JPG, WebP, GIF, CSV, TSV, TXT, Markdown, JSON</p></div><label class="button button-quiet file-button" for="files">Choose files</label><input id="files" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.csv,.tsv,.txt,.md,.json" /></div>
+      <div class="upload-head"><div><h2 id="files-title">Files</h2><p>Any file type. The agent will try to inspect it and report anything it cannot read.</p></div><label class="button button-quiet file-button" for="files">Choose files</label><input id="files" type="file" multiple /></div>
       <p class="size-note">Up to 6 files · 2 MB each · 3 MB total</p>
       <ul id="file-list" class="file-list" aria-label="Selected files"><li class="empty-files">No files selected</li></ul>
       <label class="consent-box"><input id="consent" type="checkbox" /><span><strong>I understand and agree:</strong> selected files and my task will be sent to this app’s server, OpenCode, and OpenRouter for processing. They may contain sensitive information, so I will use synthetic or de-identified files only. The temporary sandbox has a 90-second maximum lifetime; cleanup is requested after the run. The AI provider’s processing and retention are governed by its policies. The app does not save uploaded files.</span></label>

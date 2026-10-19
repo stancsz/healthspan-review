@@ -49,6 +49,128 @@ and `6ba8164` are pushed to `main`, Wiki page 029 is synchronized, and Project
 research-only;
 E-005, IR1, and patient-data governance do not advance.
 
+### OCA-2 — File-to-measurement review and downloadable report, 2026-10-19
+
+Priority: P1, depends on OCA-1 and LOCAL-REVIEW-1. Owner: Codex integrator;
+independent acceptance reviewer. Status: In Progress. Local arbitrary-file
+review, merge/history repair, pressure tests, and six-page PDF generation are
+implemented. Current production still serves the previous two-page report;
+the live artifact and batch merge have not yet been reverified after these
+local changes. Provider-backed sustained concurrency remains unverified.
+
+1. Connect OpenCode file uploads to the existing workbench and canonical
+   35-field contract. Permit arbitrary file extensions within explicit request
+   bounds; unsupported or unreadable content remains unextracted and explained.
+2. Return schema-validated candidate values with original file and page/row/
+   sheet/cell/time location, evidence excerpt, printed value/unit/date, and
+   uncertainty. Treat all file content as untrusted. Do not infer missing values.
+3. Require field-by-field human review and confirmation before candidates enter
+   the local review calculation and packet. Preserve conflicts, source
+   provenance, missingness, readiness caveats, supplied age/sex context, and
+   per-domain age status. Show age/sex-specific ranges only when an approved
+   panel exists; otherwise say unavailable and withhold numeric domain ages.
+4. Add a direct local PDF report download based on the same confirmed review
+   packet as JSON. Verify the browser upload → candidate confirmation → local
+   calculation → downloaded PDF workflow and key isolation.
+5. Reconcile tests, docs, Wiki, and Project #4. This slice cannot close E-005,
+   IR1, patient-data governance, or clinical approval.
+
+Acceptance evidence (2026-10-19): Production deployment
+`dpl_EsBBZoEimewZmTVJVehRNAnumV17` serves
+`https://healthspan-review-gules.vercel.app/workbench`. A synthetic DOCX
+containing fasting glucose 98 mg/dL, HbA1c 5.6%, albumin 4.3 g/dL, and grip
+strength 31 kg returned four candidates with source paragraph, printed value,
+unit, and date. An embedded instruction-like string did not alter extracted
+measurements. All four candidates were explicitly checked before entering the
+browser-local 35-field review; the review retained 4/35 completeness, six open
+items, missing values, and withheld numeric age/FI. The browser downloaded the
+7,463-byte PDF; PyMuPDF opened its two pages and confirmed all four values,
+source filename/date, completeness, missingness, and research-use boundaries.
+
+The bounded adversarial suite exercises exact upload caps, malformed base64,
+canonical-field filtering, same-origin/consent rejection, 1,000 parser cycles,
+64 concurrent unconsented API calls without sandbox creation, and real deflate
+archives with forged directory sizes, unsafe paths, high expansion ratios, and
+per-request aggregate expansion limits. ZIPs are actually expanded with an
+8 MB per-entry cap, CRC/size verification, and 32 MB aggregate cap. Nineteen
+API/PDF tests, nine pressure tests, the 20-check project verifier, and the full
+project gate pass. One production model response returned no schema-valid
+measurement object and failed closed; a single OpenCode continuation retry is
+now bounded to schema-invalid measurement responses. A subsequent live run on
+the current deployment returned four candidates and completed the confirmed
+PDF flow. Do not infer provider uptime or sustained concurrency from this
+small synthetic acceptance sample. The per-IP firewall remains five requests
+per minute; no paid concurrent-model load test was run.
+
+The prior production workbench HTML and JavaScript matched their then-current
+local SHA-256; neither contained an OpenRouter key prefix. The endpoint GET
+method returned 405 without key exposure. The secret remains a sensitive
+Production environment variable. The current local PDF report includes
+supplied age context, coverage cards for all 17 domains, a complete 35-field
+profile including missing rows, and explicit withheld/unavailable statuses.
+The updated local generator renders six pages for a 35-field/17-domain packet,
+including a candidate algorithm/input-gap page;
+the older production evidence is two pages and cannot be treated as acceptance
+of this source revision. OCA-2 remains open pending current live readback, PDF
+render/layout review, and batch-merge UI verification. No age/sex-specific
+reference ranges or validated category-age models are available in this
+workflow; it does not fabricate them. Dates from arbitrary-file extraction
+remain printed source metadata, not normalized into a canonical time-series
+date. E-005, IR1, patient-data governance, clinical approval, and the exact-
+hostname issue remain open.
+
+### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
+
+Priority: P1 research/model-definition work; depends on age-model evidence and
+domain-measurement contracts. Owner: research/model owner plus qualified
+clinical/statistical reviewers; Codex integrator for implementation. Status:
+Blocked before implementation by the absence of approved category-age models
+and patient reference panels. The user requested numeric estimates only for
+categories with defensible published methods, plus age/sex reference context;
+unsupported categories must stay unscored.
+
+1. Define each category's age-equivalent construct and exact standardized
+   measurements required; keep systemic clocks distinct from organ ages.
+2. Select published methods and source/licensed, age/sex-stratified reference
+   panels that match the app's available measurements and protocols.
+3. Freeze model artifacts and missingness policy; validate calibration,
+   uncertainty, repeatability, external cohort performance, and subgroup
+   support before enabling a category output.
+4. Add only approved supported-category ages/reference ranges to the PDF and
+   local review; unsupported categories stay unscored with a clear reason.
+5. Reconcile EVAL/GOAL, Wiki, and Project #4; do not infer clinical readiness.
+
+Evidence: the repository's 17-domain implementation returns null model,
+reference-panel, point-estimate, and interval fields. The 35-field intake does
+not cover every published domain-age model's required assay. For example,
+published 11-organ proteomic clocks were trained on 2,916 Olink protein
+measurements in 44,526 UK Biobank participants; that assay is not the app's
+35-field clinical record. Standard whole-body blood-aging methods do not
+thereby become joint, kidney, liver, or other category ages. No numeric
+category estimates are enabled in this slice. See [[System-Specific Age
+Report]] and [[OpenCode-Measurement-Review-and-PDF]] in the Wiki.
+
+Additional evidence audit: Zheng et al. (2026) reports NHANES KDM estimates for
+body, heart, liver, and kidney, fit separately by sex on model-specific healthy
+reference cohorts. The current contract has only subsets of their inputs. Body
+is missing BUN, uric acid, lymphocyte percentage, and MCV; heart is missing
+total cholesterol, HDL, LDL, and triglycerides; liver is missing AST, ALT,
+GGT, and LDH; kidney is missing urine albumin, urine creatinine, BUN, uric
+acid, phosphorus, and bicarbonate. hs-CRP/CRP, pulse-pressure derivation, and
+assay/cycle harmonization also require explicit protocol matching. Joint age
+is not among that paper's models. The authors' analysis code and fitted
+coefficients are not public; the paper's KDM MAE values are cohort-level
+validation summaries, not patient-specific uncertainty intervals. Its BA-CA
+sign threshold is not an age/sex-matched clinical reference range. Therefore
+no candidate model is runnable from the present schema and no age-matched
+domain reference interval can be reported. Heart is the smallest candidate
+schema expansion (four lipid measurements), but still needs a frozen,
+reproduced sex-stratified model, external/subgroup validation, uncertainty,
+and a separate empirical age/sex reference distribution. E-005 remains
+blocked. Evidence: [Zheng et al. 2026](https://www.nature.com/articles/s41538-026-00799-3),
+[BioAge toolkit paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC8602613/), and
+[BioAge KDM implementation](https://github.com/dayoonkwon/BioAge/blob/master/R/kdm_calc.R).
+
 ### APP-REVAMP-1 — Complete app revamp and publication, 2026-10-08
 
 Priority: P0 for the authorized publication slice. Owner: Codex integrator;

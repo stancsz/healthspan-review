@@ -38,3 +38,16 @@ routes. Production deployment and commit state are tracked in `GOAL.md` and
 The OpenRouter key is configured as a sensitive Production environment variable
 and is brokered to egress by Vercel; it does not enter the sandbox. E-005, IR1,
 identifiable health data governance, and clinical use remain unchanged.
+
+## Per-domain age output status
+
+The downloadable measurement-review PDF reports domain coverage, but it does
+not currently run a validated per-domain age algorithm. A 2026 paper reports
+NHANES KDM models for body, heart, liver, and kidney age; its exact biomarker
+panels exceed the app's current 35 fields. The paper does not publish fitted
+coefficients or analysis code and does not provide patient-level uncertainty
+or age/sex-specific reference intervals. Joint age is not supported by that
+paper. The compatibility audit lists the exact missing inputs and model
+limits: [domain-age compatibility matrix](https://github.com/stancsz/healthspan-review/blob/main/docs/DOMAIN_AGE_MODEL_COMPATIBILITY_2026-10-19.md).
+The app therefore leaves numeric category ages and age/sex-matched ranges
+unscored rather than calculating a partial or relabeled age.

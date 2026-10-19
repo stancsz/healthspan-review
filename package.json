@@ -9,7 +9,7 @@
     "example": "examples",
     "test": "tests"
   },
-  "scripts": { "test": "node --test api/*.test.js" },
+  "scripts": { "test": "node --test api/*.test.js tests/*.test.cjs tests/test_pdf_intake_contract.js" },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stancsz/healthspan-review.git"

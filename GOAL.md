@@ -11,6 +11,69 @@ reconcile visibility, licensing and public wording; private source is not verifi
 
 ## Active execution goal
 
+### OCA-2: Arbitrary-file measurement review with downloadable PDF, 2026-10-19
+
+The user extended OCA-1: accept arbitrary uploaded files, use the actual
+OpenCode/MiniMax M3 agent to identify healthspan measurement candidates, run
+the existing local measurement-review workflow on explicitly confirmed values,
+and provide a downloadable PDF report. The OpenRouter key remains server-side.
+“Arbitrary” means format-agnostic intake inside a documented, resource-bounded
+request envelope; unreadable, unsupported, malformed, or ambiguous content
+must remain unextracted and be explained. The 35-field local schema and
+existing parsers remain authoritative. No value may enter calculations before
+field-level human confirmation. Missing values remain missing, numeric ages
+remain withheld, and the report keeps the research-use boundary. Only synthetic
+or de-identified files may be used. A prior production run completed a
+synthetic DOCX-to-confirmed-review-to-PDF path. The current OCA-2 changes add
+batch-history retention, bounded structured-output retry, pressure coverage,
+and a revised six-page local PDF with a candidate-model input-gap page, but
+remain unverified on the live endpoint.
+The production model can return an invalid structured response, which fails
+closed; a single bounded continuation retry is in place. Local mocked
+concurrency does not establish provider-backed load reliability. The
+exact-hostname ownership, intended-user, patient-data governance, and E-005
+gates remain open. The PDF reports supplied age/sex context and measurement
+coverage for all supported domains. It labels each domain-age estimate as
+withheld and age/sex-specific reference ranges as unavailable because this
+workflow has no approved category models or panels; it does not invent
+estimates or substitute generic/synthetic ranges. The full 35-field table shows
+missing rows and distinguishes record presence from source verification.
+Numeric per-domain ages and age-matched ranges requested after the initial PDF
+run are not implemented; this is tracked as
+`BIOAGE-DOMAIN-1` in `ROADMAP.md`. Do not mark the active goal complete until
+the supported-domain decision is resolved with appropriate model, reference,
+and validation evidence.
+
+### BIOAGE-DOMAIN-1: Evidence-backed category ages and references, 2026-10-19
+
+The user asked for a real algorithm run that reports age-equivalent outputs
+and age/sex reference context for supported categories (for example, joint and
+blood), with unsupported categories left unscored. The current report emits
+17 domain coverage cards, but all numeric category ages and age/sex-specific
+reference ranges remain withheld. Repository audit found no runnable validated
+category-age model or approved patient reference panel. A generic blood-based
+clock cannot be relabeled as joint, kidney, liver, or other organ age. Continue
+the evidence and model audit; keep outputs null until each selected category
+has a prespecified construct, compatible measurements and protocol, frozen
+model, matched reference cohort, calibrated uncertainty, external/subgroup
+validation, and required expert/product approval. E-005 remains blocked.
+
+The literature audit identified a 2026 NHANES KDM study with separate body,
+heart, liver, and kidney age models. Its exact panels do not match the current
+35-feature contract: body additionally requires BUN, uric acid, lymphocyte
+percentage, and MCV (with assay/cycle harmonization); heart requires total
+cholesterol, HDL, LDL, and triglycerides; liver requires AST, ALT, GGT, and
+LDH; kidney requires urine albumin, urine creatinine, BUN, uric acid,
+phosphorus, and bicarbonate. No published joint-age panel was identified.
+The study does not publish fitted model coefficients or analysis code and does
+not provide individual confidence intervals or age/sex-specific clinical
+reference intervals. Consequently, none of those candidate models can produce
+a supported patient estimate from the current record. The next bounded step is
+to choose one domain, add its complete standardized inputs, reproduce and
+validate a sex-stratified model from public NHANES data (or obtain author
+artifacts), and separately establish an age/sex-matched empirical reference
+distribution and patient-level uncertainty before enabling its report output.
+
 ### OpenCode research file workspace, 2026-10-19
 
 The user authorized a free public workspace using the actual OpenCode runtime

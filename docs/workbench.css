@@ -95,6 +95,13 @@ a { color: inherit; }
 .pdf-import-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 .pdf-import-heading .pdf-import-actions { margin-top: 0; }
 #pdf-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+#agent-measurement-files { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.agent-measurement-card { margin-top: 20px; }
+.agent-measurement-card > .pdf-import-heading { gap: 18px; }
+.agent-measurement-card > .pdf-import-heading > div:first-child { max-width: 760px; }
+.agent-measurement-card .file-list { display: grid; gap: 5px; margin: 10px 0 0; padding: 0; list-style: none; color: var(--ink-soft); font: 11px var(--mono); overflow-wrap: anywhere; }
+.agent-measurement-card .file-list li { padding: 7px 9px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+.agent-measurement-card .agent-candidate-value { width: 110px; padding: 7px; border: 1px solid var(--line-strong); border-radius: 5px; font: 12px var(--mono); }
 .pdf-file-name { color: var(--ink-soft); font: 10px var(--mono); }
 .external-processing-note { display: grid; gap: 5px; margin-top: 17px; padding: 13px 15px; border-left: 3px solid var(--yellow); background: var(--yellow-soft); color: var(--ink-soft); font-size: 11px; line-height: 1.55; }
 .external-processing-note strong { color: var(--ink); font: 10px var(--mono); letter-spacing: .06em; text-transform: uppercase; }

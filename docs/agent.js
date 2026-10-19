@@ -9,13 +9,11 @@
   const result = document.getElementById('result');
   const maxTotal = 3 * 1024 * 1024;
   const maxFile = 2 * 1024 * 1024;
-  const accepted = /\.(pdf|png|jpe?g|webp|gif|csv|tsv|txt|md|json)$/i;
   let selected = [];
 
   function fileError(files) {
     if (!files.length) return 'Choose at least one file.';
     if (files.length > 6) return 'Choose up to 6 files.';
-    if (files.some(file => !accepted.test(file.name))) return 'One or more file types are not supported.';
     if (files.some(file => file.size === 0 || file.size > maxFile)) return 'Each file must be non-empty and 2 MB or smaller.';
     if (files.reduce((sum, file) => sum + file.size, 0) > maxTotal) return 'All files together must be 3 MB or smaller.';
     return '';

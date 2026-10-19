@@ -94,6 +94,14 @@
       "destination": "/docs/pdf-candidate-review.js"
     },
     {
+      "source": "/report-pdf.js",
+      "destination": "/docs/report-pdf.js"
+    },
+    {
+      "source": "/agent-measurement-state.js",
+      "destination": "/docs/agent-measurement-state.js"
+    },
+    {
       "source": "/pdf-import.mjs",
       "destination": "/docs/pdf-import.mjs"
     },

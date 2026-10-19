@@ -68,6 +68,23 @@ It is deliberately a non-approving template: `numeric_allowed` is false,
 `not_submitted`/`production_ready: false` until a real domain evidence package
 is reviewed.
 
+## 2026-10-19 model compatibility audit
+
+A current model audit identified a 2026 NHANES paper with sex-stratified KDM
+estimates for whole-body, heart, liver, and kidney constructs. None is runnable
+from this app's current 35-field schema. The exact missing biomarkers,
+reproducibility limits, and reference-interval gap are recorded in the
+[domain-age compatibility matrix](../DOMAIN_AGE_MODEL_COMPATIBILITY_2026-10-19.md).
+The paper's reported MAE is a population performance metric, and its age-gap
+sign is not an age/sex-matched clinical range. Joint age is not among its
+models. Numeric domain ages and reference intervals remain withheld pending a
+complete compatible panel, a frozen/reproducible model, patient-level
+uncertainty, a separately established reference distribution, external and
+subgroup validation, and required review.
+
+- Zheng et al. (2026), [NHANES body/heart/liver/kidney KDM study](https://www.nature.com/articles/s41538-026-00799-3).
+- Kwon et al. (2021), [BioAge toolkit paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC8602613/) and [GPL-3.0 KDM implementation](https://github.com/dayoonkwon/BioAge/blob/master/R/kdm_calc.R).
+
 ## Receipts
 
 - CDC defines reported age as completed years calculated from date of birth and

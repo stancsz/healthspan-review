@@ -40,6 +40,7 @@ unit, date, page, and human confirmation for every value.
 | L3 | FI numerator/denominator are transparent and safely withheld before MVV completion, with the missing-item denominator caveat. | Packet contract test and visible copy. |
 | L4 | Comparison is descriptive only when two dated scans exist and unavailable otherwise. | Two-scan and single-scan tests; no health-improvement claim. |
 | L5 | The packet can be downloaded as deterministic JSON and printed locally without raw CSV or patient identifiers. | UI contract tests and scoped print mode. |
+| L15 | A directly downloadable PDF report is generated from the same current, locally confirmed measurement packet as the JSON export. | Browser downloads PDF bytes; an independent parser confirms report values, missingness, provenance, caveats, and boundaries match the displayed/JSON packet. |
 | L6 | Governance surfaces agree and the pack is ready for the five-user IR1 comparison. | GOAL, ROADMAP, Wiki, EVAL/evidence, protocol, and Project #4 reconciliation. |
 | L7 | Unsupported numeric system-age outputs are withheld across browser, manual entry, JSON export, and MCP, including caller-supplied age metadata. | Parser/workbench/manual/MCP tests prove age values cannot be generated or passed through; exports remain empty and visible copy states the evidence gate. |
 | L13 | A complete synthetic clinic-to-patient prototype binds clinician approval to an exact plan version and measurement snapshot. | Browser QA confirms drafts stay private; edit/revoke/expiry closes patient view; only current approved plan is visible; check-in returns to follow-up export. No persistence or real patient data. |
@@ -49,19 +50,22 @@ unit, date, page, and human confirmation for every value.
 | L11 | The PDF itself stays in the browser; only bounded, minimized extracted text/page images are sent to the same-origin AI function after the user reviews a disclosure and confirms de-identification. No PDF, text, candidate response, API key, or identifier is persisted or body-logged by the app. | Function/API inspection and live runtime review verify consent gating, a 12 MiB / 50-page document limit, six-page / 3.7 MB client-preflight batches, server-only credentials, a 5-request/minute/IP Vercel Firewall rule, body-free application logs, no browser storage, and fail-closed behavior. |
 | L12 | The reviewed app is deployed at `https://healthspan-review.vercel.app/` and the PDF-to-confirmed-record path is deeply exercised on that live endpoint. | Deployment identity, live routes, synthetic text/scanned PDF walkthroughs, API behavior, failure cases, and regression of manual/CSV/sample/export routes are recorded. The current app-level flow is deeply exercised at the generated alias; exact-hostname ownership remains unresolved. |
 | L14 | A separate file-agent workspace lets users explicitly submit bounded common files to actual OpenCode tools with MiniMax M3 via OpenRouter. | Synthetic CSV/PDF/image tests exercise file intake, workspace tools, model response, browser UI, failure handling, no secret exposure, a 90-second maximum sandbox lifetime with best-effort stop, source readback, and a per-IP firewall limit; synthetic/de-identified-only consent is enforced by the API. This feature does not change the browser-local CSV measurement path or clinical boundary. |
+| L16 | The measurement workflow accepts format-agnostic user-selected files inside explicit limits, produces candidates against only the canonical 35-field schema with source locations/evidence, requires per-field review and confirmation, then runs the existing local measurement review and exports a matching PDF. | Synthetic format fixtures exercise text, images, PDF, CSV, and office/archive documents; unknown/malformed/oversized inputs fail clearly. Before confirmation record state is unchanged; after confirmation provenance, conflict/missingness, readiness caveats, age withholding, JSON and PDF match. Uploaded bytes and model output are not persisted or body-logged. |
+| L17 | The PDF presents supplied age/sex context, coverage and age-report status for each supported domain, and age/sex-specific reference ranges only when an approved, applicable panel exists. | The full 35-field profile includes missing values and does not imply source verification. Unsupported range panels are labeled unavailable; numeric domain-age estimates remain withheld until category-specific model, uncertainty, reference-panel and review requirements are met. Rendered pages show no clipping or overlapping content. |
 
 ### Constraints / invariants
 
 - Research and wellness measurement review only.
 - Keep E-005 blocked and clinical use forbidden.
 - No diagnosis, treatment advice, validated biological/system age, patient-data hosting, production-readiness, paid-pilot, real-user, or token-savings claim.
-- Keep original SECA/clinical CSVs in the measurement workflow browser-local;
-  do not upload or retain them through that workflow. The separate OpenCode
-  workspace accepts files only when the user selects them and confirms its
-  per-request disclosure.
-- The OpenCode workspace accepts bounded PDF, PNG/JPG/WebP/GIF, CSV/TSV,
-  and TXT/Markdown/JSON only. Require synthetic or de-identified
-  content; do not represent it as approved for identifiable health data.
+- Keep ordinary SECA/clinical CSV imports browser-local. A separate explicit
+  AI-assisted arbitrary-file action may transmit only user-selected files
+  after per-request consent; describe this distinction at the point of use.
+- The AI measurement action is format-agnostic only within documented file,
+  request, and runtime bounds; never promise that every format is readable.
+  Unknown or unsupported content remains unextracted. Require synthetic or
+  de-identified content; do not represent the feature as approved for
+  identifiable health data.
   Run actual OpenCode tools in a one-CPU, short-lived Vercel Sandbox with
   OpenRouter-only egress; broker the key on the Vercel side, cap sandbox
   lifetime at 90 seconds, and request stop after every run. Never log payload

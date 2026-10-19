@@ -17,6 +17,8 @@ test("Vercel root routes to the clinic companion", () => {
   assert.ok(vercel.rewrites.some((route) => route.source === "/workbench.js" && route.destination === "/docs/workbench.js"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/manual" && route.destination === "/docs/manual"));
   assert.ok(vercel.rewrites.some((route) => route.source === "/clinical-parser.js" && route.destination === "/docs/clinical-parser.js"));
+  assert.ok(vercel.rewrites.some((route) => route.source === "/report-pdf.js" && route.destination === "/docs/report-pdf.js"));
+  assert.ok(vercel.rewrites.some((route) => route.source === "/agent-measurement-state.js" && route.destination === "/docs/agent-measurement-state.js"));
   assert.match(html, /id="drop-zone"/);
   assert.match(html, /id="clinical-file"/);
   assert.match(html, /id="load-sample"/);
@@ -30,12 +32,16 @@ test("Vercel root routes to the clinic companion", () => {
 });
 
 test("clinician workspace discloses optional external PDF processing", () => {
-  assert.match(html, /CSV files stay local/);
+  assert.match(html, /Ordinary CSV imports stay local/);
   assert.match(html, /original PDF is not uploaded/);
   assert.match(html, /text and rendered page images leave this browser for processing by an external AI service/);
   assert.match(html, /up to 50 pages and 12 MB/i);
   assert.match(html, /pdf-batches\.js/);
   assert.match(html, /I consent to sending its selected page content to an external AI service/);
+  assert.match(html, /Review measurements from any file/);
+  assert.match(html, /id="agent-measurement-consent"/);
+  assert.match(html, /Confirm selected values and run review/);
+  assert.match(html, /Download PDF report/);
   assert.doesNotMatch(html, /MiniMax|Vercel function/);
   assert.doesNotMatch(js, /MiniMax/);
   assert.match(html, /No diagnosis or treatment advice\. Numeric system-age outputs are withheld/);
@@ -43,9 +49,18 @@ test("clinician workspace discloses optional external PDF processing", () => {
   assert.match(js, /buildMeasurementReviewPack/);
   assert.match(js, /35/);
   assert.match(js, /Clinical inputs CSV/);
-  assert.match(js, /contains no original CSV or patient identifier/);
+  assert.match(js, /no original source document is embedded/);
+  assert.match(js, /mode: "measurement-review"/);
+  assert.match(js, /user_confirmed_ai_file_measurement/);
+  assert.match(js, /HealthspanReportPdf\.build/);
   assert.match(js, /estimated_ages: \[\]/);
+  assert.match(js, /chronological_age_context:/);
+  assert.match(js, /domain_age_reports: domainAgeReports/);
+  assert.match(js, /label: spec.label/);
   assert.match(js, /withheld pending domain-specific evidence/);
+  assert.match(js, /mergeConfirmedBatch/);
+  assert.match(js, /Previously confirmed · superseded/);
+  assert.match(js, /Previously confirmed · same reading from another source/);
   assert.doesNotMatch(js, /estimateAgeSignals|heuristic/);
   assert.doesNotMatch(js, /fetch\s*\([^)]*https?:\/\//);
 });
