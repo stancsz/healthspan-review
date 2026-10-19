@@ -12,15 +12,20 @@ software check is green.
 
 ### PWA-1 — Installable browser app, 2026-10-19
 
-Priority: P2 app delivery. Owner: Codex integrator. Status: In Progress;
-implementation is local and release acceptance is pending. Depends on the
-shared app shell and both Vercel and GitHub Pages routing. The top header has
-an Install app control, a standalone manifest, 192/512 PNG icons, and a
-service-worker app-shell cache with API/non-GET bypass. Vercel routes the
-manifest, icons, and root-scoped worker; GitHub Pages resolves them relative to
-the repository prefix. Complete browser install/fallback acceptance, confirm
-worker scope and app-shell fetches on both deployments, verify the API bypass,
-then deploy and synchronize this roadmap, Wiki, and Project #4.
+Priority: P2 app delivery. Owner: Codex integrator. Status: Done for this
+installable-shell increment. Depends on the shared app shell and Vercel/GitHub
+Pages routing. Commit `a005515ef6dcb84782d28d9511ad4aea83f82c5b` adds the
+header Install app control, standalone manifest, 192/512 PNG icons, scoped
+service worker, and API/non-GET/range/cross-origin cache bypass. The production
+Vercel deployment `dpl_Bj9F2Mh36fGK3j8u784buMSDgBtW` is Ready; the live app alias
+serves the manifest and both icons with the expected MIME types and the worker
+with `Service-Worker-Allowed: /`. GitHub Pages run `39339457917` passed for the
+same commit; the repository-prefixed app route, manifest, both icons, and
+service worker all return HTTP 200 with expected MIME types. The install button
+and browser-menu fallback were verified in the browser on both hosts. The
+embedded browser did not expose the native `beforeinstallprompt` event, so that
+native prompt itself was not exercised. The local suite passes 115/115 Node
+tests and the canonical verifier reports `status: passed`, `E-005 blocked`.
 
 ### OCA-1 — OpenCode research file workspace, 2026-10-19
 

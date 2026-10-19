@@ -67,16 +67,20 @@ does not prove sustained provider reliability.
 
 ### PWA-1: Installable browser app, 2026-10-19
 
-The app should offer a visible Install app button in its top header and install
-as a standalone browser app. Use the native install prompt when the browser
-exposes it; where it does not, keep the button useful with platform-specific
-browser-menu instructions. The manifest and shell must work on both the Vercel
-clean routes and the GitHub Pages repository path. A same-origin service worker
-may cache only the static app shell and documents; it must never cache API
-requests, uploads, or generated user reports. Verify manifest/icon serving,
-service-worker scope, install-button behavior, and that API requests bypass the
-cache before calling the feature ready. This is an app-delivery convenience; it
-does not change research-use, privacy, age-output, or clinical approval limits.
+Done for this app-delivery increment (source commit `a005515`, 2026-10-19).
+The shared top header now offers an Install app control. Chromium's
+`beforeinstallprompt` is used when available; the browser-menu fallback was
+verified on both live app routes. The standalone manifest and 192/512 PNG icons
+load on Vercel and GitHub Pages, and the production service worker is served
+with root scope permission. The worker caches only static shell resources and
+HTML documents; it bypasses `/api/`, non-GET, range, and cross-origin requests.
+Vercel deployment `dpl_Bj9F2Mh36fGK3j8u784buMSDgBtW` is Ready at the existing
+app alias. GitHub Pages run `39339457917` passed verification and deployment for
+the same source commit. Production headers report manifest `application/manifest+json`,
+icons `image/png`, and `Service-Worker-Allowed: /`. Browser-native prompt firing
+was not exposed by the embedded test browser; the fallback path was verified.
+This is an app-delivery convenience; research-use, privacy, age-output, and
+clinical approval limits are unchanged.
 
 ### BIOAGE-DOMAIN-1: Evidence-backed category ages and references, 2026-10-19
 
