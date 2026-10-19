@@ -214,6 +214,15 @@ not a reliability rate or sustained-load test. Long-PDF endpoint acceptance
 is recorded; the full candidate-confirmation/download flow remains verified
 only for synthetic DOCX and small-text cases.
 
+Additional production acceptance on 2026-10-19: one request containing
+synthetic DOCX, small PDF, PNG, CSV, and TXT returned 17 evidence-bearing
+candidates across all five files with no unreadable files. A separate XLSX
+request returned the expected fasting glucose (98 mg/dL, row 2/A2:C2) and
+HbA1c (5.6%, row 3/A3:C3) with workbook sheet/cell citations. Neither result
+exposes a provider-key pattern. XLSX and mixed-file batch handling are now
+verified for these synthetic fixtures; universal file compatibility and the
+51-page PDF confirmation/download path remain unverified.
+
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 
 Priority: P1 research/model-definition work; depends on age-model evidence and

@@ -6,9 +6,10 @@ synthetic checks, deployment, and repository status are recorded in
 
 The `/agent` workspace uses the actual OpenCode runtime with MiniMax M3 through
 OpenRouter. It is separate from the existing measurement workbench; that
-workbench continues to parse CSVs in the browser. The new workspace accepts
-bounded PDF, image, CSV/TSV, and text/Markdown/JSON files. The API enforces
-explicit consent before accepting files.
+workbench continues to parse CSVs in the browser. The agent has been verified
+on bounded PDF, image, CSV/TSV, TXT, DOCX, and XLSX fixtures; it accepts other
+file extensions inside the same request bounds but may report them unreadable.
+The API enforces explicit consent before accepting files.
 
 Each run uses a one-CPU Vercel Sandbox with network egress limited to OpenRouter.
 A Vercel firewall transform injects the server-side OpenRouter key into
@@ -55,7 +56,7 @@ companion only. It is deployed as `dpl_9UACvM5CzGJWs8fEuvRnJsrk5LLj`, with the
 synthetic 51-page PDF returned HTTP 200 in 100.9 seconds with six candidates,
 source locations/evidence, exact filename, zero unreadable files, and no
 OpenRouter-key pattern. The original two-window sample remains 9/10 and is not
-a general reliability estimate. Full local verification passes 119 Node
+a general reliability estimate. Full local verification passes 121 Node
 tests, the canonical verifier, and docs verification. Independent review found
 that `850be97` hid the original PDF path in instructions but left the file
 accessible in the sandbox, and found a duplicate-filename fallback edge case.
@@ -79,8 +80,8 @@ candidates and zero unreadable files. This adds a successful current-deployment
 mixed-format sample; the earlier 9/10 sample is retained and neither window
 establishes sustained reliability. The full candidate-confirmation and PDF
 download flow has been verified for synthetic DOCX and small-text inputs, but
-not yet for the 51-page PDF. The
-independent reviewer found no concrete defect in the final cleanup flow. The
+not yet for the 51-page PDF. The independent reviewer found no concrete defect
+in the final cleanup flow. The
 initial pressure sample remains 9/10; this targeted case is not a general
 reliability guarantee. OCA-2 is complete for the bounded
 synthetic/de-identified scope; age-model and clinical gates remain open.
@@ -89,6 +90,15 @@ Deployment and commit state are tracked in `GOAL.md` and `ROADMAP.md`.
 The OpenRouter key is configured as a sensitive Production environment variable
 and is brokered to egress by Vercel; it does not enter the sandbox. E-005, IR1,
 identifiable health data governance, and clinical use remain unchanged.
+
+Additional production acceptance (2026-10-19): a single request containing
+synthetic DOCX, small PDF, PNG, CSV, and TXT returned 17 evidence-bearing
+candidates across all five files, with zero unreadable files. A separate
+synthetic XLSX request returned glucose 98 mg/dL from row 2/cells A2:C2 and
+HbA1c 5.6% from row 3/cells A3:C3, with sheet/cell citations. Both were served
+by MiniMax M3 via OpenRouter without a key-pattern exposure. This confirms
+these formats and mixed-file batching for the tested fixtures, not universal
+file compatibility or the untested 51-page PDF UI flow.
 
 ## Per-domain age output status
 

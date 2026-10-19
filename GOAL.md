@@ -82,6 +82,15 @@ request was checked at the endpoint; human candidate confirmation and PDF
 download were verified on synthetic DOCX/small-text workflows, not yet through
 the 51-page PDF path.
 
+Two further production checks (2026-10-19) passed: one request containing
+synthetic DOCX, small PDF, PNG, CSV, and TXT returned 17 evidence-bearing
+candidates across all five files with zero unreadable files; a synthetic XLSX
+request returned fasting glucose 98 mg/dL from row 2/cells A2:C2 and HbA1c
+5.6% from row 3/cells A3:C3. Both used MiniMax M3 via OpenRouter and exposed no
+key pattern. These establish mixed-file batching and workbook cell provenance
+for these fixtures, not universal file compatibility or completion of the
+long-PDF browser confirmation/download path.
+
 The current local repair streams `pdftotext` output into a 120,000-character
 cap, labels every extracted page with its original page number (including
 blank leading pages), and instructs OpenCode to prefer that bounded text. If
