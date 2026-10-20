@@ -140,5 +140,9 @@ repeated confirmation does not duplicate history. The production workbench
 header visibly includes **Install app**. `npm test` passes 124/124 and the
 canonical verifier passes 20/20 with E-005 blocked. This bounded sample does
 not establish universal file compatibility, sustained provider reliability,
-or numeric category-age validity. Long-PDF candidate-confirmation and download
-remain unverified end to end.
+or numeric category-age validity. The 51-page synthetic PDF UI path passed
+once end to end: six candidates were returned, a page-7 HbA1c of 5.6% was
+confirmed, and the page-49 6.0% alternative remained evidence-only. The
+seven-page letter-size report (42,958 bytes) reopened and rendered with clear
+cover, source-evidence, alternative-status, and withheld-age sections. This is
+one bounded UI acceptance, not sustained-load evidence.

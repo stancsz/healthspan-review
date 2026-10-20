@@ -238,8 +238,13 @@ candidate does not duplicate history. `npm test` passes 124/124; the canonical
 verifier passes all 20 checks with `clinical_gate: E-005 blocked`. The live
 production `/workbench` header exposes **Install app**. The install prompt is
 browser-dependent; the button and browser-menu fallback are verified. No
-universal readability, sustained reliability, long-PDF browser confirmation,
-or numeric age claim is made.
+universal readability, sustained reliability, or numeric age claim is made.
+The 51-page browser flow passed once end to end: six grounded candidates were
+returned, a page-7 HbA1c of 5.6% was confirmed, and the page-49 HbA1c 6.0%
+alternative remained evidence-only. The local PDF reopened as seven letter-size
+pages (42,958 bytes); the cover, source evidence/alternative labels, and
+withheld-age boundary rendered clearly. This single UI run does not establish
+provider uptime or sustained reliability.
 
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 

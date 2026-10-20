@@ -140,13 +140,17 @@ canonicalized consistently, and the server flags any omitted upload for manual
 review. Normalized filename collisions are rejected before sandbox execution.
 A declined same-field candidate is retained in a separate evidence-ledger
 entry and the PDF labels it as not selected and excluded from calculations.
-Local tests verify this PDF behavior and idempotent repeat confirmation. The
-live `/workbench` header visibly includes **Install app**. The Node suite passes
-124/124 and the canonical verifier passes all 20 checks with E-005 blocked.
-The native install prompt remains browser-dependent; the header control and
-browser-menu fallback are supported paths. This does not establish universal
-file readability, sustained provider reliability, or numeric category-age
-validity.
+The 51-page production browser path was then completed with a synthetic PDF:
+six candidates returned, a page-7 HbA1c of 5.6% was confirmed, and the page-49
+alternative (6.0%) was preserved but excluded. The downloaded report reopened
+as a seven-page letter PDF (42,958 bytes); rendered pages visibly show one
+confirmed entry, the withheld age output, and the selected/unselected source
+evidence. The live `/workbench` header visibly includes **Install app**. The
+Node suite passes 124/124 and the canonical verifier passes all 20 checks with
+E-005 blocked. The native install prompt remains browser-dependent; the header
+control and browser-menu fallback are supported paths. This does not establish
+universal file readability, sustained provider reliability, or numeric
+category-age validity.
 
 ### PWA-1: Installable browser app, 2026-10-19
 
