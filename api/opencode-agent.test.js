@@ -1,8 +1,18 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const { spawnSync } = require('node:child_process');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const { deflateRawSync } = require('node:zlib');
 const { finished } = require('node:stream/promises');
 const handler = require('./opencode-agent.js');
+
+const pythonCommand = process.platform === 'win32' ? ['py', ['-3']] : ['python3', []];
+const pythonAvailable = spawnSync(pythonCommand[0], [...pythonCommand[1], '--version'], { encoding: 'utf8' }).status === 0;
+function runPython(args) {
+  return spawnSync(pythonCommand[0], [...pythonCommand[1], ...args], { encoding: 'utf8' });
+}
 
 const file = (name, text = 'synthetic sample') => ({ name, data: Buffer.from(text).toString('base64') });
 function zipEnvelope({ name = 'word/document.xml', payload = Buffer.from('synthetic document xml'), entries = 1, eocd = true, declaredSize } = {}) {
@@ -168,6 +178,138 @@ test('PDF text companion replaces only its exact source path in OpenCode workspa
     ['/vercel/workspace/01-scan.pdf', '/vercel/workspace/02-scan.pdf'],
     [{ originalName: 'scan.pdf', sourcePath: '/vercel/workspace/01-scan.pdf', path: '/vercel/workspace/pdf-text/01-extracted.txt' }],
   ), ['/vercel/workspace/02-scan.pdf', '/vercel/workspace/pdf-text/01-extracted.txt']);
+});
+
+test('XLSX companion is bounded, preserves its source path until text is written, then removes only that workbook', async () => {
+  const writes = [];
+  const operations = [];
+  const sandbox = {
+    async runCommand(options) {
+      assert.equal(options.cmd, 'python3');
+      assert.equal(options.args[0], '-c');
+      assert.match(options.args[1], /sharedStrings\.xml/);
+      assert.equal(options.args[2], '/vercel/workspace/01-labs.xlsx');
+      assert.equal(options.cwd, '/vercel/workspace');
+      return { exitCode: 0, async stdout() { return 'Sheet: Labs\nRow 2: A2="Fasting glucose" | B2="98" | C2="mg/dL"'; } };
+    },
+    async mkDir(path) { operations.push(`mkdir:${path}`); },
+    async writeFiles(files) { operations.push('write'); writes.push(...files); },
+    fs: { async unlink(path) { operations.push(`unlink:${path}`); } },
+  };
+  const source = '/vercel/workspace/01-labs.xlsx';
+  const companions = await handler.prepareSpreadsheetText(sandbox, [{ name: 'labs.xlsx' }], [source]);
+  assert.deepEqual(companions, [{ originalName: 'labs.xlsx', sourcePath: source, path: '/vercel/workspace/spreadsheet-text/01-extracted.txt', truncated: false }]);
+  assert.deepEqual(operations, ['mkdir:workspace/spreadsheet-text', 'write', `unlink:${source}`]);
+  assert.equal(writes[0].path, 'workspace/spreadsheet-text/01-extracted.txt');
+  assert.match(writes[0].content.toString('utf8'), /B2="98"/);
+  assert.ok(writes[0].content.length <= handler.MAX_EXTRACTED_SPREADSHEET_CHARS);
+  assert.deepEqual(handler.buildAgentWorkspacePaths([source], companions), ['/vercel/workspace/spreadsheet-text/01-extracted.txt']);
+});
+
+test('XLSX extractor reads shared strings, multiple sheets, formulas, clipping, and fails closed on missing worksheet parts', { skip: !pythonAvailable }, t => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'healthspan-xlsx-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const builderPath = path.join(directory, 'build-fixture.py');
+  const extractorPath = path.join(directory, 'extract.py');
+  const buildFixture = String.raw`
+import sys, zipfile
+mode, destination = sys.argv[1:]
+workbook = '''<?xml version="1.0"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Labs" sheetId="1" r:id="rId1"/><sheet name="Follow up" sheetId="2" r:id="rId2"/></sheets></workbook>'''
+relationships = '''<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/></Relationships>'''
+if mode == 'missing':
+    relationships = relationships.replace('worksheets/sheet2.xml', 'worksheets/missing.xml')
+shared = '''<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><si><t>Fasting glucose</t></si><si><t>98</t></si><si><t>mg/dL</t></si><si><t>HbA1c</t></si></sst>'''
+first_sheet = '''<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData><row r="2"><c r="A2" t="s"><v>0</v></c><c r="B2" t="s"><v>1</v></c><c r="C2" t="s"><v>2</v></c></row></sheetData></worksheet>'''
+if mode == 'large':
+    rows = ''.join('<row r="%d"><c r="A%d" t="inlineStr"><is><t>filler-value-%04d-abcdefghij</t></is></c></row>' % (n, n, n) for n in range(1, 500))
+    first_sheet = '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>' + rows + '</sheetData></worksheet>'
+second_sheet = '''<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData><row r="3"><c r="A3" t="s"><v>3</v></c><c r="B3"><f>1+4.6</f><v>5.6</v></c></row></sheetData></worksheet>'''
+with zipfile.ZipFile(destination, 'w') as archive:
+    archive.writestr('xl/workbook.xml', workbook)
+    archive.writestr('xl/_rels/workbook.xml.rels', relationships)
+    archive.writestr('xl/sharedStrings.xml', shared)
+    archive.writestr('xl/worksheets/sheet1.xml', first_sheet)
+    if mode != 'missing':
+        archive.writestr('xl/worksheets/sheet2.xml', second_sheet)
+`;
+  fs.writeFileSync(builderPath, buildFixture);
+  fs.writeFileSync(extractorPath, handler.SPREADSHEET_TEXT_EXTRACTOR);
+  const build = (mode, filePath) => {
+    const result = runPython([builderPath, mode, filePath]);
+    assert.equal(result.status, 0, result.stderr);
+  };
+
+  const completePath = path.join(directory, 'complete.xlsx');
+  build('complete', completePath);
+  const complete = runPython([extractorPath, completePath, String(handler.MAX_EXTRACTED_SPREADSHEET_CHARS)]);
+  assert.equal(complete.status, 0, complete.stderr);
+  assert.match(complete.stdout, /Sheet: Labs[\s\S]*A2="Fasting glucose" \| B2="98" \| C2="mg\/dL"/);
+  assert.match(complete.stdout, /Sheet: Follow up[\s\S]*B3="5\.6" \[formula=1\+4\.6; cached="5\.6"\]/);
+
+  const largePath = path.join(directory, 'large.xlsx');
+  build('large', largePath);
+  const clipped = runPython([extractorPath, largePath, '1024']);
+  assert.equal(clipped.status, 0, clipped.stderr);
+  assert.match(clipped.stdout, /Spreadsheet text clipped at the configured character limit/);
+  assert.doesNotMatch(clipped.stdout, /filler-value-0499/);
+
+  const missingPath = path.join(directory, 'missing.xlsx');
+  build('missing', missingPath);
+  const missing = runPython([extractorPath, missingPath, String(handler.MAX_EXTRACTED_SPREADSHEET_CHARS)]);
+  assert.notEqual(missing.status, 0);
+});
+
+test('XLSX clipping is carried into a durable partial-review warning', async () => {
+  const source = '/vercel/workspace/01-labs.xlsx';
+  const sandbox = {
+    async runCommand() {
+      return { exitCode: 0, async stdout() { return 'Sheet: Labs\nRow 1: A1="Marker"\n[Spreadsheet text clipped at the configured character limit.]'; } };
+    },
+    async mkDir() {},
+    async writeFiles() {},
+    fs: { async unlink() {} },
+  };
+  const [companion] = await handler.prepareSpreadsheetText(sandbox, [{ name: 'labs.xlsx' }], [source]);
+  assert.equal(companion.truncated, true);
+  const review = handler.parseMeasurementOutput(JSON.stringify({ candidates: [], unreadable: [] }), ['labs.xlsx']);
+  handler.addSpreadsheetCompletenessWarnings(review, [companion]);
+  assert.deepEqual(review.unreadable, [{
+    file: 'labs.xlsx',
+    reason: 'Spreadsheet text was clipped at the configured 120,000-character limit; remaining workbook rows were not reviewed.',
+  }]);
+});
+
+test('XLSX preprocessing falls back to the original on extraction failure or unusable text', async () => {
+  const source = '/vercel/workspace/01-labs.xlsx';
+  for (const result of [
+    { exitCode: 1, async stdout() { return ''; } },
+    { exitCode: 0, async stdout() { return 'No readable worksheet rows'; } },
+  ]) {
+    let writes = 0, removals = 0;
+    const sandbox = {
+      async runCommand() { return result; },
+      async writeFiles() { writes++; },
+      fs: { async unlink() { removals++; } },
+    };
+    const companions = await handler.prepareSpreadsheetText(sandbox, [{ name: 'labs.xlsx' }], [source]);
+    assert.deepEqual(companions, []);
+    assert.equal(writes, 0);
+    assert.equal(removals, 0);
+    assert.deepEqual(handler.buildAgentWorkspacePaths([source], companions), [source]);
+  }
+});
+
+test('XLSX source remains advertised if exact-path removal fails', async () => {
+  const source = '/vercel/workspace/01-labs.xlsx';
+  const sandbox = {
+    async runCommand() { return { exitCode: 0, async stdout() { return 'Sheet: Labs\nRow 2: A2="Fasting glucose" | B2="98"'; } }; },
+    async mkDir() {},
+    async writeFiles() {},
+    fs: { async unlink() { throw new Error('synthetic remove failure'); } },
+  };
+  const companions = await handler.prepareSpreadsheetText(sandbox, [{ name: 'labs.xlsx' }], [source]);
+  assert.deepEqual(companions, []);
+  assert.deepEqual(handler.buildAgentWorkspacePaths([source], companions), [source]);
 });
 
 test('ZIP office files are bounded by entry count, expansion size, ratio, and safe paths', () => {

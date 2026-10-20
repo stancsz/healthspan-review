@@ -125,11 +125,12 @@ while the earlier targeted response marked none. The initial two-window result
 remains 9/10. Full local
 verification passes 121 Node tests, the 20-check canonical verifier, and docs
 verification. The independent reviewer rechecked the final SDK cleanup
-implementation and found no remaining concrete defect. OCA-2 is complete for
-the bounded synthetic/de-identified file-to-report scope; the targeted case is
-not an uptime or general reliability guarantee. The broader goal remains
-active: numeric category-age models and age/sex-matched reference ranges
-remain unavailable and are tracked in `BIOAGE-DOMAIN-1`.
+implementation and found no remaining concrete defect. The bounded
+synthetic/de-identified file-to-report functionality is complete, but the
+production pressure-reliability follow-up remains in progress; the targeted
+case is not an uptime or general reliability guarantee. The broader goal
+remains active: numeric category-age models and age/sex-matched reference
+ranges remain unavailable and are tracked in `BIOAGE-DOMAIN-1`.
 
 Follow-up acceptance (2026-10-19): production deployment
 `dpl_G1AidvYzRZisKpJQWnvjMDPDfTZW` returned HTTP 200 for a synthetic DOCX plus
@@ -145,12 +146,34 @@ six candidates returned, a page-7 HbA1c of 5.6% was confirmed, and the page-49
 alternative (6.0%) was preserved but excluded. The downloaded report reopened
 as a seven-page letter PDF (42,958 bytes); rendered pages visibly show one
 confirmed entry, the withheld age output, and the selected/unselected source
-evidence. The live `/workbench` header visibly includes **Install app**. The
-Node suite passes 124/124 and the canonical verifier passes all 20 checks with
+evidence. The live `/workbench` and `/agent` headers visibly include **Install
+app**. A current production check confirms `/workbench`, the manifest, both PNG
+icons, and `/service-worker.js` return HTTP 200; the manifest has its expected
+MIME type and the service worker has `Service-Worker-Allowed: /`. The Node
+suite passes 124/124 and the canonical verifier passes all 20 checks with
 E-005 blocked. The native install prompt remains browser-dependent; the header
 control and browser-menu fallback are supported paths. This does not establish
 universal file readability, sustained provider reliability, or numeric
 category-age validity.
+
+Production pressure follow-up (2026-10-20): two five-request windows against
+the active deployment stayed within the shared five-POST-per-minute firewall
+rule. In the first, the six-file batch and 51-page PDF returned 200, the
+opaque-only file returned 200 as unreadable, and DOCX plus opaque binary
+returned 502 after the one schema retry; the over-limit request correctly
+returned 400. Isolated DOCX-plus-opaque retry passed in 27.1 seconds. In the
+second window, DOCX, PDF, screenshot, and CSV returned 200 in 13.3–67.4
+seconds; XLSX reached the 150-second sandbox cap and returned 502. An isolated
+XLSX retry passed in 38.4 seconds with the expected glucose/HbA1c values and
+sheet/cell citations. Sanitized Vercel logs identify a schema-invalid result
+and exit 143; no provider-key pattern appeared. These failures show
+concurrency-sensitive reliability gaps. Local Node tests now exercise a
+bounded XLSX text companion with sheet/row/cell provenance, shared strings,
+formula markers, worksheet mapping failure, and explicit partial-review
+warnings after clipping. The focused API suite passes 19/19, full Node suite
+129/129, and the canonical verifier passes 20/20 with E-005 blocked. The XLSX
+repair has not yet been deployed; production reliability remains open pending
+post-deploy pressure acceptance.
 
 ### PWA-1: Installable browser app, 2026-10-19
 

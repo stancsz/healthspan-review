@@ -75,18 +75,23 @@ E-005, IR1, and patient-data governance do not advance.
 ### OCA-2 — File-to-measurement review and downloadable report, 2026-10-19
 
 Priority: P1, depends on OCA-1 and LOCAL-REVIEW-1. Owner: Codex integrator;
-independent acceptance reviewer. Status: Done for the bounded
-synthetic/de-identified file-to-report scope. Local arbitrary-file
-review, merge/history repair, pressure tests, and six-page PDF generation are
-implemented. Production serves `report-pdf-v2`; the built-in complete synthetic
-case was opened in the browser and the live PDF download action was exercised.
-The downloaded production artifact was reopened: six letter-size pages,
-41,762 bytes; the cover and age-model audit page render cleanly. A single
-five-way provider-backed burst later passed; sustained concurrency remains
-unverified.
+independent acceptance reviewer. Status: In Progress for production reliability;
+the bounded synthetic/de-identified file-to-report scope is implemented and
+verified. Local arbitrary-file review, merge/history repair, pressure tests,
+and six-page PDF generation are implemented. Production serves `report-pdf-v2`;
+the built-in complete synthetic case was opened in the browser and the live
+PDF download action was exercised. The downloaded production artifact was
+reopened: six letter-size pages, 41,762 bytes; the cover and age-model audit
+page render cleanly. Fresh production stress windows on 2026-10-20 exposed a
+schema failure and a 150-second XLSX timeout under five-way concurrency; both
+formats passed isolated reruns. A bounded XLSX-to-text repair is implemented
+locally and passes focused, full Node, and canonical checks, but is not yet
+deployed or pressure-accepted. Keep this item open until the release is
+verified at production. No sustained-concurrency guarantee is claimed.
 The Wiki age-report/PDF pages and the OCA-2 and BIOAGE-DOMAIN-1 Project #4
 items reflect production batch and concurrency-burst acceptance; Wiki commit
-`5dbd2d1`.
+`5dbd2d1`. Update the OCA-2 item to In Progress while the reliability
+follow-up is deployed and retested.
 
 1. Connect OpenCode file uploads to the existing workbench and canonical
    35-field contract. Permit arbitrary file extensions within explicit request
@@ -245,6 +250,32 @@ alternative remained evidence-only. The local PDF reopened as seven letter-size
 pages (42,958 bytes); the cover, source evidence/alternative labels, and
 withheld-age boundary rendered clearly. This single UI run does not establish
 provider uptime or sustained reliability.
+
+Production pressure follow-up (2026-10-20): two new five-request windows were
+run against the active deployment within the shared five-POST-per-minute
+firewall rule. In the first, the six-file batch and 51-page PDF returned 200,
+the opaque-only file returned 200 with an unreadable status, and the DOCX plus
+opaque-file request returned 502 after one schema retry; an over-limit request
+returned the expected 400. The DOCX-plus-opaque fixture then passed alone in
+27.1 seconds. In the second window, DOCX, PDF, screenshot, and CSV requests
+returned 200 in 13.3–67.4 seconds; XLSX hit the 150-second sandbox cap and
+returned 502. The same XLSX fixture passed alone in 38.4 seconds with correct
+glucose/HbA1c values and sheet-cell evidence. Sanitized Vercel diagnostics
+identified schema-invalid output and sandbox exit 143 respectively; no
+provider-key pattern appeared. This demonstrates concurrency-sensitive
+failures, not general reliability.
+
+The local XLSX repair converts worksheets to bounded text before OpenCode,
+preserves sheet/row/cell provenance and formula markers, rejects unmappable
+worksheet relationships, and carries clipped remainder into a server-enforced
+partial-review warning. Original files remain available when extraction,
+writing, or removal fails. Integration coverage exercises shared strings,
+multiple sheets, formula cells, clipping, and missing worksheet parts. The
+focused API suite passes 19/19, the full Node suite 129/129, and
+`uv run python scripts/verify_project.py --json` passes all 20 checks with
+`E-005 blocked`. This change has not yet been deployed or exercised against
+the provider in production. Do not claim that it resolves the concurrent XLSX
+timeout until a staged live acceptance passes.
 
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 

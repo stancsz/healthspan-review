@@ -146,3 +146,16 @@ confirmed, and the page-49 6.0% alternative remained evidence-only. The
 seven-page letter-size report (42,958 bytes) reopened and rendered with clear
 cover, source-evidence, alternative-status, and withheld-age sections. This is
 one bounded UI acceptance, not sustained-load evidence.
+
+Production pressure follow-up (2026-10-20): two five-request windows against
+the active deployment produced a DOCX schema failure and an XLSX timeout at
+the 150-second sandbox cap. Each format passed an isolated rerun. Sanitized
+Vercel logs showed invalid structured output and exit 143 respectively; no
+provider-key pattern appeared. These concurrency-sensitive failures leave
+provider reliability open. A local XLSX-to-text repair now preserves sheet,
+row, and cell locations, marks formula cells, fails closed on missing worksheet
+parts, and carries truncation into an explicit partial-review status. Its
+fixture integration tests, the full Node suite (129/129), and all 20 canonical
+checks pass. The repair is not yet deployed, so no production improvement is
+claimed. The live `/agent` header also shows **Install app**; the production
+manifest, icons, and service worker return HTTP 200.
