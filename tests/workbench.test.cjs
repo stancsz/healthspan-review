@@ -59,8 +59,13 @@ test("clinician workspace discloses optional external PDF processing", () => {
   assert.match(js, /label: spec.label/);
   assert.match(js, /withheld pending domain-specific evidence/);
   assert.match(js, /mergeConfirmedBatch/);
+  assert.match(js, /selectedAlternative/);
+  assert.match(js, /state\.agentAlternatives = combinedAgent\.alternatives/);
   assert.match(js, /Previously confirmed · superseded/);
   assert.match(js, /Previously confirmed · same reading from another source/);
+  assert.match(js, /agentAlternatives/);
+  assert.match(js, /AI alternative · not selected or entered/);
+  assert.match(js, /no candidate or readability status was returned/);
   assert.doesNotMatch(js, /estimateAgeSignals|heuristic/);
   assert.doesNotMatch(js, /fetch\s*\([^)]*https?:\/\//);
 });

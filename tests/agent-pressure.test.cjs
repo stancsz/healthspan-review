@@ -52,6 +52,8 @@ test('malformed base64 and invalid basenames fail closed while arbitrary names r
     assert.match(handler.validateBody(request([{ name, data: Buffer.from('x').toString('base64') }])), /name is invalid/);
   }
   assert.equal(handler.validateBody(request([{ name: 'folder\\odd name.🧪', data: Buffer.from('synthetic').toString('base64') }])), null);
+  assert.match(handler.validateBody(request([file('a.csv'), file('01-a.csv')])), /unambiguous/);
+  assert.match(handler.validateBody(request([file('same.csv'), file('same.csv')])), /unambiguous/);
 });
 
 test('measurement parsing maps display labels to canonical IDs and filters unsupported claims', () => {
@@ -71,7 +73,9 @@ test('measurement parsing maps display labels to canonical IDs and filters unsup
 });
 
 test('empty reviews and unreadable-file reports are valid, bounded results', () => {
-  assert.deepEqual(handler.parseMeasurementOutput('{"candidates":[],"unreadable":[]}', ['opaque.bin']), { candidates: [], unreadable: [] });
+  assert.deepEqual(handler.parseMeasurementOutput('{"candidates":[],"unreadable":[]}', ['opaque.bin']), {
+    candidates: [], unreadable: [], unaccounted: [{ file: 'opaque.bin', reason: 'No measurement candidate or readability status was returned; inspect this file manually.' }],
+  });
   const parsed = handler.parseMeasurementOutput(JSON.stringify({
     candidates: [],
     unreadable: [
@@ -85,7 +89,16 @@ test('empty reviews and unreadable-file reports are valid, bounded results', () 
   assert.equal(parsed.unreadable.length, 2);
   assert.equal(parsed.unreadable[0].file, 'opaque.bin');
   assert.equal(parsed.unreadable[1].reason.length, 240);
-  assert.deepEqual(handler.parseMeasurementOutput('{"candidates":[]}', ['opaque.bin']), { candidates: [], unreadable: [] });
+  assert.deepEqual(handler.parseMeasurementOutput('{"candidates":[]}', ['opaque.bin']), {
+    candidates: [], unreadable: [], unaccounted: [{ file: 'opaque.bin', reason: 'No measurement candidate or readability status was returned; inspect this file manually.' }],
+  });
+  const coverage = handler.parseMeasurementOutput(JSON.stringify({
+    candidates: [candidate({ file: 'source-01.docx' })],
+    unreadable: [{ file: 'source-02.pdf', reason: 'No readable text was found.' }],
+  }), ['source-01.docx', 'source-02.pdf', 'source-03.bin']);
+  assert.deepEqual(coverage.unaccounted, [{ file: 'source-03.bin', reason: 'No measurement candidate or readability status was returned; inspect this file manually.' }]);
+  assert.equal(coverage.candidates[0].file, 'source-01.docx');
+  assert.equal(coverage.unreadable[0].file, 'source-02.pdf');
   assert.equal(handler.parseMeasurementOutput(JSON.stringify({ candidates: Array.from({ length: 201 }, () => candidate()) }), ['synthetic-labs.docx']), null);
 });
 

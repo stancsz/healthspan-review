@@ -5,10 +5,11 @@ import { analyzePdfLocally } from './pdf-import.mjs';
 
   var secaParser = window.FrailtySecaParser;
   var clinicalParser = window.HealthspanClinicalParser;
-  var state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] };
+  var state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentAlternatives: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] };
   var agentFiles = [];
   var agentController = null;
   var agentSelectionId = 0;
+  var agentCandidateBatchSerial = 0;
   var valueLabels = {
     bmi: "Body mass index", height_cm: "Height", weight_kg: "Weight", fat_mass_kg: "Fat mass",
     fat_free_mass_kg: "Fat-free mass", estimated_height_cm: "Estimated height", ffmi: "FFMI",
@@ -131,7 +132,7 @@ import { analyzePdfLocally } from './pdf-import.mjs';
       source: { seca: base ? base.source : null, clinical: state.clinical ? { format: "canonical clinical inputs CSV", label: "Local clinical inputs CSV" } : null },
       measurement_ledger: base ? base.measurement_ledger : [],
       segment_ledger: base ? base.segment_ledger : [],
-      clinical_ledger: clinicalLedger.concat(state.pdfClinical ? clinicalParser.specs.filter(function (spec) { return present(state.pdfClinical.values[spec.name]); }).map(function (spec) { var source = state.pdfProvenance[spec.name] || {}, entry = { field: spec.name, value: state.pdfClinical.values[spec.name], unit: unitFor(spec.name, state.pdfClinical.units), provenance: source }; return pdfCandidateReview.toLedgerRecord(entry, spec); }) : []).concat(state.agentClinical ? clinicalParser.specs.filter(function (spec) { return present(state.agentClinical.values[spec.name]); }).map(function (spec) { return { field: spec.name, value: state.agentClinical.values[spec.name], unit: unitFor(spec.name, state.agentClinical.units), category: spec.category, provenance: Object.assign({ type: "user_confirmed_ai_file_measurement", superseded: false }, state.agentProvenance[spec.name] || {}) }; }) : []).concat((state.agentHistory || []).map(function (entry) { var spec = clinicalParser.byName[entry.field]; return { field: entry.field, value: entry.value, unit: entry.unit || "", category: spec ? spec.category : "", provenance: Object.assign({ type: "user_confirmed_ai_file_measurement", historical: true, superseded: entry.superseded, duplicate_source: entry.superseded === false }, entry.provenance || {}) }; })),
+      clinical_ledger: clinicalLedger.concat(state.pdfClinical ? clinicalParser.specs.filter(function (spec) { return present(state.pdfClinical.values[spec.name]); }).map(function (spec) { var source = state.pdfProvenance[spec.name] || {}, entry = { field: spec.name, value: state.pdfClinical.values[spec.name], unit: unitFor(spec.name, state.pdfClinical.units), provenance: source }; return pdfCandidateReview.toLedgerRecord(entry, spec); }) : []).concat(state.agentClinical ? clinicalParser.specs.filter(function (spec) { return present(state.agentClinical.values[spec.name]); }).map(function (spec) { return { field: spec.name, value: state.agentClinical.values[spec.name], unit: unitFor(spec.name, state.agentClinical.units), category: spec.category, provenance: Object.assign({ type: "user_confirmed_ai_file_measurement", superseded: false }, state.agentProvenance[spec.name] || {}) }; }) : []).concat((state.agentHistory || []).map(function (entry) { var spec = clinicalParser.byName[entry.field]; return { field: entry.field, value: entry.value, unit: entry.unit || "", category: spec ? spec.category : "", provenance: Object.assign({ type: "user_confirmed_ai_file_measurement", historical: true, superseded: entry.superseded, duplicate_source: entry.superseded === false }, entry.provenance || {}) }; })).concat((state.agentAlternatives || []).map(function (entry) { var spec = clinicalParser.byName[entry.field]; return { field: entry.field, value: entry.value, unit: entry.unit || "", category: spec ? spec.category : "", provenance: Object.assign({ type: "ai_file_alternative_not_selected", alternativeNotSelected: true }, entry.provenance || {}) }; })),
       complete_profile: { present_count: completeProfile.filter(function (row) { return present(row.value); }).length, total_count: completeProfile.length, fields: completeProfile },
       chronological_age_context: { value: present(merged.values.age) ? merged.values.age : null, unit: "years", source: merged.provenance.age || null, status: present(merged.values.age) ? "supplied_not_recomputed" : "not_available", reference_date: null },
       domain_age_reports: domainAgeReports,
@@ -205,9 +206,10 @@ import { analyzePdfLocally } from './pdf-import.mjs';
     var pdfRows = state.pdfClinical ? clinicalParser.specs.filter(function (spec) { return present(state.pdfClinical.values[spec.name]); }).map(function (spec) { var src = state.pdfProvenance[spec.name] || {}; return '<tr><td>' + escapeHtml(spec.label) + '<br><small class="field-name">' + escapeHtml(spec.name) + '</small></td><td>' + escapeHtml(formatValue(state.pdfClinical.values[spec.name])) + '</td><td>' + escapeHtml(unitFor(spec.name, state.pdfClinical.units)) + '</td><td>' + escapeHtml(categoryLabels[spec.category]) + '</td><td class="derived-label">PDF · user-confirmed</td><td>Page ' + escapeHtml(src.page || "?") + ': ' + escapeHtml(src.evidence || "") + '</td></tr>'; }).join("") : "";
     var agentRows = state.agentClinical ? clinicalParser.specs.filter(function (spec) { return present(state.agentClinical.values[spec.name]); }).map(function (spec) { var src = state.agentProvenance[spec.name] || {}; return '<tr><td>' + escapeHtml(spec.label) + '<br><small class="field-name">' + escapeHtml(spec.name) + '</small></td><td>' + escapeHtml(formatValue(state.agentClinical.values[spec.name])) + '</td><td>' + escapeHtml(unitFor(spec.name, state.agentClinical.units)) + '</td><td>' + escapeHtml(categoryLabels[spec.category]) + '</td><td class="derived-label">AI file · user-confirmed</td><td>' + escapeHtml(src.file || "") + ' · ' + escapeHtml(src.location || "") + ': ' + escapeHtml(src.evidence || "") + '</td></tr>'; }).join("") : "";
     var agentHistoryRows = (state.agentHistory || []).map(function (entry) { var spec = clinicalParser.byName[entry.field], src = entry.provenance || {}, status = entry.superseded ? "Previously confirmed · superseded" : "Previously confirmed · same reading from another source"; return '<tr><td>' + escapeHtml(spec ? spec.label : entry.field) + '<br><small class="field-name">' + escapeHtml(entry.field) + '</small></td><td>' + escapeHtml(formatValue(entry.value)) + '</td><td>' + escapeHtml(entry.unit || "") + '</td><td>' + escapeHtml(spec ? categoryLabels[spec.category] : "") + '</td><td class="warning-label">' + escapeHtml(status) + '</td><td>' + escapeHtml(src.file || "") + ' · ' + escapeHtml(src.location || "") + ': ' + escapeHtml(src.evidence || "") + '</td></tr>'; }).join("");
+    var agentAlternativeRows = (state.agentAlternatives || []).map(function (entry) { var spec = clinicalParser.byName[entry.field], src = entry.provenance || {}; return '<tr><td>' + escapeHtml(spec ? spec.label : entry.field) + '<br><small class="field-name">' + escapeHtml(entry.field) + '</small></td><td>' + escapeHtml(formatValue(entry.value)) + '</td><td>' + escapeHtml(entry.unit || "") + '</td><td>' + escapeHtml(spec ? categoryLabels[spec.category] : "") + '</td><td class="warning-label">AI alternative · not selected or entered</td><td>' + escapeHtml(src.file || "") + ' · ' + escapeHtml(src.location || "") + ': ' + escapeHtml(src.evidence || "") + '</td></tr>'; }).join("");
     var count = clinicalParser.specs.filter(function (spec) { return present(merged.values[spec.name]); }).length; $("#clinical-panel").hidden = false; $("#clinical-tag").textContent = count + " fields";
     $("#clinical-copy").textContent = "Values from local CSV input and user-confirmed AI candidates. Missing fields remain explicitly absent.";
-    $("#clinical-rows").innerHTML = csvRows + pdfRows + agentRows + agentHistoryRows;
+    $("#clinical-rows").innerHTML = csvRows + pdfRows + agentRows + agentHistoryRows + agentAlternativeRows;
   }
   function renderEstimatedAges() {
     $("#estimated-ages-panel").hidden = false;
@@ -234,6 +236,8 @@ import { analyzePdfLocally } from './pdf-import.mjs';
   }
   function renderAgentCandidates(candidates) {
     state.agentCandidates = candidates;
+    var batchId = ++agentCandidateBatchSerial;
+    candidates.forEach(function (candidate, index) { candidate.sourceCandidateId = "agent-candidate-" + batchId + "-" + index; });
     var counts = {}; candidates.forEach(function (item) { counts[item.field] = (counts[item.field] || 0) + 1; });
     $("#agent-measurement-candidate-tag").textContent = candidates.length + " candidates";
     $("#agent-measurement-candidate-rows").innerHTML = candidates.map(function (candidate, index) {
@@ -258,7 +262,7 @@ import { analyzePdfLocally } from './pdf-import.mjs';
     }); });
     document.querySelectorAll(".agent-candidate-value").forEach(function (input) { input.addEventListener("input", function () { var index = Number(this.dataset.index), candidate = state.agentCandidates[index], spec = clinicalParser.byName[candidate.field], checkbox = document.querySelector('.agent-candidate-use[data-index="' + index + '"]'), cell = $("#agent-candidate-review-" + index); try { clinicalParser.normalizeValue(this.value, spec); cell.textContent = candidate.reviewIssue || candidate.uncertainty || "Check source"; cell.className = candidate.reviewIssue || candidate.uncertainty ? "warning-label" : "derived-label"; if (checkbox) checkbox.disabled = false; } catch (error) { cell.textContent = error.message; cell.className = "warning-label"; if (checkbox) { checkbox.checked = false; checkbox.disabled = true; } } $("#apply-agent-measurement-candidates").disabled = !document.querySelector(".agent-candidate-use:checked"); }); });
   }
-  function reset() { agentSelectionId++; if (agentController) agentController.abort(); choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; agentFiles = []; $("#agent-measurement-files").value = ""; $("#agent-measurement-consent").checked = false; $("#agent-measurement-candidate-panel").hidden = true; $("#agent-measurement-status").textContent = "Choose files and confirm before sending."; renderAgentFiles(); document.querySelector('[data-step="review"]').disabled = true; document.querySelector('[data-step="export"]').disabled = true; $("#export-status").textContent = ""; setStatus("No record open.", false); showView("import"); }
+  function reset() { agentSelectionId++; if (agentController) agentController.abort(); choosePdf(null); state = { parsed: null, clinical: null, pdfClinical: null, pdfProvenance: {}, agentClinical: null, agentProvenance: {}, agentHistory: [], agentAlternatives: [], agentCandidates: [], pdfPages: [], pdfCandidates: [], source: "", packet: null, active: "import", warnings: [] }; $("#seca-file").value = ""; $("#clinical-file").value = ""; $("#pdf-file").value = ""; $("#pdf-ai-consent").checked = false; $("#pdf-candidate-panel").hidden = true; $("#pdf-status").textContent = "Choose a PDF to inspect it locally."; $("#pdf-file-name").textContent = "No PDF selected"; agentFiles = []; $("#agent-measurement-files").value = ""; $("#agent-measurement-consent").checked = false; $("#agent-measurement-candidate-panel").hidden = true; $("#agent-measurement-status").textContent = "Choose files and confirm before sending."; renderAgentFiles(); document.querySelector('[data-step="review"]').disabled = true; document.querySelector('[data-step="export"]').disabled = true; $("#export-status").textContent = ""; setStatus("No record open.", false); showView("import"); }
   function fetchText(url) { return fetch(url, { cache: "no-store" }).then(function (response) { if (!response.ok) throw new Error(url + " returned " + response.status); return response.text(); }); }
 
   var localPdf = null, pdfSelectionId = 0, activePdfController = null;
@@ -404,34 +408,70 @@ import { analyzePdfLocally } from './pdf-import.mjs';
       var aliases = new Map(files.map(function (file, index) { return [file.name, filesToSend[index].name]; }));
       var candidates = (data.candidates || []).map(function (candidate) { return Object.assign({}, candidate, { displayFile: aliases.get(candidate.file) || candidate.file }); });
       renderAgentCandidates(candidates);
-      var unreadable = (data.unreadable || []).length;
-      $("#agent-measurement-status").textContent = candidates.length + " candidate(s) returned. " + (unreadable ? unreadable + " file(s) could not be fully read." : "Check every result against the original files.") + " Nothing has entered the measurement record.";
-      if (unreadable) { $("#agent-measurement-status").textContent += " " + data.unreadable.map(function (item) { return (aliases.get(item.file) || item.file) + ": " + item.reason; }).join(" "); }
+      var unreadable = data.unreadable || [];
+      var candidateFiles = new Set(candidates.map(function (item) { return item.file; }));
+      var unreadableFiles = new Set(unreadable.map(function (item) { return item.file; }));
+      var unaccounted = Array.isArray(data.unaccounted) ? data.unaccounted : files.filter(function (item) { return !candidateFiles.has(item.name) && !unreadableFiles.has(item.name); }).map(function (item) { return { file: item.name, reason: "No measurement candidate or readability status was returned; inspect this file manually." }; });
+      var status = candidates.length + " candidate(s) returned. ";
+      status += unreadable.length ? unreadable.length + " file(s) could not be fully read. " : "";
+      status += unaccounted.length ? unaccounted.length + " file(s) need manual review because no candidate or readability status was returned. " : "All submitted files have a candidate or readability status. ";
+      status += "Nothing has entered the measurement record.";
+      if (unreadable.length) status += " " + unreadable.map(function (item) { return (aliases.get(item.file) || item.file) + ": " + item.reason; }).join(" ");
+      if (unaccounted.length) status += " " + unaccounted.map(function (item) { return (aliases.get(item.file) || item.file) + ": " + item.reason; }).join(" ");
+      $("#agent-measurement-status").textContent = status;
     } catch (error) {
       if (selectionId === agentSelectionId) $("#agent-measurement-status").textContent = error.name === "AbortError" ? "Upload cancelled because consent was withdrawn." : (error.message || "The agent could not complete this request.");
     } finally { if (agentController === controller) { agentController = null; button.dataset.busy = "false"; renderAgentFiles({ preserveStatus: true }); } }
   });
   $("#apply-agent-measurement-candidates").addEventListener("click", function () {
     var selected = Array.from(document.querySelectorAll(".agent-candidate-use:checked")), updates = [];
+    var selectedIndexes = new Set(selected.map(function (checkbox) { return Number(checkbox.dataset.index); }));
+    var selectedCandidates = Array.from(selectedIndexes).map(function (index) { return state.agentCandidates[index]; });
     try {
       selected.forEach(function (checkbox) {
         var index = Number(checkbox.dataset.index), candidate = state.agentCandidates[index], spec = clinicalParser.byName[candidate.field], valueText = document.querySelector('.agent-candidate-value[data-index="' + index + '"]').value;
         var value = clinicalParser.normalizeValue(valueText, spec);
         var existingValue = mergeValues().values[candidate.field];
-        var provenance = { file: candidate.displayFile || candidate.file, location: candidate.location, evidence: candidate.evidence, uncertainty: candidate.uncertainty || candidate.reviewIssue || "", printedValue: candidate.value, printedUnit: candidate.unit || "", printedDate: candidate.date || null, date: candidate.date || null, enteredValue: value, selectedAmongAlternatives: state.agentCandidates.filter(function (item) { return item.field === candidate.field; }).length > 1, overridesExisting: present(existingValue) && String(existingValue) !== String(value) };
+        var provenance = { sourceCandidateId: candidate.sourceCandidateId, file: candidate.displayFile || candidate.file, location: candidate.location, evidence: candidate.evidence, uncertainty: candidate.uncertainty || candidate.reviewIssue || "", printedValue: candidate.value, printedUnit: candidate.unit || "", printedDate: candidate.date || null, date: candidate.date || null, enteredValue: value, selectedAmongAlternatives: state.agentCandidates.filter(function (item) { return item.field === candidate.field; }).length > 1, overridesExisting: present(existingValue) && String(existingValue) !== String(value) };
         updates.push({ field: candidate.field, value: value, unit: spec.unit, provenance: provenance });
       });
     } catch (error) { $("#agent-measurement-apply-status").textContent = "One or more values need correction: " + error.message; return; }
     if (!selected.length) { $("#agent-measurement-apply-status").textContent = "Select at least one value and check it against the original file."; return; }
+    var alternativesToKeep = state.agentCandidates.flatMap(function (candidate, index) {
+      if (selectedIndexes.has(index)) return [];
+      var chosen = selectedCandidates.find(function (item) { return item.field === candidate.field; });
+      if (!chosen) return [];
+      var chosenSource = chosen.displayFile || chosen.file;
+      return [{
+        sourceCandidateId: candidate.sourceCandidateId,
+        field: candidate.field,
+        value: candidate.value,
+        unit: candidate.unit || "",
+        provenance: {
+          file: candidate.displayFile || candidate.file,
+          location: candidate.location,
+          evidence: candidate.evidence,
+          uncertainty: candidate.uncertainty || candidate.reviewIssue || "",
+          printedValue: candidate.value,
+          printedUnit: candidate.unit || "",
+          printedDate: candidate.date || null,
+          date: candidate.date || null,
+          alternativeNotSelected: true,
+          selectedAlternative: { file: chosenSource, location: chosen.location, value: chosen.value, unit: chosen.unit || "" },
+        },
+      }];
+    });
     var combinedAgent = HealthspanAgentMeasurementState.mergeConfirmedBatch({
       values: state.agentClinical ? state.agentClinical.values : {},
       units: state.agentClinical ? state.agentClinical.units : {},
       provenance: state.agentProvenance,
       history: state.agentHistory,
-    }, updates);
+      alternatives: state.agentAlternatives,
+    }, updates, alternativesToKeep);
     state.agentClinical = clinicalParser.result(combinedAgent.values, combinedAgent.units, "User-confirmed AI-extracted arbitrary-file measurements");
     state.agentProvenance = combinedAgent.provenance;
     state.agentHistory = combinedAgent.history;
+    state.agentAlternatives = combinedAgent.alternatives;
     state.warnings = state.warnings.filter(function (warning) { return warning.indexOf("AI file candidates:") !== 0; });
     var provenance = Object.fromEntries(updates.map(function (entry) { return [entry.field, entry.provenance]; }));
     var alternateFields = Object.keys(provenance).filter(function (field) { return provenance[field].selectedAmongAlternatives; });

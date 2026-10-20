@@ -131,6 +131,23 @@ not an uptime or general reliability guarantee. The broader goal remains
 active: numeric category-age models and age/sex-matched reference ranges
 remain unavailable and are tracked in `BIOAGE-DOMAIN-1`.
 
+Follow-up acceptance (2026-10-19): production deployment
+`dpl_G1AidvYzRZisKpJQWnvjMDPDfTZW` returned HTTP 200 for a synthetic DOCX plus
+an opaque binary. The DOCX produced four source-located candidates; the opaque
+file was explicitly reported unreadable; no upload was left unaccounted and no
+OpenRouter-key pattern appeared. Candidate and unreadable filenames are now
+canonicalized consistently, and the server flags any omitted upload for manual
+review. Normalized filename collisions are rejected before sandbox execution.
+A declined same-field candidate is retained in a separate evidence-ledger
+entry and the PDF labels it as not selected and excluded from calculations.
+Local tests verify this PDF behavior and idempotent repeat confirmation. The
+live `/workbench` header visibly includes **Install app**. The Node suite passes
+124/124 and the canonical verifier passes all 20 checks with E-005 blocked.
+The native install prompt remains browser-dependent; the header control and
+browser-menu fallback are supported paths. This does not establish universal
+file readability, sustained provider reliability, or numeric category-age
+validity.
+
 ### PWA-1: Installable browser app, 2026-10-19
 
 Done for this app-delivery increment (source commit `a005515`, 2026-10-19).

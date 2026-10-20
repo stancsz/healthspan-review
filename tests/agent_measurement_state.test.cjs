@@ -58,3 +58,38 @@ test('equivalent repeated readings retain both source records without changing t
   assert.equal(merged.history[0].provenance.file, 'labs-a.docx');
 });
 
+test('declined candidate alternatives retain source evidence without entering confirmed measurements', () => {
+  const alternative = {
+    sourceCandidateId: 'agent-candidate-1-1',
+    field: 'fasting_glucose',
+    value: '104',
+    unit: 'mg/dL',
+    provenance: { file: 'second.csv', location: 'row 4', evidence: 'Glucose,104', alternativeNotSelected: true },
+  };
+  const merged = mergeConfirmedBatch({ values: {}, units: {}, provenance: {}, history: [], alternatives: [] }, [
+    { field: 'fasting_glucose', value: 98, unit: 'mg/dL', provenance: { file: 'first.csv', location: 'row 2' } },
+  ], [alternative]);
+
+  assert.deepEqual(merged.values, { fasting_glucose: 98 });
+  assert.equal(merged.alternatives.length, 1);
+  assert.equal(merged.alternatives[0].value, '104');
+  assert.equal(merged.alternatives[0].provenance.file, 'second.csv');
+
+  const repeated = mergeConfirmedBatch(merged, [], [alternative]);
+  assert.equal(repeated.alternatives.length, 1, 'reapplying the same candidate batch does not duplicate the evidence row');
+  assert.deepEqual(repeated.values, { fasting_glucose: 98 });
+});
+
+test('reapplying the same confirmed candidate does not create duplicate measurement history', () => {
+  const update = {
+    field: 'fasting_glucose', value: 98, unit: 'mg/dL',
+    provenance: { sourceCandidateId: 'agent-candidate-2-0', file: 'labs.csv', location: 'row 2' },
+  };
+  const first = mergeConfirmedBatch({}, [update]);
+  const replayed = mergeConfirmedBatch(first, [update]);
+
+  assert.deepEqual(replayed.values, { fasting_glucose: 98 });
+  assert.equal(replayed.history.length, 0);
+  assert.equal(replayed.provenance.fasting_glucose.sourceCandidateId, 'agent-candidate-2-0');
+});
+

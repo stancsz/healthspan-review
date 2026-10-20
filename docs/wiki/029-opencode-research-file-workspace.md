@@ -125,3 +125,20 @@ model validity. A later live burst sent five synthetic research requests
 simultaneously; all returned HTTP 200 from MiniMax M3 via OpenRouter within 14
 seconds. This is one five-way burst under the five-requests/minute firewall,
 not sustained-load evidence.
+
+Follow-up production acceptance (2026-10-19): deployment
+`dpl_G1AidvYzRZisKpJQWnvjMDPDfTZW` processed a synthetic DOCX and intentionally
+opaque binary in one request. Four DOCX candidates included source locations
+and evidence; the opaque file was explicitly marked unreadable; no file was
+left unaccounted and no provider-key pattern appeared. The API now flags any
+upload omitted from both candidates and unreadable entries for manual review,
+canonicalizes numbered workspace aliases consistently, and rejects filename
+collisions after normalization. Declined same-field candidates remain visible
+in the workbench and PDF as unselected evidence but do not enter confirmed
+measurements or calculations. Local PDF tests cover this status and confirm
+repeated confirmation does not duplicate history. The production workbench
+header visibly includes **Install app**. `npm test` passes 124/124 and the
+canonical verifier passes 20/20 with E-005 blocked. This bounded sample does
+not establish universal file compatibility, sustained provider reliability,
+or numeric category-age validity. Long-PDF candidate-confirmation and download
+remain unverified end to end.

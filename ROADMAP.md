@@ -223,6 +223,24 @@ exposes a provider-key pattern. XLSX and mixed-file batch handling are now
 verified for these synthetic fixtures; universal file compatibility and the
 51-page PDF confirmation/download path remain unverified.
 
+Follow-up acceptance, 2026-10-19: deployment
+`dpl_G1AidvYzRZisKpJQWnvjMDPDfTZW` returned HTTP 200 for a synthetic DOCX and
+opaque binary in one request. Four candidates had source locations/evidence;
+the opaque file was explicitly marked unreadable; `unaccounted` was empty and
+the response contained no provider-key pattern. The server now derives a
+manual-review status for every upload omitted from both candidate and
+unreadable results, canonicalizes numbered workspace filenames consistently,
+and rejects filename aliases that collide after normalization. The workbench
+retains declined same-field candidates in a separate evidence ledger, links
+them to the chosen reading, and excludes them from calculations and confirmed
+counts; the PDF regression verifies these semantics. Reapplying the same
+candidate does not duplicate history. `npm test` passes 124/124; the canonical
+verifier passes all 20 checks with `clinical_gate: E-005 blocked`. The live
+production `/workbench` header exposes **Install app**. The install prompt is
+browser-dependent; the button and browser-menu fallback are verified. No
+universal readability, sustained reliability, long-PDF browser confirmation,
+or numeric age claim is made.
+
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 
 Priority: P1 research/model-definition work; depends on age-model evidence and

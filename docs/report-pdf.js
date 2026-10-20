@@ -62,7 +62,10 @@
     var profile = packet.complete_profile || {}, fields = Array.isArray(profile.fields) ? profile.fields : [];
     var readiness = packet.assessment_readiness || {}, fi = packet.frailty_index || {};
     var ledger = Array.isArray(packet.clinical_ledger) ? packet.clinical_ledger : [];
-    var currentLedger = ledger.filter(function (entry) { return !(entry.provenance && entry.provenance.historical); });
+    var currentLedger = ledger.filter(function (entry) {
+      var provenance = entry.provenance || {};
+      return !provenance.historical && !provenance.alternativeNotSelected;
+    });
     var syntheticFixture = fields.some(function (field) { return isSyntheticProvenance(field.provenance); }) || currentLedger.some(function (entry) { return isSyntheticProvenance(entry.provenance); });
     var boundaries = Array.isArray(packet.boundaries) ? packet.boundaries : [];
     var warnings = packet.parsing_review || {}, comparison = packet.comparison || {};
@@ -281,13 +284,20 @@
     if (evidenceEntries.length) {
       evidenceEntries.forEach(function (entry, index) {
         var source = entry.provenance || {};
-        var historyLabel = source.historical ? (source.duplicate_source ? "Previously confirmed (same reading, additional source): " : "Previously confirmed (superseded): ") : "";
+        var historyLabel = source.alternativeNotSelected
+          ? "Alternative not selected: "
+          : source.historical ? (source.duplicate_source ? "Previously confirmed (same reading, additional source): " : "Previously confirmed (superseded): ") : "";
         var title = historyLabel + fieldName(entry.field, fields) + "  -  " + String(entry.value == null ? "" : entry.value) + (entry.unit ? " " + entry.unit : "");
         var lines = [title, "Source: " + (source.file || source.filename || source.source || "not recorded") + " | " + (source.location || (source.page ? "page " + source.page : "location not recorded"))];
         if (source.printedValue != null) lines.push("Printed value: " + source.printedValue);
         if (source.printedUnit) lines.push("Printed unit: " + source.printedUnit);
         if (source.printedDate) lines.push("Printed date: " + source.printedDate);
         if (source.enteredValue != null && String(source.enteredValue) !== String(source.printedValue)) lines.push("User-confirmed entered value: " + source.enteredValue);
+        if (source.alternativeNotSelected) lines.push("Review status: Not selected; not entered into measurements or calculations.");
+        if (source.alternativeNotSelected && source.selectedAlternative) {
+          var selected = source.selectedAlternative;
+          lines.push("Selected reading for comparison: " + selected.value + (selected.unit ? " " + selected.unit : "") + " | " + (selected.file || "source not recorded") + " | " + (selected.location || "location not recorded"));
+        }
         if (source.evidence || source.excerpt) lines.push("Evidence: " + (source.evidence || source.excerpt));
         if (source.uncertainty) lines.push("Review note: " + source.uncertainty);
         var h = 36 + lines.slice(1).reduce(function (sum, line) { return sum + Math.max(12, wrap(line, 86).length * 12); }, 0);
