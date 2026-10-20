@@ -29,6 +29,14 @@ embedded browser did not expose the native `beforeinstallprompt` event, so that
 native prompt itself was not exercised. The local suite passes 115/115 Node
 tests and the canonical verifier reports `status: passed`, `E-005 blocked`.
 
+Current production follow-up (2026-10-20): deployment
+`dpl_EEwRMviEPPGUG8rGryQVvuDtkxqJ` retains the installable header and PWA
+assets. The live workbench accessibility tree exposes the top-header **Install
+app** button; `/workbench` and `/agent` load the shared navigation script. The
+manifest, correctly named 192/512 icons, and service worker return HTTP 200
+with expected MIME and root-scope headers. Browser-native prompt firing
+remains browser-dependent; browser-menu fallback remains verified.
+
 ### OCA-1 — OpenCode research file workspace, 2026-10-19
 
 Priority: P1 research-app capability. Owner: Codex integrator; acceptance:
@@ -287,6 +295,19 @@ the server added an explicit unreadable-remainder warning), isolated CSV, and
 opaque-only file. Those requests took 9.2–82.1 seconds and every file was
 accounted for. This verifies these synthetic cases under bounded concurrency;
 it does not establish sustained capacity, uptime, or universal format support.
+
+Current PDF refinement release (2026-10-20): commit
+`0093dd56435eb0d42430ed393fad298e2d0f7649` is deployed as READY production
+deployment `dpl_EEwRMviEPPGUG8rGryQVvuDtkxqJ`. The report cards state that
+category age was not calculated, provide a reason and measurement coverage,
+and distinguish mapped-field counts from model-panel completeness. The report
+does not imply matched references where none exist. A synthetic complete
+35-field packet rendered as a seven-page letter PDF; cover and first domain
+page visual review found no clipping or overlap. Production script readback
+contains the revised status/range wording and no key pattern. `npm test` passes
+129/129, the canonical verifier 20/20 with E-005 blocked, docs verification
+passes, GitHub `verify` run `39351374070` succeeds, and Pages run
+`39351374035` succeeds. This changes reporting clarity, not model capability.
 
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 

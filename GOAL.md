@@ -191,6 +191,17 @@ acceptance, not a sustained-load, uptime, or universal-format guarantee. The
 focused API suite passes 19/19, full Node suite 129/129, and the canonical
 verifier passes 20/20 with E-005 blocked.
 
+PDF report refinement was published in commit `0093dd56435eb0d42430ed393fad298e2d0f7649`,
+READY production deployment `dpl_EEwRMviEPPGUG8rGryQVvuDtkxqJ`. The live report
+script returns the updated category-age status, category-specific reasons, and
+unavailable matched-range wording; no provider-key pattern appears. A
+synthetic 35-field report rendered as seven letter-size pages, and the cover
+and domain page were visually checked without clipping. Node tests pass
+129/129, the canonical verifier passes 20/20 with E-005 blocked, documentation
+verification passes, GitHub `verify` run `39351374070` succeeded, and Pages
+run `39351374035` succeeded. Numeric category ages and matched ranges remain
+unavailable.
+
 ### PWA-1: Installable browser app, 2026-10-19
 
 Done for this app-delivery increment (source commit `a005515`, 2026-10-19).
@@ -208,6 +219,12 @@ is served by the latest Ready Vercel deployment
 headers report manifest `application/manifest+json`, icons `image/png`, and
 `Service-Worker-Allowed: /`. Browser-native prompt firing was not exposed by
 the embedded test browser; the fallback path was verified.
+The later report refinement deployment `dpl_EEwRMviEPPGUG8rGryQVvuDtkxqJ`
+retains the installable header and PWA assets. The live workbench accessibility
+tree exposes the top-header **Install app** button; both `/workbench` and
+`/agent` load the shared navigation script. Manifest, 192/512 icons, and worker
+return HTTP 200 with expected MIME and scope headers. Browser-native prompt
+firing remains browser-dependent; browser-menu fallback remains verified.
 This is an app-delivery convenience; research-use, privacy, age-output, and
 clinical approval limits are unchanged.
 

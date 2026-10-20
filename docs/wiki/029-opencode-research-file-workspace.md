@@ -187,3 +187,16 @@ upload was accounted for and no provider-key pattern appeared. This confirms
 these bounded synthetic cases, not sustained capacity, uptime, or universal
 format support. The live `/agent` header also shows **Install app**; the
 production manifest, icons, and service worker return HTTP 200.
+
+Report refinement release (2026-10-20): source commit
+`0093dd56435eb0d42430ed393fad298e2d0f7649` is READY at production deployment
+`dpl_EEwRMviEPPGUG8rGryQVvuDtkxqJ`. The synthetic 35-field PDF rendered to
+seven letter-size pages; the cover and domain page were visually reviewed
+without clipping. Live script readback confirms not-calculated category age,
+category reasons, and unavailable age/sex-matched range language. The top
+header's **Install app** button is visible in the production workbench, and
+both `/workbench` and `/agent` load shared navigation. The manifest, correctly
+named icons, and service worker return HTTP 200 with expected types. Local Node
+tests (129/129), canonical checks (20/20 with E-005 blocked), docs verification,
+GitHub verify run `39351374070`, and Pages run `39351374035` pass. No numeric
+category ages or matched ranges were added.
