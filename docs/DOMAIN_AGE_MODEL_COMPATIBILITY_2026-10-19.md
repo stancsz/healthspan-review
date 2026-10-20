@@ -38,6 +38,31 @@ whole-person score after its complete inputs and validation are in place, but
 it does not provide a patient-level age/sex-matched range or satisfy the
 requested joint/blood/organ-specific estimates.
 
+## CardioMetAge candidate identified 2026-10-19
+
+Li et al. (2026) publish a formula for a raw cardiometabolic disease
+mortality-equivalent age using chronological age plus 12 inputs: HbA1c, RDW,
+systolic blood pressure, creatinine, lymphocyte percentage, MCV, pulse rate,
+pulse pressure, uric acid, CRP, waist circumference, and BUN. This is a
+potentially reproducible **cardiometabolic** candidate after the input contract
+and protocols are expanded; it is not a blood-system, joint, heart-organ,
+kidney, or liver age. The present schema lacks lymphocyte percentage, MCV, uric
+acid, and BUN. Pulse-pressure derivation needs paired same-session readings;
+equivalence of resting heart rate to the paper's pulse-rate protocol is
+unverified; and hs-CRP unit conversion does not establish assay comparability.
+The reported cohort excluded ages below 20 and ages 90 or above.
+
+The paper distinguishes its raw predicted age from corrected CardioMetAge.
+The corrected value requires the cohort regression of raw prediction on
+chronological age and its residual parameters, which are not provided as a
+ready-to-use frozen artifact; exact correction would require reproduction and
+validation. Supplementary sex-stratified medians and IQRs summarize broad
+cohorts, not age-42/sex-matched reference intervals. Published MAE and
+repeat-measure summaries are not individual uncertainty intervals. The paper
+license is CC BY-NC-ND 4.0, so implementation and commercial/product rights
+need review before adaptation. Therefore neither raw nor corrected
+CardioMetAge is currently run by the app, and no matched range is available.
+
 ## Reference interpretation
 
 The paper's KDM age gap (estimated age minus chronological age) and positive/
@@ -71,6 +96,13 @@ distribution. Do not substitute a partial score or relabel systemic PhenoAge
 as heart age. Keep numeric category-age fields null until the model and
 reference evidence are independently accepted and E-005 is resolved.
 
+The newly identified CardioMetAge paper is another schema-expansion candidate,
+not a runnable alternative: it is cardiometabolic rather than organ-specific,
+requires four fields not in the app contract, and its corrected-age regression
+must be reproduced. Its broad-cohort supplement cannot support
+age/sex-matched patient ranges. Treat it as a research lead only until the
+model, rights, validation, and reference requirements above are met.
+
 ## Sources
 
 - Zheng et al. (2026), [NHANES body/heart/liver/kidney KDM study](https://www.nature.com/articles/s41538-026-00799-3), including Supplementary Table 13.
@@ -78,3 +110,4 @@ reference evidence are independently accepted and E-005 is resolved.
 - [BioAge KDM implementation (GPL-3.0)](https://github.com/dayoonkwon/BioAge/blob/master/R/kdm_calc.R).
 - Levine et al. (2018), [clinical PhenoAge derivation](https://pmc.ncbi.nlm.nih.gov/articles/PMC5940111/).
 - CDC, [NHANES data and documentation](https://www.cdc.gov/nchs/nhanes/).
+- Li et al. (2026), [CardioMetAge derivation](https://link.springer.com/article/10.1186/s12916-026-04621-5), with [supplementary material](https://link.springer.com/article/10.1186/s12916-026-04621-5#Sec25).

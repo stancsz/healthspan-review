@@ -60,6 +60,15 @@ run are not implemented; this is tracked as
 the supported-domain decision is resolved with appropriate model, reference,
 and validation evidence.
 
+The current PDF refinement makes that limitation explicit on each category
+card: age estimate not calculated, age/sex-matched range unavailable, observed
+and missing measurements, and the category-specific reason. Its methods page
+states that PhenoAge is a whole-person score, not blood age, and that the
+current record lacks required inputs; it also states no compatible joint-age
+model was identified. This is report clarity only: it does not add an age
+algorithm or matched reference panel. All numeric category ages remain
+withheld.
+
 Live endpoint pressure acceptance (2026-10-19): the active Vercel firewall
 rule is five POSTs per IP per 60 seconds across both AI routes. Two five-request
 windows, separated by more than 60 seconds, exercised synthetic DOCX, PDF, PNG,
@@ -233,6 +242,18 @@ these methods provides a patient-level age/sex-matched interval for biological
 age. The next bounded step is to choose one defined construct, add complete
 standardized inputs, reproduce and validate a frozen model, and separately
 establish a calibrated reference distribution and patient-level uncertainty.
+
+The 2026 CardioMetAge paper is tracked as a cardiometabolic model candidate,
+not an available result. Its raw formula needs 12 inputs and the current
+contract lacks lymphocyte percentage, MCV, uric acid, and BUN; pulse,
+pulse-pressure, and CRP assay protocols also need reconciliation. The
+published corrected age requires a cohort regression step that must be
+reproduced. Its supplement provides broad-cohort sex summaries rather than
+age-matched ranges, and it supplies no individual prediction interval. The
+CC BY-NC-ND license requires rights review before adaptation. No CardioMetAge
+value is calculated; see the compatibility audit. The requested category ages
+and reference context remain unresolved, so BIOAGE-DOMAIN-1 and the active goal
+remain open.
 
 ### OpenCode research file workspace, 2026-10-19
 

@@ -55,7 +55,7 @@ test('PDF report paginates a complete profile and preserves confirmed source met
 
 test('PDF report presents domain coverage, supplied age context, and withheld age status', () => {
   const domains = [
-    { id: 'body_composition', label: 'Body composition', measured_fields: ['bmi'], expected_fields: ['bmi', 'waist_circumference'], status: 'partial', age_report: { status: 'withheld_unvalidated', point_estimate: null } },
+    { id: 'body_composition', label: 'Body composition', measured_fields: ['bmi'], expected_fields: ['bmi', 'waist_circumference'], status: 'partial', age_report: { status: 'withheld_unvalidated', point_estimate: null, reason: 'No approved body-age model is available.' } },
     { id: 'bone_health', label: 'Bone health', measured_fields: [], expected_fields: [], status: 'not_available', age_report: { status: 'not_available', point_estimate: null } },
   ];
   const pdf = Buffer.from(global.HealthspanReportPdf.build({
@@ -70,18 +70,19 @@ test('PDF report presents domain coverage, supplied age context, and withheld ag
     clinical_ledger: [],
     boundaries: ['Research and wellness use only.'],
   })).toString('ascii');
-  assert.match(pdf, /DOMAIN AGE ESTIMATES: WITHHELD/);
-  assert.match(pdf, /Supplied age: 45 years/);
+  assert.match(pdf, /DOMAIN AGE STATUS: NOT CALCULATED/);
+  assert.match(pdf, /Supplied chronological age: 45 years/);
   assert.match(pdf, /Domain measurement and age status/);
   assert.match(pdf, /Body composition/);
-  assert.match(pdf, /Age estimate withheld/);
-  assert.match(pdf, /Recorded fields: 1 of 2/);
-  assert.match(pdf, /Recorded: Body mass index/);
+  assert.match(pdf, /Category age: not calculated/);
+  assert.match(pdf, /Domain fields recorded: 1 of 2/);
+  assert.match(pdf, /Observed: Body mass index/);
   assert.match(pdf, /Not recorded: Waist circumference/);
-  assert.match(pdf, /AGE AND REFERENCE STATUS/);
-  assert.match(pdf, /Age\/sex-specific reference ranges are unavailable/);
+  assert.match(pdf, /AGE-REPORT STATUS/);
+  assert.match(pdf, /Age\/sex-matched ranges are unavailable for this review/);
+  assert.match(pdf, /Reason: No approved body-age model is available/);
   assert.match(pdf, /Bone health/);
-  assert.match(pdf, /No supported measures are included in/);
+  assert.match(pdf, /No supported measures in this packet/);
 });
 
 test('PDF report distinguishes an older value from an equivalent repeated source', () => {
@@ -111,21 +112,27 @@ test('PDF report for the full 35-field and 17-domain packet paginates every doma
   const pdf = Buffer.from(global.HealthspanReportPdf.build({
     complete_profile: { present_count: 35, total_count: 35, fields },
     chronological_age_context: { value: 42, unit: 'years', status: 'supplied_not_recomputed' },
-    domain_age_reports: domainLabels.map((label, index) => ({ id: `domain_${index}`, label, expected_fields: [], age_report: { status: 'not_available', point_estimate: null } })),
+    domain_age_reports: domainLabels.map((label, index) => ({ id: `domain_${index}`, label, expected_fields: label === 'Blood health' ? fields.map(field => field.field) : [], reference_reason: 'No approved matched reference panel for this category and protocol.', age_report: { status: 'not_available', point_estimate: null, reason: label === 'Joint health' ? 'No compatible joint-age model; history and chair-rise do not define joint age.' : label === 'Blood health' ? 'No validated blood-system clock; PhenoAge is whole-person and inputs are incomplete.' : 'No approved model or reference panel is available.' } })),
     clinical_ledger: [],
     assessment_readiness: { assessment_ready: false, missing_requirements: [] },
     boundaries: ['Research and wellness use only.'],
   })).toString('ascii');
-  assert.equal((pdf.match(/\/Type \/Page\b/g) || []).length, 6);
+  assert.equal((pdf.match(/\/Type \/Page\b/g) || []).length, 7);
   for (const label of domainLabels) assert.ok(pdf.includes(label), `missing domain ${label}`);
   assert.match(pdf, /Candidate age algorithms and input gaps/);
   assert.match(pdf, /Whole-body age \| NHANES KDM/);
   assert.match(pdf, /Heart age \| NHANES KDM/);
   assert.match(pdf, /triglycerides/);
-  assert.match(pdf, /NO PATIENT-SPECIFIC AGE OR REFERENCE INTERVAL/);
-  assert.match(pdf, /1 \/ 6/);
-  assert.match(pdf, /6 \/ 6/);
-  assert.match(pdf, /Supplied age: 42 years/);
+  assert.match(pdf, /WHY AGES AND AGE\/SEX-MATCHED RANGES ARE NOT REPORTED/);
+  assert.match(pdf, /PhenoAge is a whole-person estimate, not blood age/);
+  assert.match(pdf, /No joint-age model is included/);
+  assert.match(pdf, /No compatible joint-age model/);
+  assert.match(pdf, /No validated blood-system clock/);
+  assert.match(pdf, /Range context:/);
+  assert.match(pdf, /See complete field table on page 2/);
+  assert.match(pdf, /1 \/ 7/);
+  assert.match(pdf, /7 \/ 7/);
+  assert.match(pdf, /Supplied chronological age: 42 years/);
   assert.match(pdf, /SYNTHETIC FIXTURE  \/  NOT USER DATA/);
   assert.match(pdf, /Synthetic\) Tj ET/);
 });

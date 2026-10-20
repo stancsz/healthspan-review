@@ -105,7 +105,7 @@
         rect(0, 0, 612, 792, C.cream);
         rect(0, 0, 612, 44, C.green);
         text("HEALTHSPAN REVIEW", 42, 15, 9, "E4EEE5", true);
-        text(kind === "profile" ? "MEASUREMENT PROFILE" : kind === "domains" ? "DOMAIN AGE ESTIMATES" : kind === "age-methods" ? "AGE MODEL AUDIT" : "SOURCE NOTES & LIMITS", 386, 15, 8, "E6C58F", true);
+        text(kind === "profile" ? "MEASUREMENT PROFILE" : kind === "domains" ? "DOMAIN AGE STATUS" : kind === "age-methods" ? "AGE MODEL AUDIT" : "SOURCE NOTES & LIMITS", 386, 15, 8, "E6C58F", true);
         y = 65;
       }
     }
@@ -137,7 +137,7 @@
 
     rect(42, 376, 528, 43, C.paleGold);
     rect(42, 376, 4, 43, C.gold);
-    text("DOMAIN AGE ESTIMATES: WITHHELD", 56, 384, 8, C.ink, true);
+    text("DOMAIN AGE STATUS: NOT CALCULATED", 56, 384, 8, C.ink, true);
     para("No category-specific model, uncertainty estimate, and approved reference panel are available for reporting.", 56, 398, 88, 7.5, C.muted, 9);
 
     y = 436;
@@ -201,25 +201,30 @@
     if (domains.length) {
       var ageContext = packet.chronological_age_context || {};
       var sexContext = fields.find(function (field) { return field.field === "sex" && field.value != null; });
-      var ageText = ageContext.value == null ? "Age not supplied" : "Supplied age: " + displayNumber(Number(ageContext.value)) + " years (not recalculated)";
+      var ageText = ageContext.value == null ? "Chronological age not supplied" : "Supplied chronological age: " + displayNumber(Number(ageContext.value)) + " years (not recalculated)";
       if (sexContext) ageText += "; recorded sex: " + sexContext.value;
-      for (var domainStart = 0; domainStart < domains.length; domainStart += 9) {
-        var domainPage = domains.slice(domainStart, domainStart + 9);
+      for (var domainStart = 0; domainStart < domains.length; domainStart += 6) {
+        var domainPage = domains.slice(domainStart, domainStart + 6);
         startPage("domains");
         text(domainStart === 0 ? "Domain measurement and age status" : "Domain measurement and age status (continued)", 42, y, 16, C.ink, true); y += 23;
-        para(ageText + ". Context only; not independently verified.", 42, y, 92, 8.5, C.muted, 12); y += 26;
+        para(ageText + ". Context only; not independently verified.", 42, y, 92, 9, C.muted, 13); y += 27;
         var noteTop = y;
-        rect(42, noteTop, 528, 54, C.paleGold);
-        text("AGE AND REFERENCE STATUS", 54, noteTop + 6, 7, C.ink, true);
-        para("Age/sex-specific reference ranges are unavailable. Numeric domain ages remain withheld pending validated models, uncertainty, and reference panels. Domain counts can overlap; all 35 fields are listed on page 2.", 54, noteTop + 18, 86, 8.4, C.muted, 10.5);
-        y = noteTop + 62;
+        rect(42, noteTop, 528, 78, C.paleGold);
+        text("AGE-REPORT STATUS", 54, noteTop + 7, 8, C.ink, true);
+        var rangeReason = domains.map(function (domain) { return domain.reference_reason; }).filter(Boolean)[0] || "No matched reference panel is available for this review.";
+        para("Category ages are not calculated without a validated domain model and patient-level uncertainty. Card counts show mapped domain fields, not candidate-model completeness.", 54, noteTop + 21, 91, 8.3, C.ink, 10.5);
+        para("Age/sex-matched ranges are unavailable for this review. Range context: " + rangeReason + " See the next page for model input gaps.", 54, noteTop + 43, 91, 8.3, C.ink, 10.5);
+        y = noteTop + 86;
         domainPage.forEach(function (domain, localIndex) {
-          var index = domainStart + localIndex, h = 100, col = localIndex % 2, row = Math.floor(localIndex / 2), x = col ? 311 : 42;
-          var cardY = y + row * 104;
+          var index = domainStart + localIndex, h = 124, col = localIndex % 2, row = Math.floor(localIndex / 2), x = col ? 311 : 42;
+          var cardY = y + row * 128;
           rect(x, cardY, 259, h, C.paper, C.line);
           rect(x, cardY, 3, h, domain.status === "not_available" ? C.line : C.gold);
           text(String(domain.label || domain.id || "Domain"), x + 11, cardY + 7, 10, C.ink, true);
-          text("Age estimate withheld", x + 11, cardY + 23, 8.5, C.red, true);
+          text("Category age: not calculated", x + 11, cardY + 23, 9, C.red, true);
+          var ageReport = domain.age_report || {};
+          var reasonHeight = para("Reason: " + String(ageReport.reason || "No validated category-age model is available."), x + 11, cardY + 39, 49, 8.1, C.ink, 9.5);
+          var summaryY = cardY + 39 + reasonHeight + 3;
           var expected = Array.isArray(domain.expected_fields) ? domain.expected_fields : [];
           var presentNames = [], missingNames = [];
           expected.forEach(function (name) {
@@ -229,14 +234,19 @@
             else missingNames.push(label);
           });
           if (!expected.length) {
-            para("No supported measures are included in the current packet.", x + 11, cardY + 39, 48, 8.5, C.muted, 10);
+            text("No supported measures in this packet.", x + 11, summaryY, 7.5, C.muted, false);
           } else {
-            text("Recorded fields: " + presentNames.length + " of " + expected.length, x + 11, cardY + 36, 8, C.muted, false);
-            var details = [];
-            if (presentNames.length) details.push("Recorded: " + presentNames.join(", "));
-            if (missingNames.length) details.push("Not recorded: " + missingNames.join(", "));
-            var detailY = cardY + 47;
-            details.forEach(function (line) { detailY += para(line, x + 11, detailY, 48, 8.5, C.muted, 10) + 2; });
+            text("Domain fields recorded: " + presentNames.length + " of " + expected.length, x + 11, summaryY, 7.5, C.muted, false);
+            summaryY += 10;
+            var detailLines = [];
+            if (presentNames.length) detailLines = detailLines.concat(wrap("Observed: " + presentNames.join(", "), 49));
+            if (missingNames.length) detailLines = detailLines.concat(wrap("Not recorded: " + missingNames.join(", "), 49));
+            var detailLineBudget = Math.floor((cardY + h - 3 - summaryY) / 8);
+            if (detailLines.length > detailLineBudget) {
+              text("See complete field table on page 2.", x + 11, summaryY, 7.5, C.ink, false);
+            } else {
+              detailLines.forEach(function (line, lineIndex) { text(line, x + 11, summaryY + lineIndex * 8, 7.5, C.ink, false); });
+            }
           }
         });
       }
@@ -248,10 +258,10 @@
     text("Candidate age algorithms and input gaps", 42, y, 16, C.ink, true); y += 23;
     para("These published research models are not run on this record. A partial panel or a relabeled whole-body clock would not be a category-age estimate.", 42, y, 92, 8.5, C.muted, 12); y += 34;
     var candidates = [
-      { title: "Whole-body age | NHANES KDM", panel: "Albumin, ALP, BUN, creatinine, CRP, HbA1c, uric acid, WBC, lymphocyte %, MCV, RDW, diastolic BP, pulse pressure.", missing: "BUN, uric acid, lymphocyte %, MCV; CRP assay harmonization and same-session pulse pressure also need protocol review." },
-      { title: "Heart age | NHANES KDM", panel: "Diastolic and systolic BP, fasting glucose, total cholesterol, HDL, LDL, fasting triglycerides.", missing: "Total cholesterol, HDL, LDL, and fasting triglycerides; fasting/lab protocol needs confirmation." },
-      { title: "Liver age | NHANES KDM", panel: "AST, ALT, GGT, ALP, LDH.", missing: "AST, ALT, GGT, and LDH. FIB-4 is not a substitute for this model panel." },
-      { title: "Kidney age | NHANES KDM", panel: "Urine albumin and creatinine, serum creatinine, BUN, uric acid, phosphorus, bicarbonate.", missing: "Urine albumin, urine creatinine, BUN, uric acid, phosphorus, and bicarbonate. eGFR is not a substitute." },
+      { title: "Whole-body age | NHANES KDM", panel: "Albumin, ALP, BUN, creatinine, CRP, HbA1c, uric acid, WBC, lymphocyte %, MCV, RDW, diastolic BP, pulse pressure.", missing: "Missing: BUN, uric acid, lymphocyte %, MCV. Protocol: CRP assay harmonization and same-session pulse pressure." },
+      { title: "Heart age | NHANES KDM", panel: "Diastolic and systolic BP, fasting glucose, total cholesterol, HDL, LDL, fasting triglycerides.", missing: "Missing: total cholesterol, HDL, LDL, triglycerides. Protocol: confirm fasting and lab methods." },
+      { title: "Liver age | NHANES KDM", panel: "AST, ALT, GGT, ALP, LDH.", missing: "Missing: AST, ALT, GGT, LDH. Protocol: confirm assay comparability. FIB-4 is not a substitute." },
+      { title: "Kidney age | NHANES KDM", panel: "Urine albumin and creatinine, serum creatinine, BUN, uric acid, phosphorus, bicarbonate.", missing: "Missing: urine albumin/creatinine, BUN, uric acid, phosphorus, bicarbonate. eGFR is not a substitute." },
     ];
     candidates.forEach(function (item, index) {
       var col = index % 2, row = Math.floor(index / 2), x = col ? 311 : 42;
@@ -259,18 +269,18 @@
       rect(x, top, 259, 178, C.paper, C.line);
       rect(x, top, 4, 178, index === 0 ? C.gold : C.green2);
       text(item.title, x + 13, top + 12, 9, C.ink, true);
-      text("Published inputs", x + 13, top + 34, 7.5, C.green2, true);
-      var ty = top + 46 + para(item.panel, x + 13, top + 46, 49, 7.5, C.muted, 10);
-      text("Missing or unmatched here", x + 13, ty + 4, 7.5, C.red, true);
+      text("Published inputs", x + 13, top + 34, 8, C.green2, true);
+      var ty = top + 46 + para(item.panel, x + 13, top + 46, 48, 8, C.muted, 10.5);
+      text("Missing measurements / protocol", x + 13, ty + 4, 7.5, C.red, true);
       ty += 17;
-      ty += para(item.missing, x + 13, ty, 49, 7.5, C.muted, 10);
+      ty += para(item.missing, x + 13, ty, 48, 8, C.muted, 10.5);
       text("Result: not calculated", x + 13, top + 153, 7.5, C.red, true);
     });
     var candidateNoteY = y + 390;
-    rect(42, candidateNoteY, 528, 78, C.paleGold);
-    text("NO PATIENT-SPECIFIC AGE OR REFERENCE INTERVAL", 55, candidateNoteY + 10, 8, C.ink, true);
-    para("The paper's cohort MAE is not an individual's uncertainty interval, and its positive/negative age gap is not an age/sex-matched clinical reference range. The paper includes no joint-age model. The app needs a complete compatible panel, reproducible frozen model, patient-level uncertainty, and a separately validated age/sex reference distribution before it can report an age.", 55, candidateNoteY + 27, 86, 7.5, C.muted, 10);
-    para("Source: Zheng et al. 2026, NHANES KDM body/heart/liver/kidney models; https://www.nature.com/articles/s41538-026-00799-3", 42, candidateNoteY + 92, 92, 7, C.muted, 9);
+    rect(42, candidateNoteY, 528, 116, C.paleGold);
+    text("WHY AGES AND AGE/SEX-MATCHED RANGES ARE NOT REPORTED", 55, candidateNoteY + 10, 8.5, C.ink, true);
+    para("The paper's cohort MAE is not one person's uncertainty interval. Its age-gap sign threshold is not an age/sex-matched reference range. No joint-age model is included. PhenoAge is a whole-person estimate, not blood age; this record lacks lymphocyte percentage and MCV. Model uncertainty and a population reference range are separate requirements. A complete compatible panel, frozen model, patient-level uncertainty, and separately validated age/sex reference distribution are required before reporting a category age.", 55, candidateNoteY + 29, 85, 8, C.muted, 10.5);
+    para("Source: Zheng et al. 2026, NHANES KDM body/heart/liver/kidney models; https://www.nature.com/articles/s41538-026-00799-3", 42, candidateNoteY + 132, 92, 7.5, C.muted, 9);
 
     // Provenance and interpretation details continue on a clean notes page.
     startPage("details");

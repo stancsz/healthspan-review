@@ -345,6 +345,33 @@ distribution. E-005 remains blocked. Evidence:
 [BioAge toolkit paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC8602613/), and
 [BioAge KDM implementation](https://github.com/dayoonkwon/BioAge/blob/master/R/kdm_calc.R).
 
+Additional candidate review (2026-10-19): Li et al. publish a raw
+CardioMetAge formula using chronological age and 12 cardiometabolic inputs.
+The current schema lacks lymphocyte percentage, MCV, uric acid, and BUN;
+pulse-rate equivalence, same-session pulse pressure, and CRP assay
+comparability need protocol review. The corrected CardioMetAge requires a
+cohort raw-age-on-chronological-age residual adjustment that must be
+reproduced. Supplementary sex-stratified broad-cohort summaries do not provide
+age/sex-matched reference ranges, and no patient-level prediction interval is
+provided. The paper is CC BY-NC-ND 4.0, so implementation rights need review.
+This is a cardiometabolic age-equivalent candidate only, not blood, joint,
+heart-organ, kidney, or liver age; no value is runnable from the current
+contract. See [compatibility audit](docs/DOMAIN_AGE_MODEL_COMPATIBILITY_2026-10-19.md)
+and [Li et al. 2026](https://link.springer.com/article/10.1186/s12916-026-04621-5).
+
+Current product clarification (2026-10-19): an independent research-validity
+council found no defensible numeric category age in the current contract. It
+recommended a one-domain kidney-model feasibility review before any fitting;
+this is a candidate direction, not a model selection or approval. The local
+compatibility audit still lists heart as the smallest schema expansion (four
+missing lipid measurements versus the larger kidney panel), so model choice
+remains unresolved. The report now gives each category a not-calculated status,
+matched-range-unavailable status, observed/missing field coverage, and a
+category-specific explanation. It explicitly distinguishes whole-person
+PhenoAge from blood age and says no compatible joint-age model was identified.
+These are presentation changes only; all numeric category-age fields remain
+null and E-005 remains blocked.
+
 ### APP-REVAMP-1 — Complete app revamp and publication, 2026-10-08
 
 Priority: P0 for the authorized publication slice. Owner: Codex integrator;

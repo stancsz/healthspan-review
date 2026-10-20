@@ -113,6 +113,26 @@ limits: [domain-age compatibility matrix](https://github.com/stancsz/healthspan-
 The app therefore leaves numeric category ages and age/sex-matched ranges
 unscored rather than calculating a partial or relabeled age.
 
+Each category card now states that the estimate was not calculated and the
+matched age/sex range is unavailable, with observed/missing field coverage and
+a concise category-specific reason. The methods page distinguishes PhenoAge
+as a whole-person estimate from blood age and records that no compatible
+joint-age algorithm was identified. This makes the limitation easier to audit;
+it does not enable numeric ages. The current 35-field input contract still has
+no defensible runnable category model or approved reference panel.
+
+An additional research candidate was identified in Li et al. (2026):
+CardioMetAge is a cardiometabolic disease age-equivalent, not a blood-system,
+joint, or organ-specific age. The published raw formula uses 12 inputs; four
+are absent from the app contract (lymphocyte percentage, MCV, uric acid, and
+BUN), and pulse/CRP protocols need review. The corrected age requires
+reproducing the cohort residual regression. Broad cohort summaries do not
+provide age/sex-matched patient references or an individual prediction
+interval; the CC BY-NC-ND license also needs rights review before adaptation.
+It remains a candidate only, and no value is calculated. See the [source
+paper](https://link.springer.com/article/10.1186/s12916-026-04621-5) and the
+[compatibility audit](https://github.com/stancsz/healthspan-review/blob/main/docs/DOMAIN_AGE_MODEL_COMPATIBILITY_2026-10-19.md).
+
 Production batch acceptance (2026-10-19): two separate synthetic text files
 for fasting glucose (92 mg/dL) and grip strength (29 kg) each produced one
 grounded OpenCode candidate with source-line evidence. Each candidate was

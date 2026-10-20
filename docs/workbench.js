@@ -120,10 +120,29 @@ import { analyzePdfLocally } from './pdf-import.mjs';
       ["lifestyle_and_function", "Lifestyle and function", ["grip_strength", "chair_rise_time", "smoking_status", "alcohol_heavy_use", "sleep_hours"]],
       ["mental_health_history", "Mental-health history", ["depression"]]
     ];
+    var ageReasons = {
+      body_composition: "No approved body-age model or matched reference panel is available.",
+      fluid_and_cellular: "No validated age model is available for these measurements.",
+      muscle_health: "No validated muscle-age model is available for these measurements.",
+      joint_health: "No compatible joint-age model; history and chair-rise do not define joint age.",
+      bone_health: "No approved bone-age model or matched reference panel is available.",
+      skin_health: "No approved skin-age model or matched reference panel is available.",
+      blood_health: "No validated blood-system clock; PhenoAge is whole-person and inputs are incomplete.",
+      cardiovascular_health: "No approved cardiovascular-age model or matched reference panel is available.",
+      cardiorespiratory_health: "No validated cardiorespiratory-age model is available for these inputs.",
+      immune_inflammatory_health: "No validated immune-age model is available for these measurements.",
+      brain_cognitive_health: "No approved cognitive-age model or matched reference panel is available.",
+      metabolic_health: "No approved metabolic-age model or matched reference panel is available.",
+      kidney_health: "Published kidney-age panels are incomplete; no frozen model is available.",
+      liver_health: "Published liver-age panels are incomplete; no frozen model is available.",
+      sleep_and_recovery: "No validated sleep-age model or matched reference panel is available.",
+      lifestyle_and_function: "No validated age model is available for this combined category.",
+      mental_health_history: "No age-equivalent mental-health model is supported here."
+    };
     var domainAgeReports = domainSpecs.map(function (domain) {
       var supported = domain[2].map(function (name) { return completeProfile.find(function (field) { return field.field === name; }); }).filter(Boolean);
       var measured = supported.filter(function (field) { return present(field.value); }).map(function (field) { return field.field; });
-      return { id: domain[0], label: domain[1], measured_fields: measured.map(function (name) { var field = completeProfile.find(function (item) { return item.field === name; }); return field ? field.label : name; }), expected_fields: domain[2], status: domain[2].length ? (measured.length ? "partial" : "not_available") : "not_available", reference_status: "not_available", age_report: { status: domain[2].length ? "withheld_unvalidated" : "not_available", point_estimate: null, interval: null, model_id: null, reference_panel_id: null } };
+      return { id: domain[0], label: domain[1], measured_fields: measured.map(function (name) { var field = completeProfile.find(function (item) { return item.field === name; }); return field ? field.label : name; }), expected_fields: domain[2], status: domain[2].length ? (measured.length ? "partial" : "not_available") : "not_available", reference_status: "not_available", reference_reason: "No approved matched reference panel for this category and protocol.", age_report: { status: domain[2].length ? "withheld_unvalidated" : "not_available", point_estimate: null, interval: null, model_id: null, reference_panel_id: null, reason: ageReasons[domain[0]] || "No approved category-age model is available." } };
     });
     return {
       format: "local-measurement-review-pack-v0.2",
