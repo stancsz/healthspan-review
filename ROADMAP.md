@@ -75,23 +75,22 @@ E-005, IR1, and patient-data governance do not advance.
 ### OCA-2 — File-to-measurement review and downloadable report, 2026-10-19
 
 Priority: P1, depends on OCA-1 and LOCAL-REVIEW-1. Owner: Codex integrator;
-independent acceptance reviewer. Status: In Progress for production reliability;
-the bounded synthetic/de-identified file-to-report scope is implemented and
-verified. Local arbitrary-file review, merge/history repair, pressure tests,
-and six-page PDF generation are implemented. Production serves `report-pdf-v2`;
+independent acceptance reviewer. Status: Done for bounded
+synthetic/de-identified delivery and pressure acceptance. Local arbitrary-file
+review, merge/history repair, bounded pressure tests, and six-page PDF
+generation are implemented. Production serves `report-pdf-v2`;
 the built-in complete synthetic case was opened in the browser and the live
 PDF download action was exercised. The downloaded production artifact was
 reopened: six letter-size pages, 41,762 bytes; the cover and age-model audit
-page render cleanly. Fresh production stress windows on 2026-10-20 exposed a
-schema failure and a 150-second XLSX timeout under five-way concurrency; both
-formats passed isolated reruns. A bounded XLSX-to-text repair is implemented
-locally and passes focused, full Node, and canonical checks, but is not yet
-deployed or pressure-accepted. Keep this item open until the release is
-verified at production. No sustained-concurrency guarantee is claimed.
+page render cleanly. Fresh production stress windows on 2026-10-20 first exposed
+a schema failure and a 150-second XLSX timeout under five-way concurrency; the
+bounded XLSX-to-text repair was then deployed and passed two four-request
+provider-backed windows. The production pressure acceptance is complete for
+the synthetic fixtures below. No sustained-concurrency guarantee is claimed.
 The Wiki age-report/PDF pages and the OCA-2 and BIOAGE-DOMAIN-1 Project #4
-items reflect production batch and concurrency-burst acceptance; Wiki commit
-`5dbd2d1`. Update the OCA-2 item to In Progress while the reliability
-follow-up is deployed and retested.
+items reflect production batch and concurrency-burst acceptance; latest Wiki
+commit `51af9eb`; the OCA-2 board items remain Done for this bounded scope, while
+BIOAGE-DOMAIN-1 remains In Progress.
 
 1. Connect OpenCode file uploads to the existing workbench and canonical
    35-field contract. Permit arbitrary file extensions within explicit request
@@ -273,9 +272,21 @@ writing, or removal fails. Integration coverage exercises shared strings,
 multiple sheets, formula cells, clipping, and missing worksheet parts. The
 focused API suite passes 19/19, the full Node suite 129/129, and
 `uv run python scripts/verify_project.py --json` passes all 20 checks with
-`E-005 blocked`. This change has not yet been deployed or exercised against
-the provider in production. Do not claim that it resolves the concurrent XLSX
-timeout until a staged live acceptance passes.
+`E-005 blocked`.
+
+Post-repair production acceptance (2026-10-20): clean commit `0c0b0b8` is
+deployed as `dpl_EwASwAaZC5sxrJybN29wGd7DUV9J`, READY and serving the production
+alias. An isolated synthetic XLSX request returned the expected glucose and
+HbA1c with workbook cell citations in 13.4 seconds. Two concurrent four-request
+windows then passed 8/8 with no provider-key pattern: XLSX, DOCX, screenshot,
+and the 51-page PDF completed in 12.0–90.2 seconds with every upload accounted
+for and grounded citations. A second window accepted a six-file DOCX/PDF/PNG/
+CSV/XLSX/opaque batch (18 candidates plus explicit opaque-file unreadability),
+a 1,800-row XLSX whose target was after the text cap (no candidate invented;
+the server added an explicit unreadable-remainder warning), isolated CSV, and
+opaque-only file. Those requests took 9.2–82.1 seconds and every file was
+accounted for. This verifies these synthetic cases under bounded concurrency;
+it does not establish sustained capacity, uptime, or universal format support.
 
 ### BIOAGE-DOMAIN-1 — Evidence-backed category age estimates and reference context, 2026-10-19
 

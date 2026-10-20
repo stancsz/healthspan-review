@@ -156,6 +156,14 @@ provider reliability open. A local XLSX-to-text repair now preserves sheet,
 row, and cell locations, marks formula cells, fails closed on missing worksheet
 parts, and carries truncation into an explicit partial-review status. Its
 fixture integration tests, the full Node suite (129/129), and all 20 canonical
-checks pass. The repair is not yet deployed, so no production improvement is
-claimed. The live `/agent` header also shows **Install app**; the production
-manifest, icons, and service worker return HTTP 200.
+checks pass. Commit `0c0b0b8` is live as production deployment
+`dpl_EwASwAaZC5sxrJybN29wGd7DUV9J`. An isolated XLSX request passed in 13.4
+seconds. Two four-request windows then passed 8/8: XLSX, DOCX, screenshot, and
+the 51-page PDF completed in 12.0–90.2 seconds; a six-file mixed batch returned
+18 grounded candidates and marked the opaque file unreadable; a 1,800-row
+clipped XLSX returned no fabricated candidate and an explicit unreadable
+remainder; CSV and opaque-only requests were also correctly handled. Every
+upload was accounted for and no provider-key pattern appeared. This confirms
+these bounded synthetic cases, not sustained capacity, uptime, or universal
+format support. The live `/agent` header also shows **Install app**; the
+production manifest, icons, and service worker return HTTP 200.

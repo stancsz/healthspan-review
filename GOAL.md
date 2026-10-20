@@ -126,11 +126,11 @@ remains 9/10. Full local
 verification passes 121 Node tests, the 20-check canonical verifier, and docs
 verification. The independent reviewer rechecked the final SDK cleanup
 implementation and found no remaining concrete defect. The bounded
-synthetic/de-identified file-to-report functionality is complete, but the
-production pressure-reliability follow-up remains in progress; the targeted
-case is not an uptime or general reliability guarantee. The broader goal
-remains active: numeric category-age models and age/sex-matched reference
-ranges remain unavailable and are tracked in `BIOAGE-DOMAIN-1`.
+synthetic/de-identified file-to-report functionality and bounded production
+pressure acceptance are complete; the tested windows do not guarantee uptime
+or sustained load. The broader goal remains active: numeric category-age
+models and age/sex-matched reference ranges remain unavailable and are tracked
+in `BIOAGE-DOMAIN-1`.
 
 Follow-up acceptance (2026-10-19): production deployment
 `dpl_G1AidvYzRZisKpJQWnvjMDPDfTZW` returned HTTP 200 for a synthetic DOCX plus
@@ -166,14 +166,21 @@ second window, DOCX, PDF, screenshot, and CSV returned 200 in 13.3–67.4
 seconds; XLSX reached the 150-second sandbox cap and returned 502. An isolated
 XLSX retry passed in 38.4 seconds with the expected glucose/HbA1c values and
 sheet/cell citations. Sanitized Vercel logs identify a schema-invalid result
-and exit 143; no provider-key pattern appeared. These failures show
-concurrency-sensitive reliability gaps. Local Node tests now exercise a
-bounded XLSX text companion with sheet/row/cell provenance, shared strings,
-formula markers, worksheet mapping failure, and explicit partial-review
-warnings after clipping. The focused API suite passes 19/19, full Node suite
-129/129, and the canonical verifier passes 20/20 with E-005 blocked. The XLSX
-repair has not yet been deployed; production reliability remains open pending
-post-deploy pressure acceptance.
+and exit 143; no provider-key pattern appeared. A bounded XLSX text companion
+was added, preserving sheet/row/cell provenance and formula markers, rejecting
+unmappable worksheet parts, and explicitly warning when the extraction is
+clipped. Commit `0c0b0b8` is deployed as production deployment
+`dpl_EwASwAaZC5sxrJybN29wGd7DUV9J`. An isolated XLSX request passed in 13.4
+seconds. Two post-deployment four-request windows passed 8/8 overall: XLSX,
+DOCX, screenshot, and a 51-page PDF completed concurrently in 12.0–90.2
+seconds; a six-file DOCX/PDF/PNG/CSV/XLSX/opaque batch, a 1,800-row clipped
+XLSX, CSV, and opaque-only request then completed in 9.2–82.1 seconds. All
+uploads were accounted for, candidates retained source evidence, the clipped
+workbook explicitly reported unreviewed remainder and returned no fabricated
+candidate, and no key pattern appeared. This is bounded synthetic pressure
+acceptance, not a sustained-load, uptime, or universal-format guarantee. The
+focused API suite passes 19/19, full Node suite 129/129, and the canonical
+verifier passes 20/20 with E-005 blocked.
 
 ### PWA-1: Installable browser app, 2026-10-19
 
