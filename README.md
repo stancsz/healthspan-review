@@ -1,6 +1,6 @@
 # Clinical Healthspan & Deficit Accumulation Engine
 
-[Unpublished research draft (PDF)](paper/main.pdf) · [LaTeX source](paper/main.tex) · [Product and research values](#product-and-research-values)
+[Product and research values](#product-and-research-values)
 
 **Research-use-only — not for clinical use.** This repository does not satisfy
 E-005, establish clinical approval, or make lifespan, diagnostic, mortality, or
@@ -167,5 +167,3 @@ This research-use-only project organizes structured wellness measurements and co
 - **Traceable evidence:** synthetic demonstrations and software verification are distinct from patient or outcome evidence.
 - **Consent and data boundaries:** local CSV/manual flows differ from PDF extraction that may send de-identified content to an external AI provider after consent.
 - **Validation before claims:** E-005 remains blocked; clinical use requires governance, representative cohorts, external validation, uncertainty analysis, and workflow evaluation.
-
-[Unpublished research draft (PDF)](paper/main.pdf) · [LaTeX source](paper/main.tex). Not submitted to arXiv; no identifier is claimed.

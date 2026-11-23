@@ -8,10 +8,6 @@ and execution quality
 decision retained. GitHub currently reports a public source repository. IR0 must
 reconcile visibility, licensing and public wording; private source is not verified.
 **Current intended use:** research and wellness development only
-## Research documentation status — 2026-11-23
-
-An arXiv-compatible, unpublished working draft now describes the current research-use-only engine, its evidence boundaries, and validation gates. The manuscript and README are documentation of the existing prototype; they add no cohort, clinical, calibration, or outcome evidence. It has not been submitted to arXiv and has no arXiv identifier. The active OCA-2 goal, BIOAGE-DOMAIN-1, and E-005 remain open.
-
 ## Active execution goal
 
 ### OCA-2: Arbitrary-file measurement review with downloadable PDF, 2026-10-19

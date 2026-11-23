@@ -9,23 +9,6 @@ dependency: later stages must not be treated as complete because an earlier
 software check is green.
 
 ## Current position
-### RPD-ALL-1 — Research documentation and working draft, 2026-11-23
-
-Priority: P2 documentation. Owner: Codex integrator. Status: Done for an
-unpublished, arXiv-compatible working draft. Depends on the existing
-research-use-only boundary; this increment does not change clinical intended
-use or validation status.
-
-The root README now states the product and research values and links the draft.
-The Markdown and LaTeX sources describe the deterministic 35-feature
-Rockwood-style index, synthetic workflow, consent boundary, open validation
-gates, and limitations. The compiled PDF was visually inspected page by page.
-
-Exit evidence: source and compiled PDF are present; the manuscript explicitly
-states it is unpublished and has no arXiv identifier. No new clinical or
-patient evidence was generated. E-005 and BIOAGE-DOMAIN-1 remain blocked or
-in progress as already recorded; OCA-2 remains the active project goal.
-
 ### PWA-1 — Installable browser app, 2026-10-19
 
 Priority: P2 app delivery. Owner: Codex integrator. Status: Done for this
