@@ -1,5 +1,7 @@
 # Clinical Healthspan & Deficit Accumulation Engine
 
+[Unpublished research draft (PDF)](paper/main.pdf) · [LaTeX source](paper/main.tex) · [Product and research values](#product-and-research-values)
+
 **Research-use-only — not for clinical use.** This repository does not satisfy
 E-005, establish clinical approval, or make lifespan, diagnostic, mortality, or
 treatment-effect claims.
@@ -156,3 +158,14 @@ uv run python scripts/build_demo_data.py --check
 Do not commit patient exports, credentials, downloaded NHANES files, model
 artifacts, or transient workstation directories. See [`SECURITY.md`](SECURITY.md)
 and [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Product and research values
+
+This research-use-only project organizes structured wellness measurements and computes a deterministic Rockwood-style deficit-accumulation index through a reviewable software workflow.
+
+- **Research use only:** it is not clinically approved and does not establish diagnosis, lifespan, mortality, or treatment effects.
+- **Traceable evidence:** synthetic demonstrations and software verification are distinct from patient or outcome evidence.
+- **Consent and data boundaries:** local CSV/manual flows differ from PDF extraction that may send de-identified content to an external AI provider after consent.
+- **Validation before claims:** E-005 remains blocked; clinical use requires governance, representative cohorts, external validation, uncertainty analysis, and workflow evaluation.
+
+[Unpublished research draft (PDF)](paper/main.pdf) · [LaTeX source](paper/main.tex). Not submitted to arXiv; no identifier is claimed.
